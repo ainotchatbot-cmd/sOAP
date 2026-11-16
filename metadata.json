@@ -1,0 +1,6 @@
+{
+  "name": "Atelier Archawee Bangkok — Botanical Soap House",
+  "description": "Atelier Archawee Bangkok · Gentle Bubble: Artisan Dark Duos, Bright Duos, and Thai & Global Holiday Edition dual-texture botanical soaps and carved marble coffrets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
