@@ -1,12 +1,12 @@
-import React, { memo, useId, useState } from 'react';
-import { Check, Gift } from 'lucide-react';
+import React, { memo, useId, useMemo, useState } from 'react';
+import { ArrowUpDown, Check, Gift } from 'lucide-react';
 import {
-  ALL_SOAP_CREATIONS,
   formatThb,
   LOOFAH_SCRUB_OPTIONS,
   MARBLE_CASSETTE_SETS,
   MarbleCassetteEdition,
   RIBBON_SEAL_OPTIONS,
+  SOAP_BY_ID,
 } from '../data/soaps';
 import { LOOFAH_TH, RIBBON_TH, useLanguage } from '../data/i18n';
 import { ResilientImage } from './ResilientImage';
@@ -106,14 +106,13 @@ const ThemedMarbleCaseCard: React.FC<ThemedMarbleCaseCardProps> = memo(({
   const ribbonName =
     lang === 'th' ? RIBBON_TH[selectedRibbon.id] ?? selectedRibbon.name : selectedRibbon.name;
 
-  const includedIds = [
-    ...edition.darkRowIds,
-    ...edition.brightRowIds,
-    ...(edition.holidayRowIds ?? []),
-  ];
-  const includedBars = includedIds
-    .map((id) => ALL_SOAP_CREATIONS.find((s) => s.id === id))
-    .filter((s): s is NonNullable<typeof s> => Boolean(s));
+  const includedBars = useMemo(
+    () =>
+      [...edition.darkRowIds, ...edition.brightRowIds, ...(edition.holidayRowIds ?? [])]
+        .map((id) => SOAP_BY_ID.get(id))
+        .filter((s): s is NonNullable<typeof s> => Boolean(s)),
+    [edition.darkRowIds, edition.brightRowIds, edition.holidayRowIds],
+  );
 
   const loofahOne = LOOFAH_SCRUB_OPTIONS.find((l) => l.id === loofahOneId) ?? LOOFAH_SCRUB_OPTIONS[0];
   const loofahTwo = LOOFAH_SCRUB_OPTIONS.find((l) => l.id === loofahTwoId) ?? LOOFAH_SCRUB_OPTIONS[1];
@@ -218,6 +217,8 @@ const ThemedMarbleCaseCard: React.FC<ThemedMarbleCaseCardProps> = memo(({
                       <img
                         src={soap.imageUrl}
                         alt={soapDisplay.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
                       />
                       <div aria-hidden="true" className="shimmer" />
@@ -367,25 +368,32 @@ export const GiftSetsSection: React.FC<GiftSetsSectionProps> = memo(({
   onAddGiftSetToBag,
 }) => {
   const { t } = useLanguage();
+  const [caseOrder, setCaseOrder] = useState<'match-3-lines' | 'bright-first' | 'occasions-first'>(
+    'match-3-lines',
+  );
 
   const darkCase = MARBLE_CASSETTE_SETS.find((c) => c.stoneType === 'dark-marble') ?? MARBLE_CASSETTE_SETS[1];
   const brightCase = MARBLE_CASSETTE_SETS.find((c) => c.stoneType === 'bright-marble') ?? MARBLE_CASSETTE_SETS[0];
   const occasionsCase = MARBLE_CASSETTE_SETS.find((c) => c.stoneType === 'checkered-occasions') ?? MARBLE_CASSETTE_SETS[2];
 
-  // Aligned 1-to-1 underneath Column 1 (Dark), Column 2 (Bright), Column 3 (Occasions)
-  const orderedThemeCases = [
-    { edition: darkCase, themeLabel: t.darkSetTheme },
-    { edition: brightCase, themeLabel: t.brightSetTheme },
-    { edition: occasionsCase, themeLabel: t.occasionsSetTheme },
-  ];
+  const darkEntry = { edition: darkCase, themeLabel: t.darkSetTheme };
+  const brightEntry = { edition: brightCase, themeLabel: t.brightSetTheme };
+  const occasionsEntry = { edition: occasionsCase, themeLabel: t.occasionsSetTheme };
+
+  const orderedThemeCases =
+    caseOrder === 'bright-first'
+      ? [brightEntry, darkEntry, occasionsEntry]
+      : caseOrder === 'occasions-first'
+        ? [occasionsEntry, brightEntry, darkEntry]
+        : [darkEntry, brightEntry, occasionsEntry];
 
   return (
     <section
       id="gifting"
-      className="relative z-10 border-b border-[var(--border)] bg-[var(--surface)]/78 text-[var(--ink)] transition-colors duration-300"
+      className="relative z-10 border-b border-[var(--border)] bg-transparent text-[var(--ink)] transition-colors duration-300"
     >
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-10 py-10 lg:py-14 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="luxury-3d-card px-5 py-4 bg-[var(--surface-card)]/94 backdrop-blur-md flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div className="space-y-1">
             <p className="text-[11px] font-medium tracking-[0.16em] uppercase" style={{ color: accentHex }}>
               {t.casesEyebrow}
@@ -393,11 +401,29 @@ export const GiftSetsSection: React.FC<GiftSetsSectionProps> = memo(({
             <h2 className="marshmallow-text font-serif text-3xl sm:text-4xl font-medium text-[var(--ink)] balance-text">
               {t.casesHeading}
             </h2>
+            <p className="text-xs text-[var(--muted)] tabular-figures">
+              {t.casesSubSummary}
+            </p>
           </div>
 
-          <p className="text-xs text-[var(--muted)] tabular-figures">
-            {t.casesSubSummary}
-          </p>
+          <label className="luxury-3d-pill inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-[var(--border)] bg-[var(--surface-card)] text-xs font-medium text-[var(--ink)] cursor-pointer self-start lg:self-end shrink-0">
+            <ArrowUpDown className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
+            <span className="sr-only">{t.caseSortLabel}</span>
+            <select
+              value={caseOrder}
+              onChange={(e) =>
+                setCaseOrder(
+                  e.target.value as 'match-3-lines' | 'bright-first' | 'occasions-first',
+                )
+              }
+              aria-label={t.caseSortLabel}
+              className="bg-transparent text-xs font-medium text-[var(--ink)] focus:outline-none cursor-pointer pr-1"
+            >
+              <option value="match-3-lines">{t.caseSortMatch}</option>
+              <option value="bright-first">{t.caseSortBrightFirst}</option>
+              <option value="occasions-first">{t.caseSortOccasionsFirst}</option>
+            </select>
+          </label>
         </div>
 
         {/* 3 Themed Marble Case Set Boxes Aligned Directly Below Dark | Bright | Occasions Columns */}

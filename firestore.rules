@@ -1,0 +1,115 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net (Default-Deny)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isVerifiedUser() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isVerifiedUser() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidUserHistory(data, userId) {
+      return data.keys().hasAll(['uid', 'itemId', 'itemType', 'title', 'viewedAt'])
+        && data.keys().hasOnly(['uid', 'itemId', 'itemType', 'title', 'subtitle', 'imageUrl', 'priceThb', 'viewedAt'])
+        && data.uid is string && data.uid == userId && data.uid == request.auth.uid
+        && data.itemId is string && data.itemId.size() >= 1 && data.itemId.size() <= 128 && data.itemId.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.itemType is string && data.itemType in ['soap', 'bath-bomb', 'marble-case', 'order']
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 160
+        && (!('subtitle' in data) || (data.subtitle is string && data.subtitle.size() <= 200))
+        && (!('imageUrl' in data) || (data.imageUrl is string && data.imageUrl.size() <= 500))
+        && (!('priceThb' in data) || (data.priceThb is number && data.priceThb >= 0 && data.priceThb <= 500000))
+        && data.viewedAt == request.time;
+    }
+
+    function isValidUserOrder(data, userId) {
+      return data.keys().hasAll(['uid', 'orderNumber', 'totalThb', 'itemCount', 'summaryTitle', 'paymentMethod', 'createdAt'])
+        && data.keys().hasOnly(['uid', 'orderNumber', 'totalThb', 'itemCount', 'summaryTitle', 'paymentMethod', 'createdAt'])
+        && data.uid is string && data.uid == userId && data.uid == request.auth.uid
+        && data.orderNumber is string && data.orderNumber.size() >= 3 && data.orderNumber.size() <= 32 && data.orderNumber.matches('^[a-zA-Z0-9_\\-]+$')
+        && data.totalThb is number && data.totalThb >= 0 && data.totalThb <= 1000000
+        && data.itemCount is number && data.itemCount >= 1 && data.itemCount <= 100
+        && data.summaryTitle is string && data.summaryTitle.size() >= 1 && data.summaryTitle.size() <= 200
+        && data.paymentMethod is string && data.paymentMethod.size() >= 2 && data.paymentMethod.size() <= 64
+        && data.createdAt == request.time;
+    }
+
+    function isValidMailingSubscriber(data) {
+      return data.keys().hasAll(['email', 'lang', 'topics', 'adCookiesAccepted', 'createdAt'])
+        && data.keys().hasOnly(['email', 'lang', 'topics', 'adCookiesAccepted', 'uid', 'createdAt'])
+        && data.email is string && data.email.size() >= 5 && data.email.size() <= 160 && data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && data.lang is string && data.lang in ['th', 'en']
+        && data.topics is list && data.topics.size() >= 1 && data.topics.size() <= 6 && data.topics[0] is string
+        && data.adCookiesAccepted is bool
+        && (!('uid' in data) || (data.uid is string && data.uid.size() <= 128 && (!isSignedIn() || data.uid == request.auth.uid)))
+        && data.createdAt == request.time;
+    }
+
+    function isValidSiteCounter(data) {
+      return data.keys().hasAll(['totalSold', 'updatedAt'])
+        && data.keys().hasOnly(['totalSold', 'updatedAt'])
+        && data.totalSold is number && data.totalSold >= 1428 && data.totalSold <= 9999999
+        && data.updatedAt == request.time;
+    }
+
+    match /users/{userId}/history/{entryId} {
+      allow get: if isValidId(userId) && isValidId(entryId) && isOwner(userId);
+      allow list: if isOwner(userId) && resource.data.uid == request.auth.uid;
+      allow create: if isValidId(userId) && isValidId(entryId) && isOwner(userId) && isValidUserHistory(incoming(), userId);
+      allow update: if isValidId(userId) && isValidId(entryId) && isOwner(userId)
+        && isValidUserHistory(incoming(), userId)
+        && incoming().uid == existing().uid
+        && incoming().itemId == existing().itemId
+        && incoming().diff(existing()).affectedKeys().hasOnly(['title', 'subtitle', 'imageUrl', 'priceThb', 'viewedAt']);
+      allow delete: if isValidId(userId) && isValidId(entryId) && isOwner(userId);
+    }
+
+    match /users/{userId}/orders/{orderId} {
+      allow get: if isValidId(userId) && isValidId(orderId) && isOwner(userId);
+      allow list: if isOwner(userId) && resource.data.uid == request.auth.uid;
+      allow create: if isValidId(userId) && isValidId(orderId) && isOwner(userId) && isValidUserOrder(incoming(), userId);
+      allow update, delete: if isAdmin();
+    }
+
+    match /mailing_list/{subscriberId} {
+      allow create: if isValidId(subscriberId) && isValidMailingSubscriber(incoming());
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    match /site_metrics/{metricId} {
+      allow get: if isValidId(metricId);
+      allow create: if isValidId(metricId) && metricId == 'counters' && isVerifiedUser() && isValidSiteCounter(incoming());
+      allow update: if isValidId(metricId) && metricId == 'counters' && isVerifiedUser()
+        && isValidSiteCounter(incoming())
+        && incoming().totalSold >= existing().totalSold
+        && incoming().totalSold <= existing().totalSold + 50
+        && incoming().diff(existing()).affectedKeys().hasOnly(['totalSold', 'updatedAt']);
+      allow list, delete: if false;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   Check,
@@ -14,7 +14,13 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
-import { ALL_SOAP_CREATIONS, formatThb, SoapCreation } from '../data/soaps';
+import { ALL_SOAP_CREATIONS, formatThb, SOAP_BY_ID, SoapCreation } from '../data/soaps';
+import {
+  BATH_BOMB_BY_ID,
+  BATH_BOMB_PRICE_TIERS,
+  BathBombCreation,
+  BathBombPackTier,
+} from '../data/bathBombs';
 import { useLanguage } from '../data/i18n';
 import { ResilientImage } from './ResilientImage';
 import { RedesignedLogoMotif } from './RedesignedLogoMotif';
@@ -59,14 +65,21 @@ interface BagContentProps {
   onUpdateQuantity: (cartKey: string, delta: number) => void;
   onRemoveItem: (cartKey: string) => void;
   onClearBag: () => void;
-  onToggleWishlist: (soapId: string) => void;
+  onToggleWishlist: (itemId: string) => void;
   onOpenPodium: (soapId: string) => void;
+  onOpenBombNutrition?: (bombId: string) => void;
   onAddSoapToBag: (
     soap: SoapCreation,
     quantity: number,
     asSlice: boolean,
     sourceEl?: HTMLElement | null,
   ) => void;
+  onAddBombToBag?: (
+    bomb: BathBombCreation,
+    quantity: number,
+    packTier: BathBombPackTier,
+  ) => void;
+  onOrderCompleted?: (receipt: OrderReceipt) => void;
   onClose?: () => void;
   isDrawer?: boolean;
 }
@@ -87,7 +100,10 @@ export const BagContent: React.FC<BagContentProps> = ({
   onClearBag,
   onToggleWishlist,
   onOpenPodium,
+  onOpenBombNutrition,
   onAddSoapToBag,
+  onAddBombToBag,
+  onOrderCompleted,
   onClose,
   isDrawer = false,
 }) => {
@@ -113,15 +129,39 @@ export const BagContent: React.FC<BagContentProps> = ({
     }
   }, [openCheckoutNonce, items.length]);
 
-  const subtotalUsd = items.reduce((sum, item) => sum + item.priceUsd * item.quantity, 0);
-  const totalCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const { subtotalUsd, totalCount } = useMemo(
+    () =>
+      items.reduce(
+        (acc, item) => {
+          acc.subtotalUsd += item.priceUsd * item.quantity;
+          acc.totalCount += item.quantity;
+          return acc;
+        },
+        { subtotalUsd: 0, totalCount: 0 },
+      ),
+    [items],
+  );
   const shippingUsd =
     subtotalUsd === 0 || subtotalUsd >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_THB;
   const totalUsd = subtotalUsd + shippingUsd;
   const remainingForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotalUsd);
   const progressPct = Math.min(100, (subtotalUsd / FREE_SHIPPING_THRESHOLD) * 100);
 
-  const wishlistedSoaps = ALL_SOAP_CREATIONS.filter((soap) => wishlistIds.includes(soap.id));
+  const wishlistedSoaps = useMemo(
+    () =>
+      wishlistIds
+        .map((id) => SOAP_BY_ID.get(id))
+        .filter((s): s is SoapCreation => Boolean(s)),
+    [wishlistIds],
+  );
+  const wishlistedBombs = useMemo(
+    () =>
+      wishlistIds
+        .map((id) => BATH_BOMB_BY_ID.get(id))
+        .filter((b): b is BathBombCreation => Boolean(b)),
+    [wishlistIds],
+  );
+  const totalWishlistCount = wishlistedSoaps.length + wishlistedBombs.length;
 
   const handleDetectGps = () => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
@@ -219,7 +259,7 @@ export const BagContent: React.FC<BagContentProps> = ({
 
     setFormError(null);
     const suffix = Math.floor(1040 + Math.random() * 8900);
-    setReceipt({
+    const completedReceipt: OrderReceipt = {
       orderNumber: `GB-${suffix}`,
       customerName: trimmedName,
       customerEmail: trimmedEmail,
@@ -231,7 +271,9 @@ export const BagContent: React.FC<BagContentProps> = ({
       subtotalUsd,
       shippingUsd,
       totalUsd,
-    });
+    };
+    setReceipt(completedReceipt);
+    onOrderCompleted?.(completedReceipt);
     onClearBag();
     setCheckoutOpen(false);
   };
@@ -319,7 +361,7 @@ export const BagContent: React.FC<BagContentProps> = ({
             {!receipt && (
               <p className="text-xs text-[var(--muted)] mt-0.5 tabular-figures">
                 {activeTab === 'wishlist'
-                  ? `${wishlistedSoaps.length} ${t.bagSavedCount}`
+                  ? `${totalWishlistCount} ${t.bagSavedCount}`
                   : `${totalCount} ${t.bagCreationsNote}`}
               </p>
             )}
@@ -372,9 +414,9 @@ export const BagContent: React.FC<BagContentProps> = ({
               }}
             >
               <Heart
-                className={`w-3.5 h-3.5 ${wishlistedSoaps.length > 0 && activeTab !== 'wishlist' ? 'fill-red-500 text-red-500' : ''}`}
+                className={`w-3.5 h-3.5 ${totalWishlistCount > 0 && activeTab !== 'wishlist' ? 'fill-red-500 text-red-500' : ''}`}
               />
-              <span>{t.wishlistTab} ({wishlistedSoaps.length})</span>
+              <span>{t.wishlistTab} ({totalWishlistCount})</span>
             </button>
           </div>
         )}
@@ -484,7 +526,7 @@ export const BagContent: React.FC<BagContentProps> = ({
             </button>
           </motion.div>
         ) : activeTab === 'wishlist' ? (
-          wishlistedSoaps.length === 0 ? (
+          totalWishlistCount === 0 ? (
             <div className="py-12 text-center space-y-3">
               <div className="w-11 h-11 rounded-full bg-[var(--surface)] border border-[var(--border)] mx-auto flex items-center justify-center text-[var(--muted)]">
                 <Heart className="w-5 h-5" />
@@ -567,6 +609,90 @@ export const BagContent: React.FC<BagContentProps> = ({
                         >
                           <Sparkles className="w-3.5 h-3.5" />
                         </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {wishlistedBombs.map((bomb) => {
+                const bombName = lang === 'th' ? bomb.nameTh : bomb.nameEn;
+                const bombMood = lang === 'th' ? bomb.soakMoodTh : bomb.soakMoodEn;
+                return (
+                  <div
+                    key={bomb.id}
+                    className="flex gap-3 p-3 rounded-xl border border-[var(--border)] bg-[var(--surface)]"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => onOpenBombNutrition?.(bomb.id)}
+                      className="w-16 h-16 rounded-lg overflow-hidden shrink-0 border border-[var(--border)] cursor-pointer"
+                    >
+                      <ResilientImage
+                        src={bomb.imageUrl}
+                        alt={bombName}
+                        fallbackTitle={bombName}
+                        fallbackGradient={bomb.fallbackGradient}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+
+                    <div className="flex-1 min-w-0 flex flex-col justify-between gap-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-[var(--ink)] truncate">
+                            {bombName}
+                          </p>
+                          <p className="text-[11px] text-[var(--muted)] truncate">
+                            {bombMood}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => onToggleWishlist(bomb.id)}
+                          aria-label={t.favRemove}
+                          className="p-1 text-red-500 hover:opacity-75 transition-opacity cursor-pointer shrink-0"
+                        >
+                          <Heart className="w-4 h-4 fill-red-500" />
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        {onAddBombToBag && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onAddBombToBag(bomb, 1, 'single');
+                              setActiveTab('bag');
+                            }}
+                            className="flex-1 py-1.5 px-2.5 rounded-md text-[11px] font-semibold cursor-pointer transition-opacity hover:opacity-90 tabular-figures"
+                            style={{ backgroundColor: accentHex, color: accentTextHex }}
+                          >
+                            + {formatThb(BATH_BOMB_PRICE_TIERS.single)}
+                          </button>
+                        )}
+                        {onAddBombToBag && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              onAddBombToBag(bomb, 1, 'coffer');
+                              setActiveTab('bag');
+                            }}
+                            className="py-1.5 px-2.5 rounded-md border border-[var(--border)] bg-[var(--surface-card)] text-[11px] font-medium text-[var(--ink)] cursor-pointer hover:border-[var(--ink)]/30 tabular-figures"
+                          >
+                            + {formatThb(BATH_BOMB_PRICE_TIERS.coffer)}
+                          </button>
+                        )}
+                        {onOpenBombNutrition && (
+                          <button
+                            type="button"
+                            onClick={() => onOpenBombNutrition(bomb.id)}
+                            aria-label={t.bathNutritionBtn}
+                            className="p-1.5 rounded-md border border-[var(--border)] bg-[var(--surface-card)] text-[var(--muted)] hover:text-[var(--ink)] cursor-pointer"
+                          >
+                            <Sparkles className="w-3.5 h-3.5" />
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

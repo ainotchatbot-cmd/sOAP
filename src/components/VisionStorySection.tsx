@@ -1,134 +1,106 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { memo } from 'react';
+import { FlaskConical, Sparkles } from 'lucide-react';
 import { ATELIER_BRAND, ATELIER_MEDIA } from '../data/soaps';
 import { useLanguage } from '../data/i18n';
 import { ResilientImage } from './ResilientImage';
-import { RedesignedLogoMotif } from './RedesignedLogoMotif';
-import { CloudSheepMotif } from './CloudSheepMotif';
-import { BrandWordmark } from './BrandWordmark';
 
 interface VisionStorySectionProps {
   accentHex: string;
   isTwilight?: boolean;
 }
 
-export const VisionStorySection: React.FC<VisionStorySectionProps> = ({
+export const VisionStorySection: React.FC<VisionStorySectionProps> = memo(({
   accentHex,
 }) => {
   const { lang, t } = useLanguage();
-  const [engravingText, setEngravingText] = useState('GENTLEBUBBLE BY AR');
 
   const founderDisplay =
     lang === 'th' ? ATELIER_BRAND.founderThaiName : ATELIER_BRAND.founderName;
-  const sloganDisplay =
-    lang === 'th' ? `${t.heroLine1} ${t.heroLine2}` : ATELIER_BRAND.slogan;
 
   return (
     <section
       id="atelier"
-      className="relative z-10 border-b border-[var(--border)] bg-[var(--canvas)]/78 text-[var(--ink)] transition-colors duration-300"
+      className="relative z-10 border-b border-[var(--border)] bg-transparent text-[var(--ink)] transition-colors duration-300"
     >
-      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-10 py-10 lg:py-14 space-y-10">
-        {/* Story of GentleBubble by AR */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-5">
-            <div className="space-y-2.5">
-              <p className="font-cursive text-2xl sm:text-3xl leading-none" style={{ color: accentHex }}>
-                {t.cursiveTagline}
+      <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-10 py-10 lg:py-14">
+        {/* 3-Column Leveled Showcase: Biotech Founder Story | Owner Portrait | Walnut Soap Board */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          {/* Card 1: Biotech Engineer Founder & Hobbies Story */}
+          <article className="luxury-3d-card p-6 sm:p-7 flex flex-col justify-between gap-5 h-full">
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <p
+                  className="text-[11px] font-semibold tracking-[0.16em] uppercase"
+                  style={{ color: accentHex }}
+                >
+                  {t.storyEyebrow}
+                </p>
+                <h2 className="marshmallow-text font-serif text-2xl sm:text-3xl font-medium leading-[1.15] text-[var(--ink)] balance-text">
+                  {t.storyHeading}
+                </h2>
+              </div>
+
+              <div className="pt-3 border-t border-[var(--border)] space-y-3 text-sm leading-relaxed text-[var(--muted)]">
+                <p>{t.storyParagraph1}</p>
+                <p>{t.storyParagraph2}</p>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[var(--border)] space-y-1.5">
+              <p className="text-xs font-semibold text-[var(--ink)] flex items-center gap-2">
+                <FlaskConical className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
+                <span>
+                  {t.storyHandPoured} {founderDisplay}
+                </span>
               </p>
+              <p className="text-[11px] text-[var(--muted)]">{t.storyPillars}</p>
+            </div>
+          </article>
 
-              <h2 className="marshmallow-text text-3xl sm:text-4xl font-medium leading-[1.08] text-[var(--ink)] balance-text">
-                <BrandWordmark accentHex={accentHex} />
-              </h2>
-
-              <p className="text-sm text-[var(--muted)]">
-                {t.storyHandPoured}{' '}
-                <span className="font-semibold text-[var(--ink)]">{founderDisplay}</span>
-                <span className="mx-1.5" aria-hidden="true">·</span>
-                <span>{t.originLocation}</span>
+          {/* Card 2: Owner Illustration Portrait (Leveled Height) */}
+          <article className="luxury-3d-card flex flex-col overflow-hidden h-full">
+            <div className="relative flex-1 min-h-[300px] overflow-hidden bg-[var(--surface)]">
+              <ResilientImage
+                src={ATELIER_MEDIA.founderIllustrationUrl}
+                alt={`Editorial portrait of founder ${founderDisplay}`}
+                fallbackTitle={founderDisplay}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="px-5 py-4 border-t border-[var(--border)] bg-[var(--surface-card)] space-y-0.5">
+              <p className="font-serif text-lg font-medium text-[var(--ink)] truncate">
+                {founderDisplay}
+              </p>
+              <p className="text-xs font-medium text-[var(--muted)] truncate">
+                {t.storyRole}
               </p>
             </div>
+          </article>
 
-            <div className="luxury-3d-card flex items-center gap-4 p-4">
-              <CloudSheepMotif size={64} accentHex={accentHex} className="shrink-0" />
-              <div className="space-y-0.5 min-w-0">
-                <p className="font-serif text-lg font-medium text-[var(--ink)] truncate">
-                  {sloganDisplay}
-                </p>
-                <p className="text-xs text-[var(--muted)]">
-                  {founderDisplay} · {t.originLocation}
-                </p>
-              </div>
+          {/* Card 3: Handcrafted Wooden Soap Board (Leveled Side-by-Side with Owner) */}
+          <article className="luxury-3d-card flex flex-col overflow-hidden h-full">
+            <div className="relative flex-1 min-h-[300px] overflow-hidden bg-[var(--surface)]">
+              <ResilientImage
+                src={ATELIER_MEDIA.vintageLaserSoapUrl}
+                alt="Handcrafted walnut and teak wood soap board engraved with GentleBubble emblem"
+                fallbackTitle="GentleBubble by AR Soap Board"
+                className="w-full h-full object-cover"
+              />
             </div>
-          </div>
-
-          <div className="lg:col-span-6 flex">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="luxury-3d-card w-full flex flex-col overflow-hidden"
-            >
-              <div className="flex-1 min-h-[260px] lg:min-h-[340px] overflow-hidden bg-[var(--surface)]">
-                <ResilientImage
-                  src={ATELIER_MEDIA.founderIllustrationUrl}
-                  alt="Editorial portrait illustration of founder Archawee Chatkul Na Ayutthaya"
-                  fallbackTitle={founderDisplay}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="px-5 py-3.5 border-t border-[var(--border)] bg-[var(--surface-card)] flex flex-wrap items-center justify-between gap-2 text-[var(--ink)]">
-                <p className="font-serif text-lg font-medium">{founderDisplay}</p>
-                <p className="font-cursive text-xl" style={{ color: accentHex }}>
-                  {t.cursiveTagline}
-                </p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Wood Plate Emblem & Engraving */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-7 items-stretch pt-6 border-t border-[var(--border)]">
-          <div className="luxury-3d-card md:col-span-5 overflow-hidden aspect-[4/3]">
-            <ResilientImage
-              src={ATELIER_MEDIA.vintageLaserSoapUrl}
-              alt="Handcrafted walnut and teak wood soap plate engraved with GentleBubble emblem"
-              fallbackTitle="GentleBubble by AR"
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="luxury-3d-card md:col-span-7 flex flex-col justify-center gap-4 p-5">
-            <div className="flex flex-col sm:flex-row items-center gap-5">
-              <div className="shrink-0">
-                <RedesignedLogoMotif
-                  variant="original-3d"
-                  size={136}
-                  engravingNote={engravingText || 'GENTLEBUBBLE'}
-                />
-              </div>
-              <div className="space-y-2 flex-1 w-full">
-                <p className="text-[11px] font-medium tracking-[0.12em] uppercase" style={{ color: accentHex }}>
-                  {t.storyKeepsakeSeal}
-                </p>
-                <h3 className="marshmallow-text font-serif text-2xl font-medium text-[var(--ink)]">
-                  {t.storyCustomCrest}
-                </h3>
-                <input
-                  type="text"
-                  maxLength={24}
-                  value={engravingText}
-                  onChange={(e) => setEngravingText(e.target.value)}
-                  aria-label={t.storyCustomCrest}
-                  placeholder={t.storyPlaceholder}
-                  className="w-full px-3.5 py-2 text-xs rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--ink)] focus:outline-none"
-                />
-              </div>
+            <div className="px-5 py-4 border-t border-[var(--border)] bg-[var(--surface-card)] space-y-0.5">
+              <p className="font-serif text-lg font-medium text-[var(--ink)] truncate flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
+                <span className="truncate">{t.soapBoardTitle}</span>
+              </p>
+              <p className="text-xs text-[var(--muted)] line-clamp-2 leading-relaxed">
+                {t.soapBoardDesc}
+              </p>
             </div>
-          </div>
+          </article>
         </div>
       </div>
     </section>
   );
-};
+});
+
+VisionStorySection.displayName = 'VisionStorySection';

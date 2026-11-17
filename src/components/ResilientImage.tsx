@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 
 interface ResilientImageProps {
@@ -7,16 +7,22 @@ interface ResilientImageProps {
   className?: string;
   fallbackTitle?: string;
   fallbackGradient?: string;
+  priority?: boolean;
 }
 
-export const ResilientImage: React.FC<ResilientImageProps> = ({
+export const ResilientImage: React.FC<ResilientImageProps> = memo(({
   src,
   alt,
   className = 'w-full h-full object-cover',
   fallbackTitle = 'GentleBubble by AR',
   fallbackGradient = 'from-[#F3EAE8] via-[#FAF7F5] to-[#EBDAD7]',
+  priority = false,
 }) => {
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [src]);
 
   if (hasError || !src) {
     return (
@@ -35,9 +41,14 @@ export const ResilientImage: React.FC<ResilientImageProps> = ({
     <img
       src={src}
       alt={alt}
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchPriority={priority ? 'high' : undefined}
       referrerPolicy="no-referrer"
       onError={() => setHasError(true)}
       className={className}
     />
   );
-};
+});
+
+ResilientImage.displayName = 'ResilientImage';

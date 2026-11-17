@@ -1,0 +1,145 @@
+{
+  "entities": {
+    "UserHistoryEntry": {
+      "title": "UserHistoryEntry",
+      "description": "Saved browsing or reservation activity entry owned by a signed-in shopper.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "itemId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "itemType": {
+          "type": "string",
+          "enum": ["soap", "bath-bomb", "marble-case", "order"]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "imageUrl": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "priceThb": {
+          "type": "number"
+        },
+        "viewedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "itemId", "itemType", "title", "viewedAt"]
+    },
+    "UserOrderRecord": {
+      "title": "UserOrderRecord",
+      "description": "Persisted concierge order confirmation saved for an authenticated customer.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderNumber": {
+          "type": "string",
+          "maxLength": 32,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "totalThb": {
+          "type": "number"
+        },
+        "itemCount": {
+          "type": "number"
+        },
+        "summaryTitle": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "paymentMethod": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "orderNumber", "totalThb", "itemCount", "summaryTitle", "paymentMethod", "createdAt"]
+    },
+    "MailingSubscriber": {
+      "title": "MailingSubscriber",
+      "description": "Email notification and site-update mailing list subscription.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "maxLength": 160,
+          "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+        },
+        "lang": {
+          "type": "string",
+          "enum": ["th", "en"]
+        },
+        "topics": {
+          "type": "array"
+        },
+        "adCookiesAccepted": {
+          "type": "boolean"
+        },
+        "uid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["email", "lang", "topics", "adCookiesAccepted", "createdAt"]
+    },
+    "SiteCounter": {
+      "title": "SiteCounter",
+      "description": "Public storefront aggregate count of reserved & sold artisanal items.",
+      "type": "object",
+      "properties": {
+        "totalSold": {
+          "type": "number"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["totalSold", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/history/{entryId}": {
+      "schema": { "$ref": "#/entities/UserHistoryEntry" },
+      "description": "Private saved viewing and interaction history belonging to userId."
+    },
+    "/users/{userId}/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/UserOrderRecord" },
+      "description": "Private saved order confirmations belonging to userId."
+    },
+    "/mailing_list/{subscriberId}": {
+      "schema": { "$ref": "#/entities/MailingSubscriber" },
+      "description": "Mailing list opt-in entries for site updates and product launches (write-only for public, admin-only read)."
+    },
+    "/site_metrics/{metricId}": {
+      "schema": { "$ref": "#/entities/SiteCounter" },
+      "description": "Publicly readable sold counter metrics."
+    }
+  }
+}

@@ -48,7 +48,6 @@ import caseCheckeredOccasionsLoofahImg from '../assets/images/case_checkered_occ
 import featherLetterBorderImg from '../assets/images/feather_letter_border_1794738931128.jpg';
 import woodPlateGentleBubbleImg from '../assets/images/wood_plate_gentle_bubble_logo_1794708237063.jpg';
 import giftBoxSealedImg from '../assets/images/gift_packaging_seal_detail_1794678322890.jpg';
-import mascotHuskyImg from '../assets/images/mascot_bubble_husky_1794678831098.jpg';
 import thaiPomeloImg from '../assets/images/thai_soap_siam_pomelo_1794678322105.jpg';
 import thaiLotusImg from '../assets/images/thai_soap_lotus_pandan_1794678322548.jpg';
 import thaiJasmineImg from '../assets/images/thai_soap_jasmine_rice_1794678321617.jpg';
@@ -211,7 +210,6 @@ export const ATELIER_MEDIA = {
   featherLetterBorderUrl: featherLetterBorderImg,
   videoUrl: '/assets/aistudio/IMG_8232_c4a11c39.mp4',
   founderIllustrationUrl: '/assets/aistudio/2026-11-05_22.13.14_f3e84c47.png',
-  mascotUrl: mascotHuskyImg,
   whiteMarbleCassetteUrl: caseBrightMarbleLoofahImg,
   darkMarbleCassetteUrl: caseDarkMarbleLoofahImg,
   giftBoxSealedUrl: giftBoxSealedImg,
@@ -2059,6 +2057,10 @@ export const ALL_SOAP_CREATIONS: SoapCreation[] = [
   ...BRIGHT_5050_LINE,
   ...HOLIDAY_EDITION_LINE,
 ];
+
+export const SOAP_BY_ID: ReadonlyMap<string, SoapCreation> = new Map(
+  ALL_SOAP_CREATIONS.map((soap) => [soap.id, soap]),
+);
 
 // ============================================================================
 // 3 SIGNATURE MARBLE CASES — EACH WITH 10 REAL LINE SOAPS + 2 LOOFAH SCRUB SLOTS

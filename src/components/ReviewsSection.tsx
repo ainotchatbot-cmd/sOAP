@@ -14,10 +14,10 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = memo(({ accentHex }
   return (
     <section
       id="reviews"
-      className="relative z-10 border-b border-[var(--border)] bg-[var(--canvas)]/78 text-[var(--ink)] transition-colors duration-300"
+      className="relative z-10 border-b border-[var(--border)] bg-transparent text-[var(--ink)] transition-colors duration-300"
     >
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-10 py-10 lg:py-12 space-y-6">
-        <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-5 py-3.5 flex flex-wrap items-baseline justify-between gap-3 shadow-sm">
           <div className="flex items-baseline gap-3">
             <h2 className="marshmallow-text font-serif text-2xl sm:text-3xl font-medium text-[var(--ink)]">
               {t.reviewsHeading}

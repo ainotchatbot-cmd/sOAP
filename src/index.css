@@ -221,27 +221,13 @@
   animation: bubblePopRing 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes sheepCloudBob {
-  0%,
-  100% {
-    transform: translateY(0px) rotate(-1deg);
-  }
-  50% {
-    transform: translateY(-5px) rotate(1.5deg);
-  }
-}
-
-.sheep-cloud-bob {
-  animation: sheepCloudBob 4.8s ease-in-out infinite;
-}
-
-/* Silk Translucent Shimmer CSS Overlay — smooth linear-gradient sheen without snow/dot specks */
-@keyframes shimmerStardustPan {
+/* Silk Translucent Shimmer CSS Overlay — compositor-only transform sweep (no frame repaints) */
+@keyframes shimmerStardustSweep {
   0% {
-    background-position: 185% 185%;
+    transform: translate3d(-135%, -135%, 0);
   }
   100% {
-    background-position: -85% -85%;
+    transform: translate3d(135%, 135%, 0);
   }
 }
 
@@ -249,45 +235,52 @@
   pointer-events: none;
   position: absolute;
   inset: 0;
+  overflow: hidden;
   mix-blend-mode: screen;
   opacity: 0.48;
+  contain: strict;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
   background-image: linear-gradient(
     114deg,
-    transparent 0%,
     transparent 34%,
-    rgba(255, 252, 244, 0.12) 42%,
-    rgba(255, 248, 224, 0.42) 49%,
-    rgba(255, 255, 255, 0.52) 50%,
-    rgba(255, 248, 224, 0.38) 51.5%,
-    rgba(255, 252, 244, 0.12) 58%,
-    transparent 66%,
-    transparent 100%
+    rgba(255, 252, 244, 0.14) 42%,
+    rgba(255, 248, 224, 0.44) 49%,
+    rgba(255, 255, 255, 0.54) 50%,
+    rgba(255, 248, 224, 0.4) 51.5%,
+    rgba(255, 252, 244, 0.14) 58%,
+    transparent 66%
   );
-  background-size: 240% 240%;
-  background-repeat: no-repeat;
-  -webkit-mask-image: linear-gradient(96deg, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.88) 48%, rgba(0, 0, 0, 0.28) 72%, rgba(0, 0, 0, 0.16) 100%);
-  mask-image: linear-gradient(96deg, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.88) 48%, rgba(0, 0, 0, 0.28) 72%, rgba(0, 0, 0, 0.16) 100%);
-  animation: shimmerStardustPan 6.8s cubic-bezier(0.35, 0.05, 0.65, 0.95) infinite;
+  will-change: transform;
+  animation: shimmerStardustSweep 6.8s cubic-bezier(0.35, 0.05, 0.65, 0.95) infinite;
 }
 
 .shimmer-enlarged {
   opacity: 0.72;
-  -webkit-mask-image: linear-gradient(96deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.96) 54%, rgba(0, 0, 0, 0.4) 78%, rgba(0, 0, 0, 0.24) 100%);
-  mask-image: linear-gradient(96deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.96) 54%, rgba(0, 0, 0, 0.4) 78%, rgba(0, 0, 0, 0.24) 100%);
+}
+
+.shimmer-enlarged::after {
   background-image: linear-gradient(
     115deg,
-    transparent 0%,
     transparent 32%,
-    rgba(255, 252, 244, 0.18) 41%,
+    rgba(255, 252, 244, 0.2) 41%,
     rgba(255, 248, 224, 0.56) 49%,
     rgba(255, 255, 255, 0.72) 50%,
     rgba(255, 248, 224, 0.52) 51.5%,
-    rgba(255, 252, 244, 0.18) 59%,
-    transparent 68%,
-    transparent 100%
+    rgba(255, 252, 244, 0.2) 59%,
+    transparent 68%
   );
-  background-size: 230% 230%;
   animation-duration: 5.4s;
+}
+
+/* Defer layout/paint of off-screen product cards in 30-item catalog grids */
+.cv-product-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 580px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -304,12 +297,11 @@
     animation: none;
     display: none;
   }
-  .sheep-cloud-bob {
-    animation: none;
-  }
   .shimmer {
+    opacity: 0.18;
+  }
+  .shimmer::after {
     animation: none;
-    opacity: 0.22;
-    background-position: 45% 45%;
+    transform: translate3d(0, 0, 0);
   }
 }

@@ -362,6 +362,8 @@ export interface I18nUiStrings {
   navStory: string;
   navReviews: string;
   bagBtn: string;
+  heroAtelierLabel: string;
+  topSellerLabel: string;
   heroLine1: string;
   heroLine2: string;
   heroSummary: string;
@@ -380,6 +382,18 @@ export interface I18nUiStrings {
   darkTab: string;
   brightTab: string;
   occasionsTab: string;
+  marbleCasesQuickTab: string;
+  sortLabel: string;
+  sortEdition: string;
+  sortGoldLeaf: string;
+  sortScentDesc: string;
+  sortScentAsc: string;
+  sortNameAsc: string;
+  goldFilterAll: string;
+  goldFilterRose: string;
+  goldFilterYellow: string;
+  inventoryReadoutPrefix: string;
+  inventoryReadoutSuffix: string;
   darkColTitle: string;
   darkColSub: string;
   brightColTitle: string;
@@ -394,6 +408,10 @@ export interface I18nUiStrings {
   casesEyebrow: string;
   casesHeading: string;
   casesSubSummary: string;
+  caseSortLabel: string;
+  caseSortMatch: string;
+  caseSortBrightFirst: string;
+  caseSortOccasionsFirst: string;
   soapsAnd2Loofahs: string;
   interiorLabel: string;
   interiorCountSuffix: string;
@@ -405,10 +423,16 @@ export interface I18nUiStrings {
   brassPlaceholder: string;
   reserveCaseBtn: string;
   reservedCaseBtn: string;
+  storyEyebrow: string;
+  storyHeading: string;
   storyHandPoured: string;
-  storyKeepsakeSeal: string;
-  storyCustomCrest: string;
-  storyPlaceholder: string;
+  storyRole: string;
+  storyParagraph1: string;
+  storyParagraph2: string;
+  storyPillars: string;
+  soapBoardEyebrow: string;
+  soapBoardTitle: string;
+  soapBoardDesc: string;
   reviewsHeading: string;
   reviewsRating: string;
   reviewsVerified: string;
@@ -422,6 +446,9 @@ export interface I18nUiStrings {
   chimeBtn: string;
   frenchMotto: string;
   frenchTag: string;
+  footerBannerTitle: string;
+  footerBannerDesc: string;
+  footerDispatchTag: string;
   modalDualStandard: string;
   modalBenefits: string;
   modalScent: string;
@@ -495,6 +522,92 @@ export interface I18nUiStrings {
   diagonalGroovesLabel: string;
   engravedStampLabel: string;
   craftStandardHeading: string;
+  modeSoapsBtn: string;
+  modeBathBombsBtn: string;
+  bathHeroLine1: string;
+  bathHeroLine2: string;
+  bathHeroSummary: string;
+  bathExploreBtn: string;
+  bathCollectionEyebrow: string;
+  bathCollectionHeading: string;
+  bathDarkColSub: string;
+  bathBrightColSub: string;
+  bathOccasionsColSub: string;
+  bathBombsUnit: string;
+  bathNutritionBtn: string;
+  bathWaterHueLabel: string;
+  bathFizzDurationLabel: string;
+  bathSoakTempLabel: string;
+  bathBrighteningTitle: string;
+  bathNutritionFactsTitle: string;
+  bathNutritionSubtitle: string;
+  bathNutrientCol: string;
+  bathAmountCol: string;
+  bathDvCol: string;
+  bathVitaminsHeader: string;
+  bathMineralsHeader: string;
+  bathAminoHeader: string;
+  bathEnzymesHeader: string;
+  bathDvFootnote: string;
+  bathSinglePack: string;
+  bathDuoPack: string;
+  bathCofferPack: string;
+  bathFocusAll: string;
+  bathFocusWine: string;
+  bathFocusMilk: string;
+  bathFocusMarine: string;
+  bathFocusRoots: string;
+  bathSortBrightening: string;
+  bathReadoutSuffix: string;
+  bathReserveBomb: string;
+  bathCasesEyebrow: string;
+  bathCasesHeading: string;
+  bathCasesSubSummary: string;
+  bathCasesInteriorLabel: string;
+  bathCasesInteriorCount: string;
+  bathCasesDarkRow: string;
+  bathCasesBrightRow: string;
+  bathCasesHolidayRow: string;
+  soldUnitLabel: string;
+  atelierSoldTotalLabel: string;
+  bathEngravedLabel: string;
+  bathGroovesLabel: string;
+  signInBtn: string;
+  signOutBtn: string;
+  historyBtn: string;
+  historyTitle: string;
+  historySubtitle: string;
+  historySignInPrompt: string;
+  historyViewedTab: string;
+  historyOrdersTab: string;
+  historyEmptyViewed: string;
+  historyEmptyOrders: string;
+  historyClearBtn: string;
+  mailingEyebrow: string;
+  mailingTitle: string;
+  mailingSubtitle: string;
+  mailingEmailPlaceholder: string;
+  mailingSubmitBtn: string;
+  mailingSuccessMsg: string;
+  mailingErrorMsg: string;
+  mailingTopicDrops: string;
+  mailingTopicRestocks: string;
+  mailingTopicBathBombs: string;
+  mailingTopicSeasonal: string;
+  cookieTitle: string;
+  cookieDesc: string;
+  cookieAcceptAll: string;
+  cookieEssentialOnly: string;
+  cookieCustomize: string;
+  cookieHistoryToggle: string;
+  cookieAdsToggle: string;
+  cookieSavePrefs: string;
+  cookieManageFooter: string;
+  seoGuideEyebrow: string;
+  seoGuideTitle: string;
+  seoGuideP1: string;
+  seoGuideP2: string;
+  seoGuideP3: string;
 }
 
 const TH_STRINGS: I18nUiStrings = {
@@ -506,9 +619,11 @@ const TH_STRINGS: I18nUiStrings = {
   navStory: 'เรื่องราว',
   navReviews: 'รีวิว',
   bagBtn: 'ถุงช้อปปิ้ง',
+  heroAtelierLabel: 'สบู่พฤกษศาสตร์ระดับห้องปฏิบัติการ · ลาดพร้าว กรุงเทพฯ',
+  topSellerLabel: 'สินค้าขายดีประจำร้าน',
   heroLine1: 'อาบฟองนุ่มดุจเมฆ',
   heroLine2: 'เปล่งประกายดุจแพรไหม',
-  heroSummary: '10 ดาร์ก · 10 ไบรท์ · 10 เทศกาล · 3 กล่องหินอ่อนพร้อมบวบธรรมชาติ',
+  heroSummary: 'อาบฟองนุ่มผสานพฤกษศาสตร์สกัดเย็น ทองคำเปลว 24K เพื่อผิวสะอาดใสและนุ่มดุจแพรไหม',
   explore30: 'สำรวจสบู่ 30 สูตร',
   casesCta: '3 กล่องหินอ่อน',
   dayMode: 'โหมดกลางวัน',
@@ -518,12 +633,24 @@ const TH_STRINGS: I18nUiStrings = {
   reservedBtn: 'เพิ่มลงถุงแล้ว',
   favAdd: 'บันทึกในรายการโปรด',
   favRemove: 'นำออกจากรายการโปรด',
-  collectionEyebrow: '30 สูตรสบู่พฤกษศาสตร์ · 10 / 10 / 10',
+  collectionEyebrow: 'คอลเลกชันสบู่พฤกษศาสตร์และสครับ 3 มิติ',
   collectionHeading: 'ดาร์ก · ไบรท์ · เทศกาลพิเศษ',
   allLinesTab: 'ทั้งหมด 3 ไลน์ (30)',
   darkTab: 'ดาร์ก (10)',
   brightTab: 'ไบรท์ (10)',
   occasionsTab: 'เทศกาล (10)',
+  marbleCasesQuickTab: 'กล่องหินอ่อน (3)',
+  sortLabel: 'จัดเรียงคลังสินค้า',
+  sortEdition: 'เรียงตามลำดับสูตร I–X',
+  sortGoldLeaf: 'เรียงตามทองคำเปลว (โรส / เยลโลว์)',
+  sortScentDesc: 'ระดับความหอม: เข้ม → อ่อนโยน',
+  sortScentAsc: 'ระดับความหอม: อ่อนโยน → เข้ม',
+  sortNameAsc: 'เรียงตามชื่อ ก–ฮ / A–Z',
+  goldFilterAll: 'ทองคำเปลวทั้งหมด',
+  goldFilterRose: 'โรสโกลด์ 24K',
+  goldFilterYellow: 'เยลโลว์โกลด์ 24K',
+  inventoryReadoutPrefix: 'แสดง',
+  inventoryReadoutSuffix: 'ก้อน จาก 3 ไลน์ · 3 กล่องหินอ่อน',
   darkColTitle: 'ไลน์ดาร์ก',
   darkColSub: 'กาแฟคั่วและถ่านไม้ไผ่',
   brightColTitle: 'ไลน์ไบรท์',
@@ -535,9 +662,13 @@ const TH_STRINGS: I18nUiStrings = {
   sizeFull: 'ปกติ ฿1,000',
   sizeMega: 'จัมโบ้ ฿2,500',
   sizePopular: 'ยอดนิยม',
-  casesEyebrow: '3 กล่องหินอ่อนซิกเนเจอร์',
-  casesHeading: 'กล่องหินอ่อนและบวบขัดผิวคู่',
-  casesSubSummary: 'หินอ่อนขาว · หินอ่อนดำ · ลายหมากรุกเทศกาล · สบู่จริง 10 ก้อน + บวบ 2 ช่อง',
+  casesEyebrow: '3 ไลน์ · กล่องหินอ่อนซิกเนเจอร์',
+  casesHeading: '3 ไลน์สบู่และกล่องหินอ่อนบวบคู่',
+  casesSubSummary: 'เรียงคู่ 3 ไลน์: หินอ่อนดำ · หินอ่อนขาว · ลายหมากรุกเทศกาล · สบู่จริง 10 ก้อน + บวบ 2 ช่อง',
+  caseSortLabel: 'เรียงลำดับกล่องหินอ่อน',
+  caseSortMatch: 'จับคู่ตาม 3 ไลน์ (ดาร์ก · ไบรท์ · เทศกาล)',
+  caseSortBrightFirst: 'หินอ่อนขาวสว่างขึ้นก่อน',
+  caseSortOccasionsFirst: 'รุ่นลายหมากรุกเทศกาลขึ้นก่อน',
   soapsAnd2Loofahs: 'สบู่ 10 ก้อน · บวบขัดผิว 2 ชิ้น',
   interiorLabel: 'ภายในกล่องหินอ่อน',
   interiorCountSuffix: 'ก้อน + ช่องวางบวบ 2 ช่อง',
@@ -549,10 +680,18 @@ const TH_STRINGS: I18nUiStrings = {
   brassPlaceholder: 'ชื่อย่อหรือข้อความสลัก...',
   reserveCaseBtn: 'สั่งจองกล่องหินอ่อน',
   reservedCaseBtn: 'เพิ่มกล่องลงถุงแล้ว',
-  storyHandPoured: 'เทมือทุกก้อนอย่างประณีตโดย',
-  storyKeepsakeSeal: 'ตราประทับซาวงเนอรี',
-  storyCustomCrest: 'ทดลองสลักชื่อบนตราประทับ',
-  storyPlaceholder: 'กรอกข้อความบนตราประทับ...',
+  storyEyebrow: 'เรื่องราวผู้ก่อตั้งและสตูดิโอ',
+  storyHeading: 'จากวิศวกรรมชีวภาพ สู่ศิลปะสบู่ทำมือ',
+  storyHandPoured: 'ปรุงสูตรและเทมือโดย',
+  storyRole: 'วิศวกรเทคโนโลยีชีวภาพและผู้ก่อตั้ง',
+  storyParagraph1:
+    'หลังจากสำเร็จการศึกษาด้านวิศวกรรมเทคโนโลยีชีวภาพ (Biotechnology Engineering) คุณอาชาวีทำงานวิจัยด้านเอนไซม์จากธรรมชาติ กรดไขมันจำเป็น และค่าสมดุล pH ที่อ่อนโยนต่อเกราะป้องกันผิว',
+  storyParagraph2:
+    'นอกเวลาห้องปฏิบัติการ เธอทุ่มเทให้งานอดิเรกที่รักทั้งงานวาดพฤกษศาสตร์ งานปั้นเซรามิก และการหล่อสบู่ศิลปะ จนก่อตั้ง GentleBubble by AR เพื่อผสานศาสตร์ไบโอเทคเข้ากับทองคำเปลวกินได้ 24K และร่องสครับ 3 มิติบนแท่นไม้แกะสลัก',
+  storyPillars: 'วศ.บ. เทคโนโลยีชีวภาพ · สมดุลผิว pH 4.5–5.5 · งานอดิเรกสู่สตูดิโอ',
+  soapBoardEyebrow: 'งานไม้แกะสลักประจำสตูดิโอ',
+  soapBoardTitle: 'แท่นวางสบู่ไม้วอลนัตสลักตราแบรนด์',
+  soapBoardDesc: 'แท่นไม้เนื้อแข็งระบายน้ำที่ออกแบบควบคู่กับสบู่ทั้ง 30 สูตรเพื่อถนอมร่องสครับและเนื้อครีม',
   reviewsHeading: 'รีวิวจากนักสะสมสบู่',
   reviewsRating: '4.9 / 5 ดาว',
   reviewsVerified: 'ยืนยันจากคำสั่งซื้อจริง',
@@ -566,6 +705,10 @@ const TH_STRINGS: I18nUiStrings = {
   chimeBtn: 'กระดิ่ง',
   frenchMotto: '« ศิลปะแห่งสบู่พฤกษศาสตร์ · บริสุทธิ์ เจิดจรัส และอ่อนโยน »',
   frenchTag: 'GentleBubble โดย AR',
+  footerBannerTitle: 'จดหมายรับรองต้นตำรับ · สตูดิโอลาดพร้าว กรุงเทพฯ',
+  footerBannerDesc:
+    'สบู่ทุกก้อนเทผสาน 50/50 ด้วยมือในชุดผลิตจำนวนจำกัด พร้อมทองคำเปลว 24K ร่องขัดผิว 3 มิติ และบรรจุภัณฑ์หินอ่อนสลักชื่อเฉพาะคุณ',
+  footerDispatchTag: 'จัดส่งกรุงเทพฯ และทั่วโลก · มาตรฐานสตูดิโอฝรั่งเศส-ไทย',
   modalDualStandard: 'มาตรฐานสบู่ทูโทน 50/50',
   modalBenefits: 'มาตรฐานคุณประโยชน์เชิงภาพ',
   modalScent: 'ความหอมระดับ',
@@ -639,6 +782,92 @@ const TH_STRINGS: I18nUiStrings = {
   diagonalGroovesLabel: 'ร่องขัดผิว 3 มิติแนวทแยง',
   engravedStampLabel: 'สลักชื่อแบรนด์เฉพาะก้อน',
   craftStandardHeading: 'มาตรฐานศิลปะสบู่ลักชัวรีทุกก้อน',
+  modeSoapsBtn: 'สบู่ก้อนพฤกษศาสตร์',
+  modeBathBombsBtn: 'บาธบอมบ์วิตามินรวม',
+  bathHeroLine1: 'แช่แร่ธาตุน้ำนมและไวน์',
+  bathHeroLine2: 'เติมวิตามินเพื่อผิวกระจ่างใส',
+  bathHeroSummary: 'ฟองฟู่นุ่มอุดมวิตามินรวม A–Z แร่ธาตุเอปซอม สาหร่ายเคลป์ นมอูฐ นมแพะ และสารสกัดผลไม้ธรรมชาติ',
+  bathExploreBtn: 'สำรวจบาธบอมบ์',
+  bathCollectionEyebrow: 'สปาแช่ตัววิตามินและแร่ธาตุเข้มข้น',
+  bathCollectionHeading: 'ดาร์ก · ไบรท์ · เทศกาลพิเศษ',
+  bathDarkColSub: 'ไวน์แดง เกลือดำ และโสมกระเทียม',
+  bathBrightColSub: 'ไวน์ขาว นมแพะ-อูฐ และสาหร่าย',
+  bathOccasionsColSub: 'เทศกาลมงคลและฟองวิตามิน',
+  bathBombsUnit: 'ก้อน',
+  bathNutritionBtn: 'ฉลากวิตามิน',
+  bathWaterHueLabel: 'สีน้ำหลังละลาย',
+  bathFizzDurationLabel: 'ระยะเวลาฟองฟู่',
+  bathSoakTempLabel: 'อุณหภูมิน้ำแนะนำ',
+  bathBrighteningTitle: 'กลไกการบำรุงและผิวกระจ่างใสขณะแช่',
+  bathNutritionFactsTitle: 'ฉลากโภชนาการผิว (Multi-Vitamin & Mineral Pack)',
+  bathNutritionSubtitle: 'สูตรวิตามิน แร่ธาตุ กรดอะมิโน และเอนไซม์สกัดครบวงจรต่อการแช่ 1 ครั้ง',
+  bathNutrientCol: 'สารอาหารและวิตามินบำรุงผิว',
+  bathAmountCol: 'ปริมาณ/ครั้ง',
+  bathDvCol: '% ความเข้มข้น',
+  bathVitaminsHeader: 'กลุ่มวิตามินรวม (Vitamins A · C · D3 · E · K2 · B-Complex)',
+  bathMineralsHeader: 'กลุ่มเกลือแร่และอิเล็กโทรไลต์ (Epsom Salts · Iodine · Zinc)',
+  bathAminoHeader: 'กลุ่มกรดอะมิโน ไวน์ น้ำนม และสารปรับผิวสว่าง',
+  bathEnzymesHeader: 'กลุ่มเอนไซม์ผลไม้ บุกคอนยัค เห็ด และสารสกัดรากพืช',
+  bathDvFootnote: '** ค่าความเข้มข้นสูตรชีวภาพเพื่อการดูดซึมผ่านน้ำอุ่นอย่างอ่อนโยน ไม่ใช้รับประทาน',
+  bathSinglePack: 'เดี่ยว ฿750',
+  bathDuoPack: 'คู่ ฿1,400',
+  bathCofferPack: 'เซต 3 ก้อน ฿2,000',
+  bathFocusAll: 'สารสกัดทั้งหมด',
+  bathFocusWine: 'ไวน์และวิตามิน C',
+  bathFocusMilk: 'น้ำนมและเปปไทด์',
+  bathFocusMarine: 'สาหร่ายเคลป์และชาเขียว',
+  bathFocusRoots: 'โสม มันเทศ กล้วย และเกลือแร่',
+  bathSortBrightening: 'เรียงตามพลังผิวกระจ่างใส',
+  bathReadoutSuffix: 'ก้อน จาก 3 ไลน์สปาแช่ตัว',
+  bathReserveBomb: 'สั่งจองบาธบอมบ์',
+  bathCasesEyebrow: 'กล่องหินอ่อนคู่ขนาน · เซตบาธบอมบ์ 9 ก้อน',
+  bathCasesHeading: 'กล่องหินอ่อนซิกเนเจอร์ 3 แบบ (9 ก้อนต่อกล่อง)',
+  bathCasesSubSummary: 'แต่ละกล่องรวมครบ 3 ไลน์: ดาร์ก 3 ก้อน · ไบรท์ 3 ก้อน · เทศกาล 3 ก้อน พร้อมบวบขัดผิว 2 ชิ้น',
+  bathCasesInteriorLabel: 'บาธบอมบ์ภายในกล่อง (3+3+3)',
+  bathCasesInteriorCount: '9 ก้อน + บวบ 2 ชิ้น',
+  bathCasesDarkRow: 'ดาร์ก (3)',
+  bathCasesBrightRow: 'ไบรท์ (3)',
+  bathCasesHolidayRow: 'เทศกาล (3)',
+  soldUnitLabel: 'จำหน่ายแล้ว',
+  atelierSoldTotalLabel: 'ยอดจำหน่ายรวม',
+  bathEngravedLabel: 'สลักโลโก้ GentleBubble บนเนื้อบอมบ์',
+  bathGroovesLabel: 'ร่องเกลียว 3D ละลายน้ำไว',
+  signInBtn: 'เข้าสู่ระบบ',
+  signOutBtn: 'ออกจากระบบ',
+  historyBtn: 'ประวัติที่บันทึก',
+  historyTitle: 'บัญชีลูกค้าและประวัติที่บันทึก',
+  historySubtitle: 'ซิงค์รายการที่เปิดชมและคำสั่งซื้อของคุณอย่างปลอดภัยเมื่อเข้าสู่ระบบ',
+  historySignInPrompt: 'เข้าสู่ระบบด้วยบัญชี Google เพื่อบันทึกประวัติการเลือกชมและใบเสร็จคำสั่งซื้อข้ามอุปกรณ์',
+  historyViewedTab: 'เพิ่งเข้าชม',
+  historyOrdersTab: 'คำสั่งซื้อที่บันทึก',
+  historyEmptyViewed: 'ยังไม่มีประวัติการเข้าชมสูตรใด ๆ',
+  historyEmptyOrders: 'ยังไม่มีคำสั่งซื้อที่บันทึกไว้ในบัญชีนี้',
+  historyClearBtn: 'ล้างประวัติ',
+  mailingEyebrow: 'จดหมายข่าวและแจ้งเตือนอัปเดต',
+  mailingTitle: 'รับอีเมลแจ้งเตือนคอลเลกชันใหม่และอัปเดตเว็บไซต์',
+  mailingSubtitle: 'ลงทะเบียนรับข่าวสารการเปิดตัวสบู่แกะสลัก บาธบอมบ์วิตามินสูตรใหม่ และการเติมสต็อกทองคำเปลว 24K',
+  mailingEmailPlaceholder: 'ระบุอีเมลของคุณ (เช่น you@example.com)...',
+  mailingSubmitBtn: 'สมัครรับแจ้งเตือน',
+  mailingSuccessMsg: 'ลงทะเบียนรับอีเมลแจ้งเตือนอัปเดตเรียบร้อยแล้ว',
+  mailingErrorMsg: 'กรุณากรอกอีเมลที่ถูกต้องก่อนกดสมัคร',
+  mailingTopicDrops: 'สูตรใหม่ประจำเดือน',
+  mailingTopicRestocks: 'เติมสต็อกทองคำเปลว 24K',
+  mailingTopicBathBombs: 'บาธบอมบ์วิตามินรวม',
+  mailingTopicSeasonal: 'กล่องหินอ่อนเทศกาล',
+  cookieTitle: 'ความเป็นส่วนตัวและคุกกี้โฆษณา',
+  cookieDesc: 'เราใช้คุกกี้ที่จำเป็นต่อระบบตะกร้าสินค้า รวมถึงคุกกี้บันทึกประวัติเมื่อเข้าสู่ระบบ และคุกกี้โฆษณาเพื่อนำเสนอโปรโมชันที่เหมาะกับคุณ',
+  cookieAcceptAll: 'ยอมรับทั้งหมด (รวมคุกกี้โฆษณา)',
+  cookieEssentialOnly: 'เฉพาะคุกกี้จำเป็น',
+  cookieCustomize: 'ตั้งค่าคุกกี้',
+  cookieHistoryToggle: 'คุกกี้บันทึกประวัติการเข้าชมและธีม',
+  cookieAdsToggle: 'คุกกี้เพื่อโฆษณาและการปรับแต่งข้อเสนอ (Ad Cookies)',
+  cookieSavePrefs: 'บันทึกการตั้งค่าคุกกี้',
+  cookieManageFooter: 'ตั้งค่าคุกกี้และโฆษณา',
+  seoGuideEyebrow: 'สารานุกรมพฤกษศาสตร์และสปา · GentleBubble by AR',
+  seoGuideTitle: 'สบู่พฤกษศาสตร์สครับ 3D ทองคำ 24K และบาธบอมบ์ร่องเกลียวละลายไว',
+  seoGuideP1: 'GentleBubble by AR คือสตูดิโอสบู่ชีวภาพในลาดพร้าว กรุงเทพฯ ที่ออกแบบโดยวิศวกรเทคโนโลยีชีวภาพ ทุกก้อนปั้นด้วยเทคนิคผสาน 50/50 ระหว่างเจลใสพฤกษศาสตร์และครีมบัตเตอร์ แกะสลักร่องสครับ 3D พร้อมสลักตราแบรนด์ GentleBubble และประดับทองคำเปลวแท้ 24K ทั้งโรสโกลด์และเยลโลว์โกลด์',
+  seoGuideP2: 'กลุ่มบาธบอมบ์วิตามิน 30 สูตร (ดาร์ก 10 · ไบรท์ 10 · เทศกาล 10) สลักตรา GentleBubble พร้อมร่องเกลียว 3D ที่เร่งการซึมผ่านของน้ำอุ่นให้ฟองฟู่กระจายตัวรวดเร็ว อัดแน่นด้วยไวน์ขาว-แดง นมอูฐ-นมแพะ ชาเขียวสไปรูลิน่า สาหร่ายเคลป์ไอโอดีน บุกคอนยัค เห็ดชิตาเกะ เกลือชมพูและเกลือดำเอปซอม กล้วย มันเทศ กระเทียมบ่ม และโสมเกาหลี',
+  seoGuideP3: 'จัดเก็บและมอบเป็นของขวัญระดับมาสเตอร์พีซในกล่องหินอ่อนแกะสลักพร้อมบวบขัดผิวธรรมชาติ เลือกสลับชมได้ทั้งสองกลุ่มสินค้าพร้อมบริการจัดส่งทั่วกรุงเทพฯ และต่างประเทศ',
 };
 
 const EN_STRINGS: I18nUiStrings = {
@@ -650,10 +879,12 @@ const EN_STRINGS: I18nUiStrings = {
   navStory: 'Story',
   navReviews: 'Reviews',
   bagBtn: 'Bag',
+  heroAtelierLabel: 'Bio-Botanical Savonnerie · Lad Phrao, Bangkok',
+  topSellerLabel: 'Top Seller Spotlight',
   heroLine1: 'Wash in Clouds.',
   heroLine2: 'Bloom in Silk.',
-  heroSummary: '10 Dark · 10 Bright · 10 Occasions · 3 Marble Loofah Cases',
-  explore30: 'Explore 30 Bars',
+  heroSummary: 'Hand-poured botanical bars finished with 24k edible gold leaf for silk-soft, luminous skin.',
+  explore30: 'Explore Sculpted Soaps',
   casesCta: '3 Marble Cases',
   dayMode: 'Cloud Day',
   nightMode: 'Twilight Night',
@@ -662,12 +893,24 @@ const EN_STRINGS: I18nUiStrings = {
   reservedBtn: 'Reserved',
   favAdd: 'Save favorite',
   favRemove: 'Remove favorite',
-  collectionEyebrow: '30 Creations · 10 / 10 / 10',
+  collectionEyebrow: 'Botanical Atelier · Sculpted Scrub Bars',
   collectionHeading: 'Dark · Bright · Occasions',
   allLinesTab: 'All 3 Lines (30)',
   darkTab: 'Dark (10)',
   brightTab: 'Bright (10)',
   occasionsTab: 'Occasions (10)',
+  marbleCasesQuickTab: 'Marble Cases (3)',
+  sortLabel: 'Sort Inventory',
+  sortEdition: 'Edition Order (I–X)',
+  sortGoldLeaf: 'Gold Leaf (Rose / Yellow)',
+  sortScentDesc: 'Scent: Rich → Subtle',
+  sortScentAsc: 'Scent: Subtle → Rich',
+  sortNameAsc: 'Alphabetical A–Z',
+  goldFilterAll: 'All Gold Leaf',
+  goldFilterRose: '24k Rose Gold',
+  goldFilterYellow: '24k Yellow Gold',
+  inventoryReadoutPrefix: 'Showing',
+  inventoryReadoutSuffix: 'bars across 3 Lines · 3 Marble Cases',
   darkColTitle: 'Dark Line',
   darkColSub: 'Roast & Carbon',
   brightColTitle: 'Bright Line',
@@ -679,9 +922,13 @@ const EN_STRINGS: I18nUiStrings = {
   sizeFull: 'Full ฿1,000',
   sizeMega: 'Huge ฿2,500',
   sizePopular: 'Popular',
-  casesEyebrow: '3 Signature Cases',
-  casesHeading: 'Marble Cases & Dual Loofahs',
-  casesSubSummary: 'Bright · Dark · Checkered Occasions · 10 Real Soaps + 2 Loofah Scrub Slots',
+  casesEyebrow: '3 Lines · Marble Cases',
+  casesHeading: '3 Lines & Signature Marble Cases',
+  casesSubSummary: 'Aligned with the 3 Lines: Dark · Bright · Occasions · 10 Real Soaps + 2 Loofah Scrub Slots',
+  caseSortLabel: 'Arrange Marble Cases',
+  caseSortMatch: 'Match 3 Lines (Dark · Bright · Occasions)',
+  caseSortBrightFirst: 'Bright Marble First',
+  caseSortOccasionsFirst: 'Checkered Occasions First',
   soapsAnd2Loofahs: '10 Soaps · 2 Loofah Scrubs',
   interiorLabel: 'Case Interior Compartment',
   interiorCountSuffix: 'Soaps + 2 Loofah Holders',
@@ -693,10 +940,18 @@ const EN_STRINGS: I18nUiStrings = {
   brassPlaceholder: 'Initials or message...',
   reserveCaseBtn: 'Reserve Case',
   reservedCaseBtn: 'Reserved Case',
-  storyHandPoured: 'Hand-poured by',
-  storyKeepsakeSeal: 'Keepsake Seal',
-  storyCustomCrest: 'Custom Crest Preview',
-  storyPlaceholder: 'Enter custom stamp text',
+  storyEyebrow: 'Founder Story & Atelier',
+  storyHeading: 'Biotech Precision Meets Hand-Sculpted Craft',
+  storyHandPoured: 'Formulated & crafted by',
+  storyRole: 'Biotech Engineer & Founder',
+  storyParagraph1:
+    'Graduating as a Biotechnology Engineer, Archawee spent years studying botanical enzymes, lipid barriers, and skin-kind pH chemistry inside formulation labs.',
+  storyParagraph2:
+    'After hours, she pursued her creative hobbies—botanical illustration, porcelain craft, and cold-process soap sculpting—founding GentleBubble by AR to unite biotech precision with 24k edible gold leaf and 3D scrub bars.',
+  storyPillars: 'B.Eng. Biotechnology · pH 4.5–5.5 Formulated · Crafted Hobbies',
+  soapBoardEyebrow: 'Studio Craftsmanship',
+  soapBoardTitle: 'Carved Walnut & Teak Soap Board',
+  soapBoardDesc: 'Slotted hardwood soap deck crafted alongside our 30 bars to keep 3D scrub grooves dry between rituals.',
   reviewsHeading: 'Collector Reviews',
   reviewsRating: '4.9 / 5 Stars',
   reviewsVerified: 'Verified Maison Orders',
@@ -710,6 +965,10 @@ const EN_STRINGS: I18nUiStrings = {
   chimeBtn: 'Chime',
   frenchMotto: '« L’Art du Savon Botanique · Pureté, Lumière & Douceur »',
   frenchTag: 'GentleBubble par AR',
+  footerBannerTitle: 'Archival Maison Correspondence · Bangkok Atelier',
+  footerBannerDesc:
+    'Every bar is hand-poured in small 50/50 botanical batches with genuine 24k edible gold leaf, carved 3D diagonal scrub grooves, and custom marble gifting.',
+  footerDispatchTag: 'Bangkok & Worldwide Dispatch · Artisanal Savonnerie',
   modalDualStandard: '50/50 Dual Bar Visual Standard',
   modalBenefits: 'Visual Benefit Standards',
   modalScent: 'Scent',
@@ -783,6 +1042,92 @@ const EN_STRINGS: I18nUiStrings = {
   diagonalGroovesLabel: '3D Diagonal Scrub Grooves',
   engravedStampLabel: 'Custom Engraved Bar Seal',
   craftStandardHeading: 'Atelier Luxury Bar Craftsmanship',
+  modeSoapsBtn: 'Artisan Bar Soaps',
+  modeBathBombsBtn: 'Vitamin Bath Bombs',
+  bathHeroLine1: 'Soak in Wine & Silk Milk.',
+  bathHeroLine2: 'Glow in Pure Vitamins.',
+  bathHeroSummary: 'Effervescent mineral spheres packed with A–Z vitamins, wine resveratrol, camel & goat milk, sea kelp iodine, konjac, and Epsom salts.',
+  bathExploreBtn: 'Explore Bath Bombs',
+  bathCollectionEyebrow: 'Vitamin & Mineral Effervescent Soak Collection',
+  bathCollectionHeading: 'Dark · Bright · Holidays',
+  bathDarkColSub: 'Red Wine, Black Salt & Ginseng',
+  bathBrightColSub: 'White Wine, Milk & Spirulina',
+  bathOccasionsColSub: 'Seasonal & Gala Mineral Packs',
+  bathBombsUnit: 'Bombs',
+  bathNutritionBtn: 'Vitamin Facts',
+  bathWaterHueLabel: 'Dissolved Tub Hue',
+  bathFizzDurationLabel: 'Effervescence Time',
+  bathSoakTempLabel: 'Ideal Bath Temp',
+  bathBrighteningTitle: 'Water-Soaking & Skin-Brightening Action',
+  bathNutritionFactsTitle: 'Bath Supplement & Skin Nutrition Facts',
+  bathNutritionSubtitle: 'Comprehensive multi-vitamin, mineral, amino acid & enzyme soak complex per sphere',
+  bathNutrientCol: 'Vitamin / Bio-Mineral Complex',
+  bathAmountCol: 'Amount / Soak',
+  bathDvCol: '% Potency',
+  bathVitaminsHeader: 'Multi-Vitamin Pack (A · C · D3 · E · K2 · Full B-Complex)',
+  bathMineralsHeader: 'Mineral & Salt Electrolytes (Epsom · Iodine · Potassium · Zinc)',
+  bathAminoHeader: 'Wine, Milk & Amino Brightening Complex',
+  bathEnzymesHeader: 'Digestive Fruit Enzymes, Konjac Mushroom & Botanical Roots',
+  bathDvFootnote: '** Transdermal bath-soak micronutrient standard formulated for external soaking.',
+  bathSinglePack: 'Single ฿750',
+  bathDuoPack: 'Duo ฿1,400',
+  bathCofferPack: 'Coffer (3) ฿2,000',
+  bathFocusAll: 'All Bio-Actives',
+  bathFocusWine: 'Wine & Vitamin C',
+  bathFocusMilk: 'Camel & Goat Milk',
+  bathFocusMarine: 'Sea Kelp & Green Tea',
+  bathFocusRoots: 'Ginseng, Yam, Banana & Salts',
+  bathSortBrightening: 'Skin-Brightening Power',
+  bathReadoutSuffix: 'bath bombs across 3 Lines',
+  bathReserveBomb: 'Reserve Bath Bomb',
+  bathCasesEyebrow: '3 Matching Marble Coffrets · 9-Sphere Editions',
+  bathCasesHeading: 'Matching Marble Cases (9 Bombs Per Chest)',
+  bathCasesSubSummary: 'Each coffret unites all 3 lines: 3 Dark + 3 Bright + 3 Holidays bath bombs + 2 natural loofah holders',
+  bathCasesInteriorLabel: 'Coffret Interior (3 Dark · 3 Bright · 3 Holidays)',
+  bathCasesInteriorCount: '9 Bombs + 2 Loofahs',
+  bathCasesDarkRow: 'Dark (3)',
+  bathCasesBrightRow: 'Bright (3)',
+  bathCasesHolidayRow: 'Holidays (3)',
+  soldUnitLabel: 'sold',
+  atelierSoldTotalLabel: 'Atelier Sold',
+  bathEngravedLabel: 'Debossed GentleBubble Crown Seal',
+  bathGroovesLabel: '3D Fast-Dissolve Water Grooves',
+  signInBtn: 'Sign In',
+  signOutBtn: 'Sign Out',
+  historyBtn: 'Saved History',
+  historyTitle: 'Member Account & Saved History',
+  historySubtitle: 'Cloud-synced formula inspections and concierge order receipts when logged in',
+  historySignInPrompt: 'Sign in with Google to save your viewed formulas, preferred bath actives, and order receipts across sessions.',
+  historyViewedTab: 'Viewed Formulas',
+  historyOrdersTab: 'Saved Orders',
+  historyEmptyViewed: 'No inspected formulas recorded yet.',
+  historyEmptyOrders: 'No completed orders saved to your account yet.',
+  historyClearBtn: 'Clear History',
+  mailingEyebrow: 'Site Updates & Dispatch Mailing List',
+  mailingTitle: 'Receive Email Notifications & Atelier Releases',
+  mailingSubtitle: 'Join the GentleBubble by AR dispatch list for seasonal formula drops, fast-dissolve bath bomb releases, and 24k gold restocks.',
+  mailingEmailPlaceholder: 'Enter your email address (e.g. you@example.com)...',
+  mailingSubmitBtn: 'Subscribe for Updates',
+  mailingSuccessMsg: 'Subscribed! Email notifications for GentleBubble by AR updates are active.',
+  mailingErrorMsg: 'Please enter a valid email address to subscribe.',
+  mailingTopicDrops: 'New Soap & Bath Drops',
+  mailingTopicRestocks: '24k Gold Leaf Restocks',
+  mailingTopicBathBombs: 'Vitamin Bath Bombs',
+  mailingTopicSeasonal: 'Marble Holiday Coffrets',
+  cookieTitle: 'Saved History & Ad Cookies',
+  cookieDesc: 'We use essential cookies for your bag, saved-history cookies when signed in, and advertising cookies to tailor botanical offers.',
+  cookieAcceptAll: 'Accept All (Incl. Ad Cookies)',
+  cookieEssentialOnly: 'Essential Only',
+  cookieCustomize: 'Preferences',
+  cookieHistoryToggle: 'Saved History & Theme Memory Cookies',
+  cookieAdsToggle: 'Personalized Advertising Cookies (Ad Tracking)',
+  cookieSavePrefs: 'Save Cookie Preferences',
+  cookieManageFooter: 'Cookie & Ad Settings',
+  seoGuideEyebrow: 'Botanical Craft Index · GentleBubble by AR',
+  seoGuideTitle: '24k Gold Scrub Soaps, Fast-Dissolve Grooved Bath Bombs & Marble Coffrets',
+  seoGuideP1: 'GentleBubble by AR is an artisanal bio-botanical savonnerie in Lad Phrao, Bangkok. Every upright sculpted soap bar unites translucent crystal gel and whipped organic butter in a 50/50 pour with deep 3D diagonal scrub grooves, debossed GentleBubble engraving, and 24k edible Rose Gold or Yellow Gold leaf.',
+  seoGuideP2: 'Our parallel 30-edition Vitamin Bath Bomb line (10 Dark, 10 Bright, 10 Holidays) is molded with signature debossed GentleBubble lettering and deep 3D spiral fast-dissolve water grooves for instant hydro-effervescence—infused with red & white wine resveratrol, camel & goat milk, green tea spirulina, sea kelp bio-iodine, konjac mushroom, Himalayan pink & black Epsom salts, banana, yam, aged garlic, and Korean ginseng.',
+  seoGuideP3: 'Presented in bespoke white Calacatta, dark Nero Marquina, and checkered marble coffrets with natural loofah scrub holders, silk ribbons, and custom brass engraving for collectors worldwide.',
 };
 
 export const PRESET_LABELS_TH: Record<DreamPresetId, string> = {
