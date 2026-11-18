@@ -608,6 +608,88 @@ export interface I18nUiStrings {
   seoGuideP1: string;
   seoGuideP2: string;
   seoGuideP3: string;
+  scrollerAriaLabel: string;
+  scrollerTypesBtn: string;
+  scrollerTypeSpotlight: string;
+  scrollerTypeAllLines: string;
+  scrollerTypeDark: string;
+  scrollerTypeBright: string;
+  scrollerTypeHolidays: string;
+  scrollerTypeCases: string;
+  scrollerTypeStory: string;
+  scrollerTypeReviews: string;
+  scrollerTypeGuide: string;
+  scrollerTypeSocial: string;
+  socialEyebrow: string;
+  socialHeading: string;
+  socialSubtitle: string;
+  socialRefreshBtn: string;
+  socialViewPostBtn: string;
+  socialFollowLink: string;
+  socialEmptyTitle: string;
+  socialEmptyDesc: string;
+  socialAwaitingConfigDesc: string;
+  socialErrorDesc: string;
+  socialRetryBtn: string;
+  socialTaggedPrefix: string;
+  ledgerActionLabel: string;
+  colophonEyebrow: string;
+  colophonBannerTitle: string;
+  colophonSoapsTitle: string;
+  colophonBombsTitle: string;
+  colophonSampleLedgerBtn: string;
+  colophonReadAssayBtn: string;
+  colophonHideAssayBtn: string;
+  colophonCol1Label: string;
+  colophonCol2Label: string;
+  colophonCol3Label: string;
+  colophonSoapsCol1Text: string;
+  colophonSoapsCol2Text: string;
+  colophonSoapsCol3Text: string;
+  colophonBombsCol1Text: string;
+  colophonBombsCol2Text: string;
+  colophonBombsCol3Text: string;
+  colophonExpandedTitle: string;
+  colophonSoapsExpandedText: string;
+  colophonBombsExpandedText: string;
+  colophonBiotechFootnote: string;
+  ledgerHeading: string;
+  ledgerFolioPrefix: string;
+  ledgerRitualTitle: string;
+  navVault: string;
+  scrollerTypeVault: string;
+  vaultEyebrow: string;
+  vaultLockedLine1: string;
+  vaultLockedLine2: string;
+  vaultLockedDesc: string;
+  vaultUnlockBtn: string;
+  vaultUnlockedBadge: string;
+  vaultHeadingLine1: string;
+  vaultHeadingLine2: string;
+  vaultSublead: string;
+  vaultKpiFormulations: string;
+  vaultKpiCategories: string;
+  vaultKpiProducts: string;
+  vaultKpiBrands: string;
+  vaultAllFilter: string;
+  vaultSearchPlaceholder: string;
+  vaultBarLabel: string;
+  vaultBombLabel: string;
+  vaultBarStampTag: string;
+  vaultBombStampTag: string;
+  vaultGrooveStylePrefix: string;
+  vaultReserveBar: string;
+  vaultReserveBomb: string;
+  vaultReservePair: string;
+  vaultCountSuffix: string;
+  vaultEmptyMatch: string;
+  vaultBoxesEyebrow: string;
+  vaultBoxesHeading: string;
+  vaultBoxesSub: string;
+  vaultBoxesInteriorLabel: string;
+  vaultBoxesInteriorCount: string;
+  vaultReserveBoxBtn: string;
+  vaultReservedBoxBtn: string;
 }
 
 const TH_STRINGS: I18nUiStrings = {
@@ -619,21 +701,21 @@ const TH_STRINGS: I18nUiStrings = {
   navStory: 'เรื่องราว',
   navReviews: 'รีวิว',
   bagBtn: 'ถุงช้อปปิ้ง',
-  heroAtelierLabel: 'สบู่พฤกษศาสตร์ระดับห้องปฏิบัติการ · ลาดพร้าว กรุงเทพฯ',
-  topSellerLabel: 'สินค้าขายดีประจำร้าน',
+  heroAtelierLabel: 'เมซงแห่งความหอมละมุน · ลาดพร้าว กรุงเทพฯ',
+  topSellerLabel: 'กลิ่นยอดนิยมประจำเมซง',
   heroLine1: 'อาบฟองนุ่มดุจเมฆ',
   heroLine2: 'เปล่งประกายดุจแพรไหม',
-  heroSummary: 'อาบฟองนุ่มผสานพฤกษศาสตร์สกัดเย็น ทองคำเปลว 24K เพื่อผิวสะอาดใสและนุ่มดุจแพรไหม',
+  heroSummary: 'พิธีกรรมแห่งการอาบน้ำที่หลอมรวมความละมุนดุจปุยเมฆ กลิ่นหอมชวนฝัน และประกายทองคำเปลวแท้ เพื่อผิวที่นุ่มนวลประดุจแพรไหม',
   explore30: 'สำรวจสบู่ 30 สูตร',
   casesCta: '3 กล่องหินอ่อน',
   dayMode: 'โหมดกลางวัน',
   nightMode: 'โหมดยามค่ำ',
-  inspectBtn: 'ดูส่วนผสม',
+  inspectBtn: 'เปิดตำรับ',
   reserveBtn: 'สั่งจอง',
   reservedBtn: 'เพิ่มลงถุงแล้ว',
   favAdd: 'บันทึกในรายการโปรด',
   favRemove: 'นำออกจากรายการโปรด',
-  collectionEyebrow: 'คอลเลกชันสบู่พฤกษศาสตร์และสครับ 3 มิติ',
+  collectionEyebrow: 'คอลเลกชันสบู่แกะสลักแห่งความทรงจำ',
   collectionHeading: 'ดาร์ก · ไบรท์ · เทศกาลพิเศษ',
   allLinesTab: 'ทั้งหมด 3 ไลน์ (30)',
   darkTab: 'ดาร์ก (10)',
@@ -709,11 +791,11 @@ const TH_STRINGS: I18nUiStrings = {
   footerBannerDesc:
     'สบู่ทุกก้อนเทผสาน 50/50 ด้วยมือในชุดผลิตจำนวนจำกัด พร้อมทองคำเปลว 24K ร่องขัดผิว 3 มิติ และบรรจุภัณฑ์หินอ่อนสลักชื่อเฉพาะคุณ',
   footerDispatchTag: 'จัดส่งกรุงเทพฯ และทั่วโลก · มาตรฐานสตูดิโอฝรั่งเศส-ไทย',
-  modalDualStandard: 'มาตรฐานสบู่ทูโทน 50/50',
-  modalBenefits: 'มาตรฐานคุณประโยชน์เชิงภาพ',
+  modalDualStandard: 'สมดุลสองเนื้อสัมผัส 50/50',
+  modalBenefits: 'สัมผัสแห่งการปรนนิบัติผิว',
   modalScent: 'ความหอมระดับ',
-  modalActiveRatios: 'สัดส่วนสารสำคัญและเบส',
-  modalBotanicalVisuals: 'สารสกัดพฤกษศาสตร์หลัก',
+  modalActiveRatios: 'บัญชีสารสกัดพฤกษศาสตร์และสัดส่วนโอสถ',
+  modalBotanicalVisuals: 'บันทึกสารสกัดธรรมชาติประจำตำรับ',
   modalShimmerLight: 'ประกายชิมเมอร์และแสงโปร่งแสง',
   modalOpaqueButter: 'เนื้อบัตเตอร์นุ่ม',
   modalFrostedGlow: 'กึ่งโปร่งแสง',
@@ -783,32 +865,32 @@ const TH_STRINGS: I18nUiStrings = {
   engravedStampLabel: 'สลักชื่อแบรนด์เฉพาะก้อน',
   craftStandardHeading: 'มาตรฐานศิลปะสบู่ลักชัวรีทุกก้อน',
   modeSoapsBtn: 'สบู่ก้อนพฤกษศาสตร์',
-  modeBathBombsBtn: 'บาธบอมบ์วิตามินรวม',
-  bathHeroLine1: 'แช่แร่ธาตุน้ำนมและไวน์',
-  bathHeroLine2: 'เติมวิตามินเพื่อผิวกระจ่างใส',
-  bathHeroSummary: 'ฟองฟู่นุ่มอุดมวิตามินรวม A–Z แร่ธาตุเอปซอม สาหร่ายเคลป์ นมอูฐ นมแพะ และสารสกัดผลไม้ธรรมชาติ',
+  modeBathBombsBtn: 'บาธบอมบ์สปาแช่ตัว',
+  bathHeroLine1: 'ดื่มด่ำในห้วงอ่างกำมะหยี่',
+  bathHeroLine2: 'ตื่นรับผิวเปล่งประกายพอร์ซเลน',
+  bathHeroSummary: 'ฟองอาบน้ำละมุนดุจม่านหมอกยามค่ำ ผสานกลิ่นไวน์วินเทจ น้ำนมละมุน และไออุ่นแห่งเกลือแร่เพื่อช่วงเวลาพักผ่อนอันแสนสงบ',
   bathExploreBtn: 'สำรวจบาธบอมบ์',
-  bathCollectionEyebrow: 'สปาแช่ตัววิตามินและแร่ธาตุเข้มข้น',
+  bathCollectionEyebrow: 'พิธีกรรมสปาแช่ตัวและฟองฟู่ชวนฝัน',
   bathCollectionHeading: 'ดาร์ก · ไบรท์ · เทศกาลพิเศษ',
-  bathDarkColSub: 'ไวน์แดง เกลือดำ และโสมกระเทียม',
-  bathBrightColSub: 'ไวน์ขาว นมแพะ-อูฐ และสาหร่าย',
-  bathOccasionsColSub: 'เทศกาลมงคลและฟองวิตามิน',
+  bathDarkColSub: 'มนต์เสน่ห์ยามค่ำและความอบอุ่นลุ่มลึก',
+  bathBrightColSub: 'น้ำนมรุ่งอรุณและแสงพอร์ซเลน',
+  bathOccasionsColSub: 'คืนเฉลิมฉลองและฤดูกาลแห่งความสุข',
   bathBombsUnit: 'ก้อน',
-  bathNutritionBtn: 'ฉลากวิตามิน',
+  bathNutritionBtn: 'เปิดตำรับโอสถ',
   bathWaterHueLabel: 'สีน้ำหลังละลาย',
-  bathFizzDurationLabel: 'ระยะเวลาฟองฟู่',
-  bathSoakTempLabel: 'อุณหภูมิน้ำแนะนำ',
-  bathBrighteningTitle: 'กลไกการบำรุงและผิวกระจ่างใสขณะแช่',
-  bathNutritionFactsTitle: 'ฉลากโภชนาการผิว (Multi-Vitamin & Mineral Pack)',
-  bathNutritionSubtitle: 'สูตรวิตามิน แร่ธาตุ กรดอะมิโน และเอนไซม์สกัดครบวงจรต่อการแช่ 1 ครั้ง',
-  bathNutrientCol: 'สารอาหารและวิตามินบำรุงผิว',
-  bathAmountCol: 'ปริมาณ/ครั้ง',
+  bathFizzDurationLabel: 'จังหวะการฟู่ละลาย',
+  bathSoakTempLabel: 'อุณหภูมิน้ำอุ่น',
+  bathBrighteningTitle: 'บันทึกการดูแลผิวและความกระจ่างใสในตำรับ',
+  bathNutritionFactsTitle: 'สมุดบัญชีตำรับโอสถและวิตามิน (Atelier Elixir Ledger)',
+  bathNutritionSubtitle: 'รายละเอียดวิตามิน แร่ธาตุ และสารสกัดชีวภาพที่ซ่อนอยู่ใต้ฟองนุ่ม',
+  bathNutrientCol: 'รายการสารสกัดและวิตามินบำรุงผิว',
+  bathAmountCol: 'ปริมาณต่อก้อน',
   bathDvCol: '% ความเข้มข้น',
-  bathVitaminsHeader: 'กลุ่มวิตามินรวม (Vitamins A · C · D3 · E · K2 · B-Complex)',
-  bathMineralsHeader: 'กลุ่มเกลือแร่และอิเล็กโทรไลต์ (Epsom Salts · Iodine · Zinc)',
-  bathAminoHeader: 'กลุ่มกรดอะมิโน ไวน์ น้ำนม และสารปรับผิวสว่าง',
-  bathEnzymesHeader: 'กลุ่มเอนไซม์ผลไม้ บุกคอนยัค เห็ด และสารสกัดรากพืช',
-  bathDvFootnote: '** ค่าความเข้มข้นสูตรชีวภาพเพื่อการดูดซึมผ่านน้ำอุ่นอย่างอ่อนโยน ไม่ใช้รับประทาน',
+  bathVitaminsHeader: 'I. หมวดวิตามินบำรุงผิว (Vitamins A · C · D3 · E · K2 · B-Complex)',
+  bathMineralsHeader: 'II. หมวดเกลือแร่และไอโอดีนทะเลลึก (Epsom · Iodine · Zinc)',
+  bathAminoHeader: 'III. หมวดไวน์สกัด น้ำนม และเปปไทด์ผิวกระจ่างใส',
+  bathEnzymesHeader: 'IV. หมวดเอนไซม์ผลไม้ บุกคอนยัค เห็ด และรากพฤกษศาสตร์',
+  bathDvFootnote: '** บัญชีสูตรตำรับเมซงเพื่อการแช่อาบภายนอกเท่านั้น ความเข้มข้นเทียบตามมาตรฐานชีวภาพของสตูดิโอ',
   bathSinglePack: 'เดี่ยว ฿750',
   bathDuoPack: 'คู่ ฿1,400',
   bathCofferPack: 'เซต 3 ก้อน ฿2,000',
@@ -868,6 +950,88 @@ const TH_STRINGS: I18nUiStrings = {
   seoGuideP1: 'GentleBubble by AR คือสตูดิโอสบู่ชีวภาพในลาดพร้าว กรุงเทพฯ ที่ออกแบบโดยวิศวกรเทคโนโลยีชีวภาพ ทุกก้อนปั้นด้วยเทคนิคผสาน 50/50 ระหว่างเจลใสพฤกษศาสตร์และครีมบัตเตอร์ แกะสลักร่องสครับ 3D พร้อมสลักตราแบรนด์ GentleBubble และประดับทองคำเปลวแท้ 24K ทั้งโรสโกลด์และเยลโลว์โกลด์',
   seoGuideP2: 'กลุ่มบาธบอมบ์วิตามิน 30 สูตร (ดาร์ก 10 · ไบรท์ 10 · เทศกาล 10) สลักตรา GentleBubble พร้อมร่องเกลียว 3D ที่เร่งการซึมผ่านของน้ำอุ่นให้ฟองฟู่กระจายตัวรวดเร็ว อัดแน่นด้วยไวน์ขาว-แดง นมอูฐ-นมแพะ ชาเขียวสไปรูลิน่า สาหร่ายเคลป์ไอโอดีน บุกคอนยัค เห็ดชิตาเกะ เกลือชมพูและเกลือดำเอปซอม กล้วย มันเทศ กระเทียมบ่ม และโสมเกาหลี',
   seoGuideP3: 'จัดเก็บและมอบเป็นของขวัญระดับมาสเตอร์พีซในกล่องหินอ่อนแกะสลักพร้อมบวบขัดผิวธรรมชาติ เลือกสลับชมได้ทั้งสองกลุ่มสินค้าพร้อมบริการจัดส่งทั่วกรุงเทพฯ และต่างประเทศ',
+  scrollerAriaLabel: 'แถบเลื่อนสบู่ 3 สีแบบซ่อนอัตโนมัติ',
+  scrollerTypesBtn: 'เลือกประเภท',
+  scrollerTypeSpotlight: 'ไฮไลต์ยอดนิยม',
+  scrollerTypeAllLines: 'ครบทั้ง 3 ไลน์',
+  scrollerTypeDark: 'ประเภท: ดาร์ก',
+  scrollerTypeBright: 'ประเภท: ไบรท์',
+  scrollerTypeHolidays: 'ประเภท: เทศกาล',
+  scrollerTypeCases: 'กล่องหินอ่อน',
+  scrollerTypeStory: 'เรื่องราวแบรนด์',
+  scrollerTypeReviews: 'รีวิวลูกค้า',
+  scrollerTypeGuide: 'คู่มือพฤกษศาสตร์',
+  scrollerTypeSocial: 'แท็กจากอินสตาแกรม',
+  socialEyebrow: 'คอมมูนิตี้และภาพแท็กจริงบน Instagram',
+  socialHeading: 'ภาพรีวิวจากผู้ใช้งานจริง',
+  socialSubtitle: 'อัปเดตโพสต์ที่ลูกค้าแท็ก @gentlebubble.ar บน Instagram ล่าสุดแบบเรียลไทม์',
+  socialRefreshBtn: 'รีเฟรชโพสต์',
+  socialViewPostBtn: 'ดูโพสต์บน Instagram',
+  socialFollowLink: 'เยี่ยมชม @gentlebubble.ar',
+  socialEmptyTitle: 'รอรับภาพแท็กใหม่จาก @gentlebubble.ar',
+  socialEmptyDesc: 'ยังไม่มีโพสต์ที่ถูกแท็กล่าสุด ลองแท็ก @gentlebubble.ar บน Instagram เพื่อร่วมแบ่งปันประสบการณ์สปาของคุณ',
+  socialAwaitingConfigDesc: 'โพสต์ที่ถูกแท็กจะปรากฏที่นี่โดยอัตโนมัติเมื่อเชื่อมต่อบัญชี Instagram Graph API บนเซิร์ฟเวอร์เรียบร้อยแล้ว',
+  socialErrorDesc: 'ไม่สามารถเชื่อมต่อฟีดโพสต์แท็กจาก Instagram ได้ชั่วคราว กรุณาลองใหม่อีกครั้ง',
+  socialRetryBtn: 'ลองดึงข้อมูลใหม่',
+  socialTaggedPrefix: 'แท็กโดย',
+  ledgerActionLabel: 'เปิดตำรับโอสถ',
+  colophonEyebrow: 'เอกสารรับรองตำรับเมซง · พิมพ์ละเอียดบนกระดาษวินเทจ',
+  colophonBannerTitle: 'บันทึกส่วนผสมและงานฝีมือเบื้องหลังความฝัน',
+  colophonSoapsTitle: 'สิ่งที่ซ่อนอยู่ในฟองนุ่ม — ตำรับสกัดเย็น 50/50 และงานทองคำ 24K',
+  colophonBombsTitle: 'สิ่งที่ซ่อนอยู่ในฟองฟู่ — ตำรับไวน์ น้ำนม แร่ธาตุ และวิตามิน A–Z',
+  colophonSampleLedgerBtn: 'เปิดดูตัวอย่างสมุดบัญชีโอสถ',
+  colophonReadAssayBtn: 'อ่านบันทึกสารสกัดฉบับเต็ม',
+  colophonHideAssayBtn: 'พับเก็บบันทึกสารสกัด',
+  colophonCol1Label: 'I. งานปรุงชีวภาพ (The Actives)',
+  colophonCol2Label: 'II. งานแกะสลัก (The Craft)',
+  colophonCol3Label: 'III. มาตรฐานผิว (Skin Balance)',
+  colophonSoapsCol1Text: 'ผสานเจลใสพฤกษศาสตร์ 50% และครีมบัตเตอร์ออร์แกนิก 50% ด้วยกรดซาลิไซลิก ซัลเฟอร์ สควาเลน เลซิติน สไปรูลิน่า และน้ำนมมะพร้าว',
+  colophonSoapsCol2Text: 'ทุกก้อนสลักตรา GentleBubble แกะสลักร่องขัดผิว 3 มิติแนวทแยง และประดับทองคำเปลวแท้ 24K โรสโกลด์หรือเยลโลว์โกลด์',
+  colophonSoapsCol3Text: 'ควบคุมสมดุลผิวอ่อนโยนที่ pH 4.5–5.5 พร้อมของขวัญล้ำค่าภายในก้อน ทั้งไข่มุกแท้ ใยบวบสยาม หรือฟองน้ำไหมนุ่ม',
+  colophonBombsCol1Text: 'อัดแน่นด้วยเรสเวอราทรอลจากไวน์ขาว-แดง น้ำนมอูฐ-นมแพะ สาหร่ายเคลป์ไอโอดีน บุกคอนยัค เห็ดชิตาเกะ กล้วย มันเทศ กระเทียม และโสม',
+  colophonBombsCol2Text: 'ขึ้นรูปด้วยร่องเกลียว 3 มิติเพื่อเร่งการซึมผ่านและละลายในน้ำอุ่นภายใน 2.5–3.5 นาที พร้อมประทับตรา GentleBubble และทองคำ 24K',
+  colophonBombsCol3Text: 'เสริมเกลือชมพูหิมาลัย เกลือดำเอปซอม วิตามินรวม A, C, D3, E, K2, B-Complex ครบชุด และเอนไซม์ผลไม้เพื่อผิวสว่างเนียน',
+  colophonExpandedTitle: 'บันทึกห้องปฏิบัติการ GentleBubble โดยวิศวกรเทคโนโลยีชีวภาพ',
+  colophonSoapsExpandedText: 'เบื้องหลังสัมผัสราวปุยเมฆคือการคำนวณอัตราส่วนอิมัลชันและค่า HLB ในห้องแล็บ เพื่อไม่ให้สารสกัดพฤกษศาสตร์สูญเสียฤทธิ์ขณะขึ้นรูป ทำให้คุณได้ดื่มด่ำกับความงามโดยไม่ต้องกังวลเรื่องผิวแห้งตึง',
+  colophonBombsExpandedText: 'บาธบอมบ์ทั้ง 30 ตำรับถูกปรุงให้คงความเสถียรของวิตามิน C 1,000mg ไนอาซินาไมด์ แมกนีเซียม และแร่ธาตุทะเลจนวินาทีที่สัมผัสน้ำอุ่นในอ่าง เพื่อให้ทุกการแช่เป็นทั้งการพักผ่อนทางอารมณ์และการฟื้นบำรุงผิวอย่างแท้จริง',
+  colophonBiotechFootnote: '— บันทึกโดย อาชาวี ฉัตรกุล ณ อยุธยา · วศ.บ. เทคโนโลยีชีวภาพ · ลาดพร้าว กรุงเทพฯ',
+  ledgerHeading: 'สมุดบัญชีโอสถและสารสกัดเมซง',
+  ledgerFolioPrefix: 'ระเบียนตำรับ',
+  ledgerRitualTitle: 'สัมผัสแห่งการแช่และบำบัดผิว',
+  navVault: 'คลังลับ 30 สูตร',
+  scrollerTypeVault: 'คลังลับสมาชิก',
+  vaultEyebrow: 'คลังลับเฉพาะสมาชิก · 60 สูตรคู่ปรับสภาพผิว',
+  vaultLockedLine1: 'ห้องปรุงสูตรลับเฉพาะสมาชิก',
+  vaultLockedLine2: 'ลงชื่อเข้าใช้เพื่อปลดล็อก 30 คู่แบรนด์',
+  vaultLockedDesc: 'เข้าสู่ระบบด้วย Google เพื่อชมสบู่ก้อนและบาธบอมบ์สูตรเปอร์เซ็นต์ 30 แบรนด์เคียงคู่กัน พร้อมร่องวิกตอเรียนและตราประทับเฉพาะสูตร',
+  vaultUnlockBtn: 'เข้าสู่ระบบ Google เพื่อเปิดคลังลับ',
+  vaultUnlockedBadge: 'ปลดล็อกคลังลับสมาชิกแล้ว',
+  vaultHeadingLine1: 'สบู่ก้อนและบาธบอมบ์เคียงคู่ 30 แบรนด์',
+  vaultHeadingLine2: 'ร่องวิกตอเรียนและตราประทับสารสกัด %',
+  vaultSublead: 'วางเคียงข้างกันครบทั้ง 30 สูตร 5 กลุ่มบำรุงผิว (60 SKUs) พร้อมร่องแกะสลักสไตล์วิกตอเรียนและตราประทับแบรนด์-เปอร์เซ็นต์บนเนื้อผลิตภัณฑ์',
+  vaultKpiFormulations: 'สูตรเฉพาะ (Formulations)',
+  vaultKpiCategories: 'กลุ่มบำรุงผิว (Categories)',
+  vaultKpiProducts: 'สินค้ารวม (Paired SKUs)',
+  vaultKpiBrands: 'แบรนด์ไลน์ (Brand Lines)',
+  vaultAllFilter: 'ทุกกลุ่มบำรุงผิว (30)',
+  vaultSearchPlaceholder: 'ค้นหาชื่อแบรนด์ สารสกัด % หรือตราประทับ...',
+  vaultBarLabel: 'สบู่ก้อนร่องวิกตอเรียน',
+  vaultBombLabel: 'บาธบอมบ์ตราประทับโค้ง',
+  vaultBarStampTag: 'ตราประทับสบู่ ≤14',
+  vaultBombStampTag: 'ตราประทับบอมบ์ ≤12',
+  vaultGrooveStylePrefix: 'ร่องวิกตอเรียน',
+  vaultReserveBar: 'สบู่ ฿950',
+  vaultReserveBomb: 'บอมบ์ ฿750',
+  vaultReservePair: 'จองคู่ (สบู่+บอมบ์)',
+  vaultCountSuffix: 'คู่สูตรพิเศษพร้อมสั่งจอง',
+  vaultEmptyMatch: 'ไม่พบสูตรคู่ที่ตรงกับตัวกรองในขณะนี้',
+  vaultBoxesEyebrow: 'หีบหินอ่อนพิเศษสลักร่องวิกตอเรียน · อย่างละ 3 ชิ้น',
+  vaultBoxesHeading: '3 หีบหินอ่อนวิกตอเรียน (สบู่ 3 ก้อน + บาธบอมบ์ 3 ลูก)',
+  vaultBoxesSub: 'แกะร่องวิกตอเรียนแบบเดียวกับตัวผลิตภัณฑ์ตลอดขอบหีบหินอ่อน พร้อมบวบธรรมชาติ 2 ช่อง ริบบิ้นซาติน และป้ายทองเหลืองสลักชื่อ',
+  vaultBoxesInteriorLabel: 'ชุดคู่ภายในหีบหินอ่อน (อย่างละ 3 ชิ้น)',
+  vaultBoxesInteriorCount: 'สบู่ 3 ก้อน + บอมบ์ 3 ลูก + บวบ 2 ชิ้น',
+  vaultReserveBoxBtn: 'สั่งจองหีบหินอ่อนวิกตอเรียน',
+  vaultReservedBoxBtn: 'เพิ่มหีบหินอ่อนลงถุงแล้ว',
 };
 
 const EN_STRINGS: I18nUiStrings = {
@@ -879,21 +1043,21 @@ const EN_STRINGS: I18nUiStrings = {
   navStory: 'Story',
   navReviews: 'Reviews',
   bagBtn: 'Bag',
-  heroAtelierLabel: 'Bio-Botanical Savonnerie · Lad Phrao, Bangkok',
-  topSellerLabel: 'Top Seller Spotlight',
+  heroAtelierLabel: 'Maison de Beauté · Lad Phrao, Bangkok',
+  topSellerLabel: 'Maison Spotlight',
   heroLine1: 'Wash in Clouds.',
   heroLine2: 'Bloom in Silk.',
-  heroSummary: 'Hand-poured botanical bars finished with 24k edible gold leaf for silk-soft, luminous skin.',
+  heroSummary: 'Hand-poured bathing rituals spun from moonlight calm, warm botanicals, and a whisper of 24k gold—for silk-soft, luminous skin.',
   explore30: 'Explore Sculpted Soaps',
   casesCta: '3 Marble Cases',
   dayMode: 'Cloud Day',
   nightMode: 'Twilight Night',
-  inspectBtn: 'Inspect',
+  inspectBtn: 'Apothecary Ledger',
   reserveBtn: 'Reserve',
   reservedBtn: 'Reserved',
   favAdd: 'Save favorite',
   favRemove: 'Remove favorite',
-  collectionEyebrow: 'Botanical Atelier · Sculpted Scrub Bars',
+  collectionEyebrow: 'Collectible Savonnerie · Three Moods',
   collectionHeading: 'Dark · Bright · Occasions',
   allLinesTab: 'All 3 Lines (30)',
   darkTab: 'Dark (10)',
@@ -969,11 +1133,11 @@ const EN_STRINGS: I18nUiStrings = {
   footerBannerDesc:
     'Every bar is hand-poured in small 50/50 botanical batches with genuine 24k edible gold leaf, carved 3D diagonal scrub grooves, and custom marble gifting.',
   footerDispatchTag: 'Bangkok & Worldwide Dispatch · Artisanal Savonnerie',
-  modalDualStandard: '50/50 Dual Bar Visual Standard',
-  modalBenefits: 'Visual Benefit Standards',
+  modalDualStandard: '50/50 Dual Texture Harmony',
+  modalBenefits: 'Sensory & Skin Ritual Profile',
   modalScent: 'Scent',
-  modalActiveRatios: 'Active & Base Ratios',
-  modalBotanicalVisuals: 'Botanical Active Visuals',
+  modalActiveRatios: 'Apothecary Ratio & pH Ledger',
+  modalBotanicalVisuals: 'Botanical Formulation Dossier',
   modalShimmerLight: 'Crystal Shimmer & Light',
   modalOpaqueButter: 'Opaque Butter',
   modalFrostedGlow: 'Frosted Glow',
@@ -1043,32 +1207,32 @@ const EN_STRINGS: I18nUiStrings = {
   engravedStampLabel: 'Custom Engraved Bar Seal',
   craftStandardHeading: 'Atelier Luxury Bar Craftsmanship',
   modeSoapsBtn: 'Artisan Bar Soaps',
-  modeBathBombsBtn: 'Vitamin Bath Bombs',
-  bathHeroLine1: 'Soak in Wine & Silk Milk.',
-  bathHeroLine2: 'Glow in Pure Vitamins.',
-  bathHeroSummary: 'Effervescent mineral spheres packed with A–Z vitamins, wine resveratrol, camel & goat milk, sea kelp iodine, konjac, and Epsom salts.',
-  bathExploreBtn: 'Explore Bath Bombs',
-  bathCollectionEyebrow: 'Vitamin & Mineral Effervescent Soak Collection',
+  modeBathBombsBtn: 'Effervescent Bath Spheres',
+  bathHeroLine1: 'Melt into Velvet Skies.',
+  bathHeroLine2: 'Awaken in Porcelain Glow.',
+  bathHeroSummary: 'Slow-risen bath spheres woven from vintage cellar notes, warm silk milk, and luminous dusk mist for an unhurried sanctuary.',
+  bathExploreBtn: 'Explore Bath Spheres',
+  bathCollectionEyebrow: 'Effervescent Soak Sanctuary · Three Moods',
   bathCollectionHeading: 'Dark · Bright · Holidays',
-  bathDarkColSub: 'Red Wine, Black Salt & Ginseng',
-  bathBrightColSub: 'White Wine, Milk & Spirulina',
-  bathOccasionsColSub: 'Seasonal & Gala Mineral Packs',
+  bathDarkColSub: 'Velvet Dusk & Fireside Warmth',
+  bathBrightColSub: 'Morning Milk & Sunlit Mist',
+  bathOccasionsColSub: 'Candlelit & Gala Rituals',
   bathBombsUnit: 'Bombs',
-  bathNutritionBtn: 'Vitamin Facts',
+  bathNutritionBtn: 'Apothecary Ledger',
   bathWaterHueLabel: 'Dissolved Tub Hue',
-  bathFizzDurationLabel: 'Effervescence Time',
-  bathSoakTempLabel: 'Ideal Bath Temp',
-  bathBrighteningTitle: 'Water-Soaking & Skin-Brightening Action',
-  bathNutritionFactsTitle: 'Bath Supplement & Skin Nutrition Facts',
-  bathNutritionSubtitle: 'Comprehensive multi-vitamin, mineral, amino acid & enzyme soak complex per sphere',
-  bathNutrientCol: 'Vitamin / Bio-Mineral Complex',
-  bathAmountCol: 'Amount / Soak',
+  bathFizzDurationLabel: 'Dissolve Cadence',
+  bathSoakTempLabel: 'Bath Warmth',
+  bathBrighteningTitle: 'Elixir Note & Skin Luminosity',
+  bathNutritionFactsTitle: 'Atelier Elixir & Assay Ledger',
+  bathNutritionSubtitle: 'Complete apothecary breakdown of vitamins, mineral salts, wines & milks beneath the veil',
+  bathNutrientCol: 'Botanical / Micronutrient Entry',
+  bathAmountCol: 'Assay / Soak',
   bathDvCol: '% Potency',
-  bathVitaminsHeader: 'Multi-Vitamin Pack (A · C · D3 · E · K2 · Full B-Complex)',
-  bathMineralsHeader: 'Mineral & Salt Electrolytes (Epsom · Iodine · Potassium · Zinc)',
-  bathAminoHeader: 'Wine, Milk & Amino Brightening Complex',
-  bathEnzymesHeader: 'Digestive Fruit Enzymes, Konjac Mushroom & Botanical Roots',
-  bathDvFootnote: '** Transdermal bath-soak micronutrient standard formulated for external soaking.',
+  bathVitaminsHeader: 'I. Essential Vitamin Complex (A · C · D3 · E · K2 · B-Complex)',
+  bathMineralsHeader: 'II. Deep Sea & Salt Electrolytes (Epsom · Iodine · Zinc)',
+  bathAminoHeader: 'III. Cellar Wine, Silk Milk & Luminosity Complex',
+  bathEnzymesHeader: 'IV. Fruit Enzymes, Konjac, Mushrooms & Botanical Roots',
+  bathDvFootnote: '** Archival maison formulation standard prepared strictly for warm-water bathing rituals.',
   bathSinglePack: 'Single ฿750',
   bathDuoPack: 'Duo ฿1,400',
   bathCofferPack: 'Coffer (3) ฿2,000',
@@ -1128,6 +1292,88 @@ const EN_STRINGS: I18nUiStrings = {
   seoGuideP1: 'GentleBubble by AR is an artisanal bio-botanical savonnerie in Lad Phrao, Bangkok. Every upright sculpted soap bar unites translucent crystal gel and whipped organic butter in a 50/50 pour with deep 3D diagonal scrub grooves, debossed GentleBubble engraving, and 24k edible Rose Gold or Yellow Gold leaf.',
   seoGuideP2: 'Our parallel 30-edition Vitamin Bath Bomb line (10 Dark, 10 Bright, 10 Holidays) is molded with signature debossed GentleBubble lettering and deep 3D spiral fast-dissolve water grooves for instant hydro-effervescence—infused with red & white wine resveratrol, camel & goat milk, green tea spirulina, sea kelp bio-iodine, konjac mushroom, Himalayan pink & black Epsom salts, banana, yam, aged garlic, and Korean ginseng.',
   seoGuideP3: 'Presented in bespoke white Calacatta, dark Nero Marquina, and checkered marble coffrets with natural loofah scrub holders, silk ribbons, and custom brass engraving for collectors worldwide.',
+  scrollerAriaLabel: 'Three-color sablé soap bar scroller',
+  scrollerTypesBtn: 'By Type',
+  scrollerTypeSpotlight: 'Spotlight',
+  scrollerTypeAllLines: 'All 3 Lines',
+  scrollerTypeDark: 'Dark Line',
+  scrollerTypeBright: 'Bright Line',
+  scrollerTypeHolidays: 'Holidays',
+  scrollerTypeCases: 'Marble Cases',
+  scrollerTypeStory: 'Maison Story',
+  scrollerTypeReviews: 'Reviews',
+  scrollerTypeGuide: 'Craft Guide',
+  scrollerTypeSocial: 'Instagram Mentions',
+  socialEyebrow: 'Verified Community · Tagged on Instagram',
+  socialHeading: 'Social Proof from the Atelier Community',
+  socialSubtitle: 'Live tagged posts mentioning @gentlebubble.ar fetched directly from Instagram',
+  socialRefreshBtn: 'Refresh Mentions',
+  socialViewPostBtn: 'View on Instagram',
+  socialFollowLink: 'Visit @gentlebubble.ar',
+  socialEmptyTitle: 'Awaiting New Tagged Mentions',
+  socialEmptyDesc: 'No tagged posts are returned yet. Tag @gentlebubble.ar on Instagram to share your bath ritual with our atelier.',
+  socialAwaitingConfigDesc: 'Live tagged mentions from Instagram will appear here automatically once Instagram Graph API server credentials are connected.',
+  socialErrorDesc: 'Unable to reach Instagram tagged mentions right now. Please try again.',
+  socialRetryBtn: 'Retry Fetch',
+  socialTaggedPrefix: 'Tagged by',
+  ledgerActionLabel: 'Apothecary Ledger',
+  colophonEyebrow: 'Archival Apothecary Provenance · Antique Fine Print',
+  colophonBannerTitle: 'Hidden Beneath the Dream — Formulation & Craft Assay',
+  colophonSoapsTitle: 'Inside the Silk Cloud — 50/50 Bio-Botanical Architecture & 24k Gold Leaf',
+  colophonBombsTitle: 'Inside the Effervescence — Cellar Wines, Milks, Sea Kelp & Full A–Z Vitamins',
+  colophonSampleLedgerBtn: 'Inspect Sample Elixir Ledger',
+  colophonReadAssayBtn: 'Unfold Complete Assay',
+  colophonHideAssayBtn: 'Fold Assay Notes',
+  colophonCol1Label: 'I. Botanical Chemistry',
+  colophonCol2Label: 'II. Sculpted Craft',
+  colophonCol3Label: 'III. Skin Standard',
+  colophonSoapsCol1Text: 'Each bar unites 50% translucent botanical crystal with 50% whipped butter infused with squalane, lecithin, salicylic BHA, sulfur, spirulina, and cold-pressed coconut milk.',
+  colophonSoapsCol2Text: 'Individually debossed with the GentleBubble crown seal, hand-carved 3D diagonal scrub grooves, and authentic 24k edible rose or yellow gold leaf.',
+  colophonSoapsCol3Text: 'Calibrated to skin-kind pH 4.5–5.5 with a hidden keepsake inside every bar: freshwater pearl, raw Siamese loofah, gold leaf, or silk sponge.',
+  colophonBombsCol1Text: 'Enriched with red & white wine resveratrol, camel & goat milk peptides, green tea spirulina, sea kelp bio-iodine, konjac, shiitake, banana, yam, aged garlic & Korean ginseng.',
+  colophonBombsCol2Text: 'Molded with debossed GentleBubble lettering and deep 3D spiral water grooves for rapid 2.5–3.5 minute warm-bath effervescence and mineral dispersion.',
+  colophonBombsCol3Text: 'Fortified with USP pink Himalayan & black Kala Namak Epsom salts, complete Vitamins A–Z (C, D3, E, K2, B-Complex), and gentle fruit enzymes.',
+  colophonExpandedTitle: 'Biotechnology Studio Notes — Formulated by Archawee',
+  colophonSoapsExpandedText: 'Hidden behind every poetic scent cloud is precise formulation engineering—balancing gentle cleansers, barrier lipids, and mineral pigments so your skin feels calm, luminous, and never stripped.',
+  colophonBombsExpandedText: 'Every 220g bath sphere stabilizes high-potency brightening vitamins (Vitamin C 1,000mg, Niacinamide B3), marine iodine, and trace electrolytes in dry botanical butter until the moment warm water awakens the soak.',
+  colophonBiotechFootnote: '— Attested by Archawee Chatkul Na Ayutthaya · B.Eng. Biotechnology · Lad Phrao, Bangkok',
+  ledgerHeading: 'Atelier Apothecary Elixir Ledger',
+  ledgerFolioPrefix: 'Folio',
+  ledgerRitualTitle: 'Soak Atmosphere & Luminosity',
+  navVault: 'Secret Vault',
+  scrollerTypeVault: 'Secret Vault',
+  vaultEyebrow: 'Members-Only Private Vault · 60 Paired SKUs',
+  vaultLockedLine1: 'Members-Only Secret Store.',
+  vaultLockedLine2: 'Sign In to Reveal 30 Clinical Pairings.',
+  vaultLockedDesc: 'Log in with Google to enter our private vault of 30 matched Bar Soaps & Bath Bombs—individually embossed with brand stamps, active percentages, and sculpted Victorian grooves.',
+  vaultUnlockBtn: 'Sign In with Google to Unlock Vault',
+  vaultUnlockedBadge: 'Member Vault Unlocked',
+  vaultHeadingLine1: '30 Matched Bar Soaps & Bath Bombs.',
+  vaultHeadingLine2: 'Victorian Grooves & Active % Engravings.',
+  vaultSublead: 'Paired side by side across 5 skin-benefit categories (60 SKUs), complete with ornate Victorian channels and debossed mold stamps.',
+  vaultKpiFormulations: 'Total Formulations',
+  vaultKpiCategories: 'Benefit Categories',
+  vaultKpiProducts: 'Total Paired SKUs',
+  vaultKpiBrands: 'Unique Brand Lines',
+  vaultAllFilter: 'All Benefits (30)',
+  vaultSearchPlaceholder: 'Search brand, active % formula, or stamp...',
+  vaultBarLabel: 'Victorian Bar Soap',
+  vaultBombLabel: 'Curved Bath Bomb',
+  vaultBarStampTag: 'Bar Stamp ≤14',
+  vaultBombStampTag: 'Bomb Stamp ≤12',
+  vaultGrooveStylePrefix: 'Victorian Groove',
+  vaultReserveBar: 'Bar ฿950',
+  vaultReserveBomb: 'Bomb ฿750',
+  vaultReservePair: 'Paired Duo',
+  vaultCountSuffix: 'paired formulations unlocked',
+  vaultEmptyMatch: 'No formulations match your current filter.',
+  vaultBoxesEyebrow: '3 Special Victorian-Grooved Marble Boxes · 3 of Each',
+  vaultBoxesHeading: 'Victorian Marble Coffrets (3 Soaps + 3 Bath Bombs)',
+  vaultBoxesSub: 'Hand-carved solid marble chests embossed with matching Victorian grooves around the stone casing—paired with 3 matching bars, 3 grooved bombs, and 2 natural loofah pads.',
+  vaultBoxesInteriorLabel: 'Inside Coffret (3 Matched Pairings)',
+  vaultBoxesInteriorCount: '3 Soaps + 3 Bombs + 2 Loofahs',
+  vaultReserveBoxBtn: 'Reserve Victorian Marble Box',
+  vaultReservedBoxBtn: 'Reserved Marble Box',
 };
 
 export const PRESET_LABELS_TH: Record<DreamPresetId, string> = {

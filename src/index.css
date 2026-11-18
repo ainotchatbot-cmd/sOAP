@@ -76,6 +76,40 @@
   text-wrap: balance;
 }
 
+/* Fluid clamp() typography scaling gracefully from 320px to 1440px+ */
+.fluid-hero-display {
+  font-size: clamp(2.1rem, 1.35rem + 3vw, 3.8rem);
+  line-height: 1.05;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.fluid-section-display {
+  font-size: clamp(1.6rem, 1.15rem + 1.75vw, 2.65rem);
+  line-height: 1.1;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.fluid-card-display {
+  font-size: clamp(1.06rem, 0.94rem + 0.45vw, 1.3rem);
+  line-height: 1.24;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.fluid-lead-copy {
+  font-size: clamp(0.875rem, 0.83rem + 0.22vw, 1.02rem);
+  line-height: 1.6;
+}
+
+/* Debossed mold stamp depth for soap & bath bomb Victorian grooves */
+.engraved-stamp-deboss {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 -1px 1px rgba(42, 33, 28, 0.42);
+}
+
 /* Shiny lifted 3D curved bubbly porcelain relief surface */
 .luxury-3d-card {
   border-radius: 28px;

@@ -23,6 +23,7 @@ import {
   SoapSizeTier,
 } from '../data/soaps';
 import { BENEFIT_LABELS_TH, MARKER_LABELS_TH, useLanguage } from '../data/i18n';
+import { getPoeticSoapMood } from '../data/poeticMoods';
 import { InlayGlyph } from './InlayGlyph';
 import { PackagingIconGlyph, PACKAGING_MARKER_SPECS } from './PackagingSymbols';
 
@@ -483,6 +484,9 @@ export const SoapPodiumModal: React.FC<SoapPodiumModalProps> = ({
                   <h2 className="marshmallow-text font-serif text-3xl sm:text-4xl font-medium text-[var(--ink)] balance-text">
                     {display.name}
                   </h2>
+                  <p className="font-serif italic text-sm text-[var(--muted)]">
+                    {getPoeticSoapMood(soap, lang, display.scentMood)}
+                  </p>
                 </div>
 
                 {/* 50/50 Visual Layer Architecture Split Diagram + Keepsake Icon */}
@@ -612,106 +616,110 @@ export const SoapPodiumModal: React.FC<SoapPodiumModalProps> = ({
                   </div>
                 </div>
 
-                {/* Visual Ingredient Matrix & Formula Facts / pH Meter */}
+                {/* Antique Parchment Botanical Dossier & Formula pH Ledger */}
                 {soap.nutritionFacts ? (
-                  <div className="rounded-[20px] border border-[var(--border)] bg-[var(--surface)]/80 p-4 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-                        {t.modalActiveRatios} · {soap.nutritionFacts.servingSize}
-                      </span>
-                      <span
-                        className="text-xs font-semibold tabular-figures"
-                        style={{ color: accentHex }}
-                      >
-                        pH {soap.nutritionFacts.pHLevel}
-                      </span>
-                    </div>
-
-                    {/* Visual pH Balance Meter (pH 4.0 to 7.5) */}
-                    <div className="space-y-1">
-                      <div className="relative h-2 rounded-full bg-gradient-to-r from-amber-300 via-emerald-300 to-sky-300 border border-[var(--border)]">
+                  <div className="border border-[#B99E74]/60 dark:border-[#E6C589]/28 bg-[#F6EEDD] dark:bg-[#2D2840] p-1">
+                    <div className="border border-[#B99E74]/45 dark:border-[#E6C589]/22 bg-[#FAF4E7]/90 dark:bg-[#262138]/85 p-3.5 space-y-3 text-[#463626] dark:text-[#E5D9C4]">
+                      <div className="flex items-center justify-between gap-2 border-b border-dotted border-[#B99E74]/55 dark:border-[#E6C589]/25 pb-2">
+                        <span className="font-serif text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7B6244] dark:text-[#CBBCA6]">
+                          {t.modalActiveRatios} · {soap.nutritionFacts.servingSize}
+                        </span>
                         <span
-                          aria-hidden="true"
-                          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-[var(--surface-card)] border-2 shadow"
-                          style={{
-                            left: `${parsePhMarkerPercent(soap.nutritionFacts.pHLevel)}%`,
-                            borderColor: accentHex,
-                          }}
-                        />
+                          className="font-serif text-xs font-semibold tabular-figures"
+                          style={{ color: accentHex }}
+                        >
+                          pH {soap.nutritionFacts.pHLevel}
+                        </span>
                       </div>
-                      <div className="flex justify-between text-[9.5px] text-[var(--muted)] tabular-figures">
-                        <span>{t.modalPhAcidic}</span>
-                        <span>{t.modalPhIdeal}</span>
-                        <span>{t.modalPhNeutral}</span>
-                      </div>
-                    </div>
 
-                    {/* Visual Ingredient Icon Cards + Proportional Bars */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {Object.entries({
-                        ...soap.nutritionFacts.activeIngredients,
-                        ...soap.nutritionFacts.baseAndHydration,
-                      }).map(([ingredient, pct]) => {
-                        const IngIcon = getIngredientVisualIcon(ingredient);
-                        const numPct = Math.min(100, Math.max(8, parseFloat(pct) || 12));
-                        return (
-                          <div
-                            key={ingredient}
-                            className="rounded-xl border border-[var(--border)] bg-[var(--surface-card)]/90 px-3 py-2 space-y-1.5"
-                          >
-                            <div className="flex items-center justify-between gap-2 text-[11px]">
-                              <span className="inline-flex items-center gap-1.5 min-w-0 font-medium text-[var(--ink)]">
-                                <IngIcon className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
-                                <span className="truncate">{translateIngredient(ingredient)}</span>
-                              </span>
-                              <span className="font-semibold tabular-figures shrink-0 text-[var(--ink)]">
-                                {pct}
-                              </span>
+                      {/* Visual pH Balance Meter (pH 4.0 to 7.5) */}
+                      <div className="space-y-1">
+                        <div className="relative h-2 rounded-full bg-gradient-to-r from-amber-300 via-emerald-300 to-sky-300 border border-[#B99E74]/45">
+                          <span
+                            aria-hidden="true"
+                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 rounded-full bg-[#FAF4E7] border-2 shadow"
+                            style={{
+                              left: `${parsePhMarkerPercent(soap.nutritionFacts.pHLevel)}%`,
+                              borderColor: accentHex,
+                            }}
+                          />
+                        </div>
+                        <div className="flex justify-between font-serif text-[9.5px] text-[#7B6244] dark:text-[#CBBCA6] tabular-figures">
+                          <span>{t.modalPhAcidic}</span>
+                          <span>{t.modalPhIdeal}</span>
+                          <span>{t.modalPhNeutral}</span>
+                        </div>
+                      </div>
+
+                      {/* Vintage Botanical Ingredient Cards + Proportional Bars */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {Object.entries({
+                          ...soap.nutritionFacts.activeIngredients,
+                          ...soap.nutritionFacts.baseAndHydration,
+                        }).map(([ingredient, pct]) => {
+                          const IngIcon = getIngredientVisualIcon(ingredient);
+                          const numPct = Math.min(100, Math.max(8, parseFloat(pct) || 12));
+                          return (
+                            <div
+                              key={ingredient}
+                              className="border border-[#C9B38C]/55 dark:border-[#E6C589]/22 bg-[#FDF9F0] dark:bg-[#312B46] px-3 py-2 space-y-1.5"
+                            >
+                              <div className="flex items-center justify-between gap-2 font-serif text-[11px]">
+                                <span className="inline-flex items-center gap-1.5 min-w-0 font-medium text-[#3C2D1E] dark:text-[#F4EBD9]">
+                                  <IngIcon className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
+                                  <span className="truncate">{translateIngredient(ingredient)}</span>
+                                </span>
+                                <span className="font-semibold tabular-figures shrink-0 text-[#55422E] dark:text-[#EADCC4]">
+                                  {pct}
+                                </span>
+                              </div>
+                              <div className="h-1.5 w-full rounded-full bg-[#E8DEC8] dark:bg-[#231E34] overflow-hidden">
+                                <div
+                                  className="h-full rounded-full"
+                                  style={{
+                                    width: `${numPct}%`,
+                                    backgroundColor: barPrimary,
+                                  }}
+                                />
+                              </div>
                             </div>
-                            <div className="h-1.5 w-full rounded-full bg-[var(--surface)] overflow-hidden">
-                              <div
-                                className="h-full rounded-full"
-                                style={{
-                                  width: `${numPct}%`,
-                                  backgroundColor: barPrimary,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 ) : (
-                  <div className="rounded-[20px] border border-[var(--border)] bg-[var(--surface)]/80 p-4 space-y-2.5">
-                    <span className="block text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--muted)]">
-                      {t.modalBotanicalVisuals}
-                    </span>
-                    <div className="grid grid-cols-2 gap-2">
-                      {soap.bioActives.actives.map((activeName, idx) => {
-                        const ActiveIcon = getIngredientVisualIcon(activeName);
-                        const barWidth = Math.max(58, 92 - idx * 11);
-                        return (
-                          <div
-                            key={activeName}
-                            className="rounded-xl border border-[var(--border)] bg-[var(--surface-card)]/90 px-3 py-2 space-y-1.5"
-                          >
-                            <div className="flex items-center gap-1.5 text-[11px] font-medium text-[var(--ink)]">
-                              <ActiveIcon className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
-                              <span className="truncate">{translateIngredient(activeName)}</span>
+                  <div className="border border-[#B99E74]/60 dark:border-[#E6C589]/28 bg-[#F6EEDD] dark:bg-[#2D2840] p-1">
+                    <div className="border border-[#B99E74]/45 dark:border-[#E6C589]/22 bg-[#FAF4E7]/90 dark:bg-[#262138]/85 p-3.5 space-y-2.5 text-[#463626] dark:text-[#E5D9C4]">
+                      <span className="block font-serif text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7B6244] dark:text-[#CBBCA6] border-b border-dotted border-[#B99E74]/55 dark:border-[#E6C589]/25 pb-1.5">
+                        {t.modalBotanicalVisuals}
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        {soap.bioActives.actives.map((activeName, idx) => {
+                          const ActiveIcon = getIngredientVisualIcon(activeName);
+                          const barWidth = Math.max(58, 92 - idx * 11);
+                          return (
+                            <div
+                              key={activeName}
+                              className="border border-[#C9B38C]/55 dark:border-[#E6C589]/22 bg-[#FDF9F0] dark:bg-[#312B46] px-3 py-2 space-y-1.5"
+                            >
+                              <div className="flex items-center gap-1.5 font-serif text-[11px] font-medium text-[#3C2D1E] dark:text-[#F4EBD9]">
+                                <ActiveIcon className="w-3.5 h-3.5 shrink-0" style={{ color: accentHex }} />
+                                <span className="truncate">{translateIngredient(activeName)}</span>
+                              </div>
+                              <div className="h-1.5 w-full rounded-full bg-[#E8DEC8] dark:bg-[#231E34] overflow-hidden">
+                                <div
+                                  className="h-full rounded-full"
+                                  style={{
+                                    width: `${barWidth}%`,
+                                    backgroundColor: idx % 2 === 0 ? barPrimary : accentHex,
+                                  }}
+                                />
+                              </div>
                             </div>
-                            <div className="h-1.5 w-full rounded-full bg-[var(--surface)] overflow-hidden">
-                              <div
-                                className="h-full rounded-full"
-                                style={{
-                                  width: `${barWidth}%`,
-                                  backgroundColor: idx % 2 === 0 ? barPrimary : accentHex,
-                                }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 )}

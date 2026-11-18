@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
-import { ChevronLeft, ChevronRight, Heart, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, ScrollText } from 'lucide-react';
 import {
   ALL_SOAP_CREATIONS,
   formatThb,
@@ -15,6 +15,7 @@ import {
   BathBombPackTier,
 } from '../data/bathBombs';
 import { useLanguage } from '../data/i18n';
+import { getPoeticBombMood, getPoeticSoapMood } from '../data/poeticMoods';
 import { ResilientImage } from './ResilientImage';
 
 interface HeroTopSellerCarouselProps {
@@ -42,6 +43,22 @@ const DEFAULT_BOMB_TOP_SELLERS: string[] = [
   'bb-dark-red-wine',
   'bb-holiday-coronation-gold',
 ];
+
+const preloadedCarouselUrls = new Set<string>();
+
+function preloadCarouselImage(url: string): void {
+  if (typeof window === 'undefined' || !url || preloadedCarouselUrls.has(url)) return;
+  preloadedCarouselUrls.add(url);
+  const img = new Image();
+  img.decoding = 'async';
+  img.referrerPolicy = 'no-referrer';
+  img.src = url;
+  if (typeof img.decode === 'function') {
+    img.decode().catch(() => {
+      // Allow regular browser load without surfacing decode interruptions
+    });
+  }
+}
 
 export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
   mode,
@@ -84,6 +101,35 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
     setActiveIndex(0);
   }, [mode, primarySpotlightId]);
 
+  // Preload active, next, and previous slide images immediately + warm the alternate mode on idle
+  useEffect(() => {
+    const activeSlides = mode === 'bath-bombs' ? bombSlides : soapSlides;
+    if (activeSlides.length === 0) return;
+
+    const orderedIndices = [
+      activeIndex,
+      (activeIndex + 1) % activeSlides.length,
+      (activeIndex - 1 + activeSlides.length) % activeSlides.length,
+    ];
+
+    orderedIndices.forEach((idx) => {
+      const slide = activeSlides[idx];
+      if (slide?.imageUrl) {
+        preloadCarouselImage(slide.imageUrl);
+      }
+    });
+
+    const alternateFirstUrl =
+      mode === 'bath-bombs' ? soapSlides[0]?.imageUrl : bombSlides[0]?.imageUrl;
+
+    if (!alternateFirstUrl) return;
+    const idleHandle = window.setTimeout(() => {
+      preloadCarouselImage(alternateFirstUrl);
+    }, 600);
+
+    return () => window.clearTimeout(idleHandle);
+  }, [activeIndex, bombSlides, mode, soapSlides]);
+
   useEffect(() => {
     if (isPaused || totalSlides <= 1) return;
     const timer = window.setInterval(() => {
@@ -104,7 +150,7 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
           id: activeBomb.id,
           line: activeBomb.line,
           name: lang === 'th' ? activeBomb.nameTh : activeBomb.nameEn,
-          subtitle: lang === 'th' ? activeBomb.soakMoodTh : activeBomb.soakMoodEn,
+          subtitle: getPoeticBombMood(activeBomb, lang),
           imageUrl: activeBomb.imageUrl,
           imageAlt: activeBomb.imageAlt,
           fallbackGradient: activeBomb.fallbackGradient,
@@ -114,7 +160,7 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
           id: activeSoap.id,
           line: activeSoap.line,
           name: getSoapDisplay(activeSoap).name,
-          subtitle: getSoapDisplay(activeSoap).scentMood,
+          subtitle: getPoeticSoapMood(activeSoap, lang, getSoapDisplay(activeSoap).scentMood),
           imageUrl: activeSoap.imageUrl,
           imageAlt: activeSoap.imageAlt,
           fallbackGradient: activeSoap.fallbackGradient,
@@ -147,7 +193,7 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
 
   return (
     <div
-      className="luxury-3d-card max-w-[430px] mx-auto overflow-hidden flex flex-col"
+      className="luxury-3d-card max-w-[500px] lg:max-w-[520px] mx-auto overflow-hidden flex flex-col"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}
@@ -240,13 +286,15 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
         </div>
       </div>
 
-      {/* Caption & Actions */}
+      {/* Two-Line Accent Caption & Concise Actions */}
       <div className="px-5 sm:px-6 py-4 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-4 bg-[var(--surface-card)]">
-        <div className="space-y-0.5 min-w-0">
-          <p className="font-serif text-xl sm:text-2xl font-medium text-[var(--ink)] truncate">
+        <div className="space-y-0.5 min-w-0 flex-1">
+          <p className="font-serif fluid-card-display font-bold text-[var(--ink)] truncate">
             {activeItem.name}
           </p>
-          <p className="text-xs text-[var(--muted)] truncate">{activeItem.subtitle}</p>
+          <p className="text-xs font-semibold truncate" style={{ color: accentHex }}>
+            {activeItem.subtitle}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -265,7 +313,7 @@ export const HeroTopSellerCarousel: React.FC<HeroTopSellerCarouselProps> = ({
             onClick={handleInspect}
             className="px-3.5 h-9 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--ink)] text-xs font-medium inline-flex items-center gap-1.5 hover:border-[var(--ink)]/30 transition-colors cursor-pointer"
           >
-            <Sparkles className="w-3.5 h-3.5" style={{ color: accentHex }} />
+            <ScrollText className="w-3.5 h-3.5" style={{ color: accentHex }} />
             <span>{mode === 'bath-bombs' ? t.bathNutritionBtn : t.inspectBtn}</span>
           </button>
           <button

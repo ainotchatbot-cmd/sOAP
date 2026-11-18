@@ -3,10 +3,11 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import {
   ArrowDownRight,
   Feather,
-  FlaskConical,
   History,
+  Lock,
   LogIn,
   MoonStar,
+  ScrollText,
   ShoppingBag,
   Sparkles,
   Sun,
@@ -15,6 +16,7 @@ import {
   DREAM_PRESETS,
   DreamPresetId,
   getDreamPreset,
+  SoapLineKey,
 } from './data/palette';
 import {
   ALL_SOAP_CREATIONS,
@@ -33,6 +35,11 @@ import {
   BathBombPackTier,
 } from './data/bathBombs';
 import {
+  VAULT_PRICING,
+  VaultMarbleBoxEdition,
+  VaultPairedFormulation,
+} from './data/memberVaultCatalog';
+import {
   PRESET_LABELS_SHORT_EN,
   PRESET_LABELS_TH,
   useLanguage,
@@ -40,20 +47,35 @@ import {
 import { harpEngine, MusicTuneStyle } from './utils/harpAudio';
 import { ResilientImage } from './components/ResilientImage';
 import { StarfallNightAtmosphere } from './components/StarfallNightAtmosphere';
-import { TopTenDuosSection } from './components/TopTenDuosSection';
-import { GiftSetsSection } from './components/GiftSetsSection';
-import { VisionStorySection } from './components/VisionStorySection';
-import { ReviewsSection } from './components/ReviewsSection';
 import { HarpTunePlayer } from './components/HarpTunePlayer';
 import { RedesignedLogoMotif } from './components/RedesignedLogoMotif';
 import { BrandWordmark } from './components/BrandWordmark';
 import { FloatingSoapBubblesOverlay } from './components/FloatingSoapBubblesOverlay';
 import { HeroTopSellerCarousel } from './components/HeroTopSellerCarousel';
 import type { BagItem, OrderReceipt } from './components/BagWorkspace';
-import { SeoAtelierSection } from './components/SeoAtelierSection';
 import { MailingListBanner } from './components/MailingListBanner';
 import { CookieAdBanner } from './components/CookieAdBanner';
+import { SmartFrenchScroller } from './components/SmartFrenchScroller';
+import { LazyGallerySection, triggerRevealSection } from './components/LazyGallerySection';
 
+const TopTenDuosSection = lazy(() =>
+  import('./components/TopTenDuosSection').then((m) => ({ default: m.TopTenDuosSection })),
+);
+const GiftSetsSection = lazy(() =>
+  import('./components/GiftSetsSection').then((m) => ({ default: m.GiftSetsSection })),
+);
+const SocialProofSection = lazy(() =>
+  import('./components/SocialProofSection').then((m) => ({ default: m.SocialProofSection })),
+);
+const VisionStorySection = lazy(() =>
+  import('./components/VisionStorySection').then((m) => ({ default: m.VisionStorySection })),
+);
+const ReviewsSection = lazy(() =>
+  import('./components/ReviewsSection').then((m) => ({ default: m.ReviewsSection })),
+);
+const SeoAtelierSection = lazy(() =>
+  import('./components/SeoAtelierSection').then((m) => ({ default: m.SeoAtelierSection })),
+);
 const BathBombsSection = lazy(() =>
   import('./components/BathBombsSection').then((m) => ({ default: m.BathBombsSection })),
 );
@@ -75,6 +97,9 @@ const AccountHistoryModal = lazy(() =>
 );
 const MobileBagDrawer = lazy(() =>
   import('./components/BagWorkspace').then((m) => ({ default: m.MobileBagDrawer })),
+);
+const SecretVaultSection = lazy(() =>
+  import('./components/SecretVaultSection').then((m) => ({ default: m.SecretVaultSection })),
 );
 import {
   auth,
@@ -130,6 +155,7 @@ export default function App() {
   });
 
   const [catalogMode, setCatalogMode] = useState<CatalogPageMode>('soaps');
+  const [activeLineFilter, setActiveLineFilter] = useState<'parallel' | SoapLineKey>('parallel');
   const [musicStyle, setMusicStyle] = useState<MusicTuneStyle>('off');
   const [isAmbienceOn, setIsAmbienceOn] = useState<boolean>(false);
 
@@ -625,6 +651,108 @@ export default function App() {
     [highlightRecentItem, lang],
   );
 
+  const handleAddVaultToBag = useCallback(
+    (item: VaultPairedFormulation, variant: 'bar' | 'bomb' | 'pair') => {
+      const cartKey = `${item.id}__${variant}`;
+      const unitPrice =
+        variant === 'bar'
+          ? VAULT_PRICING.barThb
+          : variant === 'bomb'
+            ? VAULT_PRICING.bombThb
+            : VAULT_PRICING.pairedDuoThb;
+      const itemLabel =
+        variant === 'bar'
+          ? `${item.brandName} · ${item.shortBarStamp}`
+          : variant === 'bomb'
+            ? `${item.brandName} · ${item.shortBombStamp}`
+            : `${item.brandName} · Paired Duo (${item.shortBarStamp} + ${item.shortBombStamp})`;
+      const scentLabel = `${item.activeFormula} · ${
+        variant === 'bar' ? item.soapName : variant === 'bomb' ? item.bombName : `${item.soapName} + ${item.bombName}`
+      }`;
+
+      setBagItems((prev) => {
+        const existing = prev.find((bagItem) => bagItem.cartKey === cartKey);
+        if (existing) {
+          return prev.map((bagItem) =>
+            bagItem.cartKey === cartKey ? { ...bagItem, quantity: bagItem.quantity + 1 } : bagItem,
+          );
+        }
+        return [
+          ...prev,
+          {
+            cartKey,
+            editionId: item.id,
+            name: itemLabel,
+            scentName: scentLabel,
+            priceUsd: unitPrice,
+            quantity: 1,
+            imageUrl: item.imageUrl,
+            fallbackGradient: 'from-[#FAF2EA] via-[#EFE0D3] to-[#C8A890]',
+          },
+        ];
+      });
+
+      if (user && cookiePrefs.savedHistory) {
+        void recordUserHistory(user.uid, {
+          itemId: item.id,
+          itemType: variant === 'bomb' ? 'bath-bomb' : 'soap',
+          title: itemLabel,
+          subtitle: item.activeFormula,
+          imageUrl: item.imageUrl.slice(0, 480),
+          priceThb: unitPrice,
+        }).catch(() => {});
+      }
+
+      highlightRecentItem(cartKey);
+    },
+    [cookiePrefs.savedHistory, highlightRecentItem, user],
+  );
+
+  const handleAddVaultMarbleBoxToBag = useCallback(
+    (box: VaultMarbleBoxEdition, ribbonAndLoofahs: string, engravingNote: string) => {
+      const normalizedNote = engravingNote.trim();
+      const cartKey = `${box.id}__${ribbonAndLoofahs}__${normalizedNote || 'none'}`;
+      const boxTitle = lang === 'th' ? box.titleTh : box.titleEn;
+
+      setBagItems((prev) => {
+        const existing = prev.find((bagItem) => bagItem.cartKey === cartKey);
+        if (existing) {
+          return prev.map((bagItem) =>
+            bagItem.cartKey === cartKey ? { ...bagItem, quantity: bagItem.quantity + 1 } : bagItem,
+          );
+        }
+        return [
+          ...prev,
+          {
+            cartKey,
+            editionId: box.id,
+            name: boxTitle,
+            scentName: ribbonAndLoofahs,
+            priceUsd: box.priceThb,
+            quantity: 1,
+            imageUrl: box.imageUrl,
+            fallbackGradient: 'from-[#F1E6D6] via-[#E5D3BD] to-[#C69C60]',
+            giftNote: normalizedNote || undefined,
+          },
+        ];
+      });
+
+      if (user && cookiePrefs.savedHistory) {
+        void recordUserHistory(user.uid, {
+          itemId: box.id,
+          itemType: 'marble-case',
+          title: boxTitle.slice(0, 150),
+          subtitle: ribbonAndLoofahs.slice(0, 190),
+          imageUrl: box.imageUrl.slice(0, 480),
+          priceThb: box.priceThb,
+        }).catch(() => {});
+      }
+
+      highlightRecentItem(cartKey);
+    },
+    [cookiePrefs.savedHistory, highlightRecentItem, lang, user],
+  );
+
   const handleUpdateBagQuantity = (cartKey: string, delta: number) => {
     setBagItems((prev) =>
       prev
@@ -665,26 +793,42 @@ export default function App() {
             >
               <a
                 href="#collection"
-                onClick={() => handleSelectCatalogMode('soaps')}
+                onClick={() => {
+                  handleSelectCatalogMode('soaps');
+                  triggerRevealSection('#collection');
+                }}
                 className={`hover:text-[var(--ink)] transition-colors whitespace-nowrap shrink-0 ${catalogMode === 'soaps' ? 'text-[var(--ink)] font-semibold' : ''}`}
               >
                 {t.modeSoapsBtn}
               </a>
               <a
                 href="#collection"
-                onClick={() => handleSelectCatalogMode('bath-bombs')}
+                onClick={() => {
+                  handleSelectCatalogMode('bath-bombs');
+                  triggerRevealSection('#collection');
+                }}
                 className={`hover:text-[var(--ink)] transition-colors whitespace-nowrap shrink-0 ${catalogMode === 'bath-bombs' ? 'text-[var(--ink)] font-semibold' : ''}`}
               >
                 {t.modeBathBombsBtn}
               </a>
               <a
+                href="#secret-vault"
+                onClick={() => triggerRevealSection('#secret-vault')}
+                className="hover:text-[var(--ink)] transition-colors whitespace-nowrap shrink-0 inline-flex items-center gap-1.5"
+              >
+                <Lock className="w-3 h-3 shrink-0" style={{ color: accentHex }} />
+                <span>{t.navVault}</span>
+              </a>
+              <a
                 href="#atelier"
+                onClick={() => triggerRevealSection('#atelier')}
                 className="hover:text-[var(--ink)] transition-colors whitespace-nowrap shrink-0"
               >
                 {t.navStory}
               </a>
               <a
                 href="#reviews"
+                onClick={() => triggerRevealSection('#reviews')}
                 className="hover:text-[var(--ink)] transition-colors whitespace-nowrap shrink-0"
               >
                 {t.navReviews}
@@ -801,7 +945,7 @@ export default function App() {
                     color: catalogMode === 'bath-bombs' ? accentTextHex : 'var(--muted)',
                   }}
                 >
-                  <FlaskConical className="w-3.5 h-3.5" />
+                  <ScrollText className="w-3.5 h-3.5" />
                   <span>{t.modeBathBombsBtn}</span>
                 </button>
               </div>
@@ -842,18 +986,15 @@ export default function App() {
                     </p>
 
                     <div className="space-y-3">
-                      <h1
-                        className="marshmallow-text font-serif font-medium leading-[1.06] tracking-tight text-[var(--ink)] balance-text"
-                        style={{ fontSize: 'clamp(2.25rem, 3.6vw, 3.6rem)' }}
-                      >
+                      <h1 className="marshmallow-text font-serif fluid-hero-display tracking-tight text-[var(--ink)]">
                         <span className="block">
                           {catalogMode === 'bath-bombs' ? t.bathHeroLine1 : t.heroLine1}
                         </span>
-                        <span className="block" style={{ color: accentHex }}>
+                        <span className="block mt-1" style={{ color: accentHex }}>
                           {catalogMode === 'bath-bombs' ? t.bathHeroLine2 : t.heroLine2}
                         </span>
                       </h1>
-                      <p className="text-sm text-[var(--muted)] leading-relaxed max-w-xl">
+                      <p className="fluid-lead-copy text-[var(--muted)] max-w-xl">
                         {catalogMode === 'bath-bombs' ? t.bathHeroSummary : t.heroSummary}
                       </p>
                     </div>
@@ -862,6 +1003,7 @@ export default function App() {
                     <div className="flex flex-wrap items-center gap-3 pt-1">
                       <a
                         href="#collection"
+                        onClick={() => triggerRevealSection('#collection')}
                         className="luxury-3d-pill inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold transition-opacity hover:opacity-90 whitespace-nowrap shrink-0"
                         style={{ backgroundColor: accentHex, color: accentTextHex }}
                       >
@@ -872,6 +1014,7 @@ export default function App() {
                       {catalogMode === 'soaps' ? (
                         <a
                           href="#gifting"
+                          onClick={() => triggerRevealSection('#gifting')}
                           className="luxury-3d-pill inline-flex items-center px-5 py-2.5 rounded-full border border-[var(--border)] bg-[var(--surface-card)] hover:bg-[var(--surface)] text-[var(--ink)] text-xs font-medium transition-colors whitespace-nowrap shrink-0"
                         >
                           {t.casesCta}
@@ -882,7 +1025,7 @@ export default function App() {
                           onClick={() => handleOpenBombNutrition('bb-bright-white-wine')}
                           className="luxury-3d-pill inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-[var(--border)] bg-[var(--surface-card)] hover:bg-[var(--surface)] text-[var(--ink)] text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                         >
-                          <FlaskConical className="w-3.5 h-3.5" style={{ color: accentHex }} />
+                          <ScrollText className="w-3.5 h-3.5" style={{ color: accentHex }} />
                           <span>{t.bathNutritionBtn}</span>
                         </button>
                       )}
@@ -929,7 +1072,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* SECTION 2: Parallel 3-Column Storefront (Soaps OR Bath Bombs) */}
+          {/* SECTION 2: Lazy-Loaded Parallel 3-Column Storefront (Soaps OR Bath Bombs) */}
           <AnimatePresence mode="wait">
             {catalogMode === 'soaps' ? (
               <motion.div
@@ -939,22 +1082,28 @@ export default function App() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               >
-                <TopTenDuosSection
-                  accentHex={accentHex}
-                  accentTextHex={accentTextHex}
-                  wishlistIds={wishlistIds}
-                  itemSoldDeltas={itemSoldDeltas}
-                  onToggleWishlist={handleToggleWishlist}
-                  onOpenPodium={handleOpenPodium}
-                  onAddToBag={handleAddSoapToBag}
-                />
+                <LazyGallerySection id="collection" minHeightClass="min-h-[680px]" rootMargin="380px 0px">
+                  <TopTenDuosSection
+                    accentHex={accentHex}
+                    accentTextHex={accentTextHex}
+                    wishlistIds={wishlistIds}
+                    itemSoldDeltas={itemSoldDeltas}
+                    activeLineFilter={activeLineFilter}
+                    onChangeLineFilter={setActiveLineFilter}
+                    onToggleWishlist={handleToggleWishlist}
+                    onOpenPodium={handleOpenPodium}
+                    onAddToBag={handleAddSoapToBag}
+                  />
+                </LazyGallerySection>
 
-                <GiftSetsSection
-                  accentHex={accentHex}
-                  accentTextHex={accentTextHex}
-                  onOpenPodium={handleOpenPodium}
-                  onAddGiftSetToBag={handleAddGiftSetToBag}
-                />
+                <LazyGallerySection id="gifting" minHeightClass="min-h-[540px]" rootMargin="420px 0px">
+                  <GiftSetsSection
+                    accentHex={accentHex}
+                    accentTextHex={accentTextHex}
+                    onOpenPodium={handleOpenPodium}
+                    onAddGiftSetToBag={handleAddGiftSetToBag}
+                  />
+                </LazyGallerySection>
               </motion.div>
             ) : (
               <motion.div
@@ -964,36 +1113,66 @@ export default function App() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Suspense fallback={<div className="min-h-[60vh]" />}>
+                <LazyGallerySection id="collection" minHeightClass="min-h-[680px]" rootMargin="380px 0px">
                   <BathBombsSection
                     accentHex={accentHex}
                     accentTextHex={accentTextHex}
                     wishlistIds={wishlistIds}
                     itemSoldDeltas={itemSoldDeltas}
+                    activeLineFilter={activeLineFilter}
+                    onChangeLineFilter={setActiveLineFilter}
                     onToggleWishlist={handleToggleWishlist}
                     onOpenNutritionModal={handleOpenBombNutrition}
                     onAddBombToBag={handleAddBombToBag}
                   />
+                </LazyGallerySection>
 
+                <LazyGallerySection id="gifting" minHeightClass="min-h-[540px]" rootMargin="420px 0px">
                   <BathBombMarbleCasesSection
                     accentHex={accentHex}
                     accentTextHex={accentTextHex}
                     onOpenNutritionModal={handleOpenBombNutrition}
                     onAddBombCaseToBag={handleAddBathBombCaseToBag}
                   />
-                </Suspense>
+                </LazyGallerySection>
               </motion.div>
             )}
           </AnimatePresence>
 
+          {/* SECTION 2.5: Members-Only Secret Store Vault (30 Matched Pairs + 3 Victorian Marble Boxes) */}
+          <LazyGallerySection id="secret-vault" minHeightClass="min-h-[460px]" rootMargin="380px 0px">
+            <SecretVaultSection
+              user={user}
+              accentHex={accentHex}
+              accentTextHex={accentTextHex}
+              wishlistIds={wishlistIds}
+              itemSoldDeltas={itemSoldDeltas}
+              onSignIn={handleSignIn}
+              onToggleWishlist={handleToggleWishlist}
+              onAddVaultToBag={handleAddVaultToBag}
+              onAddVaultMarbleBoxToBag={handleAddVaultMarbleBoxToBag}
+            />
+          </LazyGallerySection>
+
+          {/* SECTION 3: Instagram Tagged Social Proof Mentions */}
+          <LazyGallerySection id="social-proof" minHeightClass="min-h-[340px]" rootMargin="440px 0px">
+            <SocialProofSection accentHex={accentHex} accentTextHex={accentTextHex} />
+          </LazyGallerySection>
+
           {/* SECTION 4: Maison Heritage, Founder Story & Custom Stamp */}
-          <VisionStorySection accentHex={accentHex} isTwilight={isTwilight} />
+          <LazyGallerySection id="atelier" minHeightClass="min-h-[420px]" rootMargin="440px 0px">
+            <VisionStorySection accentHex={accentHex} isTwilight={isTwilight} />
+          </LazyGallerySection>
 
           {/* SECTION 5: Collector Voices */}
-          <ReviewsSection accentHex={accentHex} />
+          <LazyGallerySection id="reviews" minHeightClass="min-h-[300px]" rootMargin="440px 0px">
+            <ReviewsSection accentHex={accentHex} />
+          </LazyGallerySection>
 
           {/* SECTION 6: Botanical Guide & Mailing List */}
-          <SeoAtelierSection accentHex={accentHex} onSelectMode={handleSelectCatalogMode} />
+          <LazyGallerySection id="botanical-guide" minHeightClass="min-h-[300px]" rootMargin="440px 0px">
+            <SeoAtelierSection accentHex={accentHex} onSelectMode={handleSelectCatalogMode} />
+          </LazyGallerySection>
           <MailingListBanner
             accentHex={accentHex}
             accentTextHex={accentTextHex}
@@ -1092,10 +1271,33 @@ export default function App() {
                   >
                     {t.modeBathBombsBtn}
                   </a>
-                  <a href="#atelier" className="hover:text-[var(--ink)] transition-colors">
+                  <a
+                    href="#secret-vault"
+                    onClick={() => triggerRevealSection('secret-vault')}
+                    className="hover:text-[var(--ink)] transition-colors inline-flex items-center gap-1"
+                  >
+                    <Lock className="w-3 h-3" style={{ color: accentHex }} />
+                    <span>{t.navVault}</span>
+                  </a>
+                  <a
+                    href="#social-proof"
+                    onClick={() => triggerRevealSection('social-proof')}
+                    className="hover:text-[var(--ink)] transition-colors"
+                  >
+                    {t.scrollerTypeSocial}
+                  </a>
+                  <a
+                    href="#atelier"
+                    onClick={() => triggerRevealSection('atelier')}
+                    className="hover:text-[var(--ink)] transition-colors"
+                  >
                     {t.navStory}
                   </a>
-                  <a href="#reviews" className="hover:text-[var(--ink)] transition-colors">
+                  <a
+                    href="#reviews"
+                    onClick={() => triggerRevealSection('reviews')}
+                    className="hover:text-[var(--ink)] transition-colors"
+                  >
                     {t.navReviews}
                   </a>
                   <button
@@ -1115,25 +1317,103 @@ export default function App() {
                 </nav>
               </div>
 
-              {/* Clear 2-Column Archival Correspondence Banner */}
-              <div className="luxury-3d-card overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch">
-                <div className="md:col-span-5 relative aspect-[16/10] md:aspect-auto md:min-h-[210px] overflow-hidden bg-[#F9F4EA]">
+              {/* Clear 2-Column Archival Correspondence Banner (Blush-Pearl Cameo & Victorian Filigree Adaptation) */}
+              <div className="luxury-3d-card relative overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch">
+                {/* Left Column: Blush-Pearl Cameo Medallion + Lace Monogram 'A' Seal over Archival Parchment */}
+                <div className="md:col-span-5 relative aspect-[16/10] md:aspect-auto md:min-h-[235px] overflow-hidden bg-[#F7ECE5] flex items-center justify-center p-5">
                   <ResilientImage
                     src={ATELIER_MEDIA.featherLetterBorderUrl}
                     alt="Official archival parchment stationery border with white ostrich feather quill and GentleBubble by AR seal"
                     fallbackTitle="GentleBubble by AR Correspondence"
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover opacity-55"
                   />
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-gradient-to-br from-[#FBF4EE]/75 via-[#F1DCD7]/55 to-[#E4C2B9]/65"
+                  />
+
+                  {/* Corner Rose-Gold Filigree Flourishes (adapted botanical filigree framing) */}
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 120 120"
+                    className="pointer-events-none absolute top-2.5 left-2.5 w-11 h-11 text-[#B9896B]/65"
+                    fill="none"
+                  >
+                    <path
+                      d="M6 76 C6 34, 34 6, 76 6 M14 54 C16 26, 26 16, 54 14 M22 28 C30 22, 38 24, 42 30 C35 34, 28 32, 22 28 Z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="14" cy="14" r="2.2" fill="#FFFDF9" stroke="currentColor" strokeWidth="1" />
+                  </svg>
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 120 120"
+                    className="pointer-events-none absolute bottom-2.5 right-2.5 w-11 h-11 text-[#B9896B]/65 rotate-180"
+                    fill="none"
+                  >
+                    <path
+                      d="M6 76 C6 34, 34 6, 76 6 M14 54 C16 26, 26 16, 54 14 M22 28 C30 22, 38 24, 42 30 C35 34, 28 32, 22 28 Z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="14" cy="14" r="2.2" fill="#FFFDF9" stroke="currentColor" strokeWidth="1" />
+                  </svg>
+
+                  {/* Seed-Pearl Oval Cameo Frame housing the Victorian Lace 'A' Crest for Archawee (AR) */}
+                  <div className="relative z-10 flex flex-col items-center">
+                    <div className="relative w-36 h-44 sm:w-40 sm:h-48 rounded-full p-2.5 bg-gradient-to-b from-[#FAF3EB] via-[#F2D9D4] to-[#E6C3BC] shadow-[0_14px_30px_-10px_rgba(116,74,64,0.34),inset_0_2px_4px_rgba(255,255,255,0.9)] border-2 border-[#D4AD7D]">
+                      {/* Subtle Seed-Pearl Bead Ring */}
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-[3px] rounded-full border-[2.5px] border-dotted border-[#FFFDF8]/95"
+                      />
+                      <div className="relative w-full h-full rounded-full overflow-hidden bg-gradient-to-b from-[#FDF9F5] to-[#F6E6E2] border border-[#C99B72]/55 flex items-center justify-center p-3">
+                        <img
+                          src="/assets/aistudio/Victorian_Lace_Alphabet_Clipart_Printable__1__16758b81.jpg"
+                          alt="Victorian lace and rose-gold filigree A monogram crest adapted for GentleBubble by AR"
+                          loading="lazy"
+                          decoding="async"
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-contain mix-blend-multiply scale-105"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Blush Satin Cameo Bow Crest Label (Adapted for Maison AR) */}
+                    <div className="-mt-3 relative z-20 inline-flex items-center px-4 py-1 rounded-full bg-gradient-to-r from-[#E9C1B8] via-[#F5DDD8] to-[#E9C1B8] border border-[#C99B72] shadow-sm text-[10.5px] font-serif italic font-semibold tracking-wider text-[#4C322B]">
+                      <span>Maison A · R</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="md:col-span-7 p-5 sm:p-6 bg-[var(--surface-card)] flex flex-col justify-between gap-4 border-t md:border-t-0 md:border-l border-[var(--border)]">
-                  <div className="space-y-2">
+
+                {/* Right Column: Archival Correspondence Dispatch framed with delicate Rose-Gold Corner Filigree */}
+                <div className="md:col-span-7 relative p-5 sm:p-7 bg-[var(--surface-card)] flex flex-col justify-between gap-4 border-t md:border-t-0 md:border-l border-[var(--border)]">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 80 80"
+                    className="pointer-events-none absolute top-3 right-3 w-8 h-8 text-[#C59876]/45"
+                    fill="none"
+                  >
+                    <path
+                      d="M72 48 C72 22, 58 8, 32 8 M62 34 C60 18, 52 14, 42 12"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="64" cy="16" r="1.8" fill="currentColor" />
+                  </svg>
+
+                  <div className="space-y-2 pr-6">
                     <p
                       className="text-[11px] font-semibold tracking-[0.14em] uppercase"
                       style={{ color: accentHex }}
                     >
                       {t.footerDispatchTag}
                     </p>
-                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-[var(--ink)] leading-snug">
+                    <h3 className="font-serif text-xl sm:text-2xl font-medium text-[var(--ink)] leading-snug balance-text">
                       {t.footerBannerTitle}
                     </h3>
                     <p className="text-sm text-[var(--muted)] leading-relaxed max-w-2xl">
@@ -1150,20 +1430,16 @@ export default function App() {
                     <div className="flex flex-wrap items-center gap-2.5">
                       <span
                         className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md border border-[var(--border)] bg-[var(--surface)]/80"
-                        aria-label="French Maison Savonnerie Signature"
+                        aria-label="Savonnerie Artisanale Signature"
                       >
-                        <svg
-                          width="22"
-                          height="15"
-                          viewBox="0 0 24 16"
-                          className="rounded-[2px] border border-[var(--border)] shrink-0 shadow-xs"
-                          role="img"
-                          aria-label="Flag of France"
+                        <span
+                          aria-hidden="true"
+                          className="inline-flex h-3 w-4 rounded-[2px] overflow-hidden border border-[var(--border)] shrink-0"
                         >
-                          <rect x="0" y="0" width="8" height="16" fill="#0055A4" />
-                          <rect x="8" y="0" width="8" height="16" fill="#FFFFFF" />
-                          <rect x="16" y="0" width="8" height="16" fill="#EF4135" />
-                        </svg>
+                          <span className="w-1/3 h-full bg-[#F5EBE0]" />
+                          <span className="w-1/3 h-full bg-[#DFB4AC]" />
+                          <span className="w-1/3 h-full bg-[#92735F]" />
+                        </span>
                         <span className="font-serif italic text-[11.5px] text-[var(--ink)]">
                           {t.frenchMotto}
                         </span>
@@ -1272,6 +1548,16 @@ export default function App() {
           onSavePreferences={handleSaveCookiePrefs}
           onCloseModal={() => setIsCookieModalOpen(false)}
           onOpenModal={() => setIsCookieModalOpen(true)}
+        />
+
+        {/* French Tricolor Bell-Pinch Smart Scroller with Type-Based Jump */}
+        <SmartFrenchScroller
+          catalogMode={catalogMode}
+          activeLineFilter={activeLineFilter}
+          accentHex={accentHex}
+          accentTextHex={accentTextHex}
+          onSelectCatalogMode={handleSelectCatalogMode}
+          onSelectLineFilter={setActiveLineFilter}
         />
       </div>
     </MotionConfig>

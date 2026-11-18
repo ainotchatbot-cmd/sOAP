@@ -13,9 +13,11 @@ import {
   SoapSizeTier,
 } from '../data/soaps';
 import { INLAY_LABELS_TH, useLanguage } from '../data/i18n';
+import { getPoeticSoapMood } from '../data/poeticMoods';
 import { getDeterministicItemSoldBase } from '../services/atelierStoreService';
 import { ResilientImage } from './ResilientImage';
 import { InlayGlyph } from './InlayGlyph';
+import { ApothecaryColophonBanner, VintageParchmentTicket } from './VintageApothecaryBanner';
 
 type ViewColumnFilter = 'parallel' | SoapLineKey;
 type InlayFilter = 'all' | LuxuryInlayType;
@@ -27,6 +29,8 @@ interface TopTenDuosSectionProps {
   accentTextHex?: string;
   wishlistIds: string[];
   itemSoldDeltas?: Record<string, number>;
+  activeLineFilter?: ViewColumnFilter;
+  onChangeLineFilter?: (next: ViewColumnFilter) => void;
   onToggleWishlist: (id: string) => void;
   onOpenPodium: (id: string) => void;
   onAddToBag: (
@@ -66,7 +70,7 @@ const LuxuryDuoCard: React.FC<LuxuryDuoCardProps> = memo(({
   onStepQty,
   onAdd,
 }) => {
-  const { t, getSoapDisplay } = useLanguage();
+  const { lang, t, getSoapDisplay, translateIngredient } = useLanguage();
   const display = getSoapDisplay(soap);
 
   const unitPrice =
@@ -79,6 +83,20 @@ const LuxuryDuoCard: React.FC<LuxuryDuoCardProps> = memo(({
   const creamColor = soap.botanicalLayers.creamColorHex;
   const leafType = getSoapGoldLeafType(soap);
   const isRoseGold = leafType === 'rose-gold';
+  const poeticMood = getPoeticSoapMood(soap, lang, display.scentMood);
+
+  const ingredientFinePrint = [
+    ...soap.bioActives.actives.slice(0, 3),
+    ...soap.ingredients.slice(0, 2),
+  ]
+    .filter((item, idx, arr) => arr.indexOf(item) === idx)
+    .slice(0, 4)
+    .map(translateIngredient)
+    .join(' · ');
+
+  const craftFinePrint = `${isRoseGold ? t.roseGoldLeafLabel : t.yellowGoldLeafLabel} · ${t.diagonalGroovesLabel}${
+    soap.nutritionFacts ? ` · pH ${soap.nutritionFacts.pHLevel}` : ''
+  }`;
 
   return (
     <article className="group relative cv-product-card">
@@ -102,67 +120,35 @@ const LuxuryDuoCard: React.FC<LuxuryDuoCardProps> = memo(({
           <div aria-hidden="true" className="shimmer z-20" />
         </div>
 
-        {/* Crisp Scannable Card Details Below Photo */}
-        <div className="p-4 sm:p-5 space-y-3">
+        {/* Emotional Frontstage Card Details (Enlarged visual priority + Bold 2-line accent framing) */}
+        <div className="p-3.5 sm:p-4 space-y-2.5">
           <div className="space-y-1 text-center">
-            <div className="flex items-center justify-center gap-2 text-[11px] text-[var(--muted)]">
-              <span className="tabular-figures font-medium">{soap.editionNumber}</span>
+            <div className="flex items-center justify-center gap-1.5 text-[11px] text-[var(--muted)]">
+              <span className="tabular-figures font-semibold">{soap.editionNumber}</span>
               <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1">
-                <span
-                  aria-hidden="true"
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ backgroundColor: crystalColor }}
-                />
-                <span
-                  aria-hidden="true"
-                  className="w-2.5 h-2.5 rounded-full border border-[var(--border)]"
-                  style={{ backgroundColor: creamColor }}
-                />
+              <span className="inline-flex items-center gap-1 text-[var(--ink)] shrink-0">
+                <InlayGlyph type={soap.luxuryInlay.type} size={12} />
+                <span>{display.inlayLabel}</span>
               </span>
-              <span className="truncate max-w-[140px]">{display.themeLabel}</span>
               <span aria-hidden="true">·</span>
-              <span className="tabular-figures font-semibold text-[var(--ink)]">
+              <span className="tabular-figures font-bold text-[var(--ink)]">
                 {formatThb(unitPrice)}
               </span>
             </div>
 
             <h4
               onClick={onOpenPodium}
-              className="font-serif text-lg sm:text-xl leading-snug font-medium text-[var(--ink)] cursor-pointer hover:opacity-85 transition-opacity line-clamp-1"
+              className="font-serif fluid-card-display font-bold text-[var(--ink)] cursor-pointer hover:opacity-85 transition-opacity line-clamp-1"
             >
               {display.name}
             </h4>
 
-            <div className="flex items-center justify-center gap-2 text-[11px] text-[var(--muted)]">
-              <span className="truncate max-w-[165px]">{display.scentMood}</span>
-              <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1 text-[var(--ink)] shrink-0">
-                <InlayGlyph type={soap.luxuryInlay.type} size={13} />
-                <span>{display.inlayLabel}</span>
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] text-[var(--muted)] pt-0.5">
-              <span className="inline-flex items-center gap-1 text-[var(--ink)] font-medium">
-                <span
-                  aria-hidden="true"
-                  className="w-2 h-2 rounded-full shrink-0"
-                  style={{
-                    background: isRoseGold
-                      ? 'linear-gradient(135deg, #FBE3DA, #C4715E)'
-                      : 'linear-gradient(135deg, #FFF4BD, #C89620)',
-                  }}
-                />
-                <span>{isRoseGold ? t.roseGoldLeafLabel : t.yellowGoldLeafLabel}</span>
-              </span>
-              <span aria-hidden="true">·</span>
-              <span className="truncate">{t.diagonalGroovesLabel}</span>
-              <span aria-hidden="true">·</span>
-              <span className="tabular-figures font-medium text-[var(--ink)]">
-                {soldCount} {t.soldUnitLabel}
-              </span>
-            </div>
+            <p
+              className="text-xs font-semibold line-clamp-1"
+              style={{ color: 'var(--accent)' }}
+            >
+              {poeticMood}
+            </p>
           </div>
 
           {/* Uniform 3-Tier Decoy Pricing & Reserve Controls */}
@@ -276,6 +262,17 @@ const LuxuryDuoCard: React.FC<LuxuryDuoCardProps> = memo(({
             </div>
           </div>
         </div>
+
+        {/* Recessed Antique Parchment Ingredient Ticket */}
+        <VintageParchmentTicket
+          assayCode={`${t.ledgerFolioPrefix} ${soap.editionNumber} · ${soap.batchHarvestId}`}
+          finePrintText={ingredientFinePrint}
+          craftSpecText={craftFinePrint}
+          soldCount={soldCount}
+          soldUnitLabel={t.soldUnitLabel}
+          ledgerActionLabel={t.ledgerActionLabel}
+          onInspectLedger={onOpenPodium}
+        />
       </div>
     </article>
   );
@@ -288,12 +285,19 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
   accentTextHex = '#261E14',
   wishlistIds,
   itemSoldDeltas = {},
+  activeLineFilter,
+  onChangeLineFilter,
   onToggleWishlist,
   onOpenPodium,
   onAddToBag,
 }) => {
   const { lang, t, getSoapDisplay } = useLanguage();
-  const [viewFilter, setViewFilter] = useState<ViewColumnFilter>('parallel');
+  const [internalViewFilter, setInternalViewFilter] = useState<ViewColumnFilter>('parallel');
+  const viewFilter = activeLineFilter ?? internalViewFilter;
+  const setViewFilter = (next: ViewColumnFilter) => {
+    setInternalViewFilter(next);
+    onChangeLineFilter?.(next);
+  };
   const [inlayFilter, setInlayFilter] = useState<InlayFilter>('all');
   const [goldFilter, setGoldFilter] = useState<GoldLeafFilter>('all');
   const [sortBy, setSortBy] = useState<InventorySortKey>('edition');
@@ -390,7 +394,7 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
               <p className="text-[11px] tracking-[0.18em] uppercase" style={{ color: accentHex }}>
                 {t.collectionEyebrow}
               </p>
-              <h2 className="marshmallow-text font-serif text-3xl sm:text-4xl font-medium leading-[1.08] text-[var(--ink)] balance-text">
+              <h2 className="marshmallow-text font-serif fluid-section-display text-[var(--ink)]">
                 {t.collectionHeading}
               </h2>
             </div>
@@ -539,7 +543,7 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
         {viewFilter === 'parallel' ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-7 items-start">
             {/* Vertical Column 1: Dark Accents */}
-            <div className="space-y-5">
+            <div id="type-dark" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.darkColTitle}
@@ -555,7 +559,7 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
             </div>
 
             {/* Vertical Column 2: Bright Accents */}
-            <div className="space-y-5">
+            <div id="type-bright" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.brightColTitle}
@@ -571,7 +575,7 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
             </div>
 
             {/* Vertical Column 3: Occasions & Holidays */}
-            <div className="space-y-5">
+            <div id="type-holiday" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.occasionsColTitle}
@@ -596,6 +600,13 @@ export const TopTenDuosSection: React.FC<TopTenDuosSectionProps> = memo(({
             ).map((soap) => renderSoapCard(soap))}
           </div>
         )}
+
+        {/* Full-Width Antique Parchment Provenance Colophon Banner */}
+        <ApothecaryColophonBanner
+          mode="soaps"
+          accentHex={accentHex}
+          onOpenSampleLedger={() => onOpenPodium(BRIGHT_5050_LINE[0].id)}
+        />
       </div>
     </section>
   );

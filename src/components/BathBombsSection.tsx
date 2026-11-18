@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useState } from 'react';
-import { ArrowUpDown, Check, FlaskConical, Heart, Minus, Plus } from 'lucide-react';
+import { ArrowUpDown, Check, Heart, Minus, Plus } from 'lucide-react';
 import { SoapLineKey } from '../data/palette';
 import {
   BATH_BOMB_PRICE_TIERS,
@@ -12,8 +12,10 @@ import {
 } from '../data/bathBombs';
 import { formatThb } from '../data/soaps';
 import { useLanguage } from '../data/i18n';
+import { getPoeticBombMood } from '../data/poeticMoods';
 import { getDeterministicItemSoldBase } from '../services/atelierStoreService';
 import { ResilientImage } from './ResilientImage';
+import { ApothecaryColophonBanner, VintageParchmentTicket } from './VintageApothecaryBanner';
 
 type BombColumnFilter = 'parallel' | SoapLineKey;
 type NutrientFilter = 'all' | NutrientFocusCategory;
@@ -25,6 +27,8 @@ interface BathBombsSectionProps {
   accentTextHex?: string;
   wishlistIds: string[];
   itemSoldDeltas?: Record<string, number>;
+  activeLineFilter?: BombColumnFilter;
+  onChangeLineFilter?: (next: BombColumnFilter) => void;
   onToggleWishlist: (id: string) => void;
   onOpenNutritionModal: (bombId: string) => void;
   onAddBombToBag: (
@@ -66,10 +70,14 @@ const BathBombCard: React.FC<BathBombCardProps> = memo(({
   const { lang, t } = useLanguage();
   const unitPrice = BATH_BOMB_PRICE_TIERS[packTier];
   const title = lang === 'th' ? bomb.nameTh : bomb.nameEn;
-  const soakMood = lang === 'th' ? bomb.soakMoodTh : bomb.soakMoodEn;
+  const poeticMood = getPoeticBombMood(bomb, lang);
   const waterHueName = lang === 'th' ? bomb.waterHueNameTh : bomb.waterHueNameEn;
   const highlights = lang === 'th' ? bomb.highlightsTh : bomb.highlightsEn;
+  const heroActives = lang === 'th' ? bomb.heroActivesTh : bomb.heroActivesEn;
   const isRoseGold = bomb.edibleGoldLeaf === 'rose-gold';
+
+  const finePrintText = `${heroActives} — ${highlights[0]} · ${highlights[1]}`;
+  const craftSpecText = `${isRoseGold ? t.roseGoldLeafLabel : t.yellowGoldLeafLabel} · ${t.bathGroovesLabel}`;
 
   return (
     <article className="group relative cv-product-card">
@@ -91,43 +99,33 @@ const BathBombCard: React.FC<BathBombCardProps> = memo(({
           <div aria-hidden="true" className="shimmer z-20" />
         </div>
 
-        {/* Crisp Metadata, Compact Nutrient Highlights & Reservation Controls */}
-        <div className="p-4 sm:p-5 space-y-3">
+        {/* Pure Mood, Bold Two-Line Accent Box & Reservation Frontstage */}
+        <div className="p-3.5 sm:p-4 space-y-2.5">
           <div className="space-y-1 text-center">
             <div className="flex items-center justify-center gap-2 text-[11px] text-[var(--muted)]">
-              <span className="tabular-figures font-medium">{bomb.editionNumber}</span>
+              <span className="tabular-figures font-semibold">{bomb.editionNumber}</span>
               <span aria-hidden="true">·</span>
               <span
                 aria-hidden="true"
                 className="w-2.5 h-2.5 rounded-full border border-[var(--border)] shrink-0"
                 style={{ background: bomb.waterGradient }}
               />
-              <span className="truncate max-w-[140px]">{waterHueName}</span>
+              <span className="truncate max-w-[135px]">{waterHueName}</span>
               <span aria-hidden="true">·</span>
-              <span className="font-medium shrink-0" style={{ color: isRoseGold ? '#C4715E' : '#C89620' }}>
-                {isRoseGold ? '24k Rose' : '24k Gold'}
+              <span className="tabular-figures font-bold text-[var(--ink)]">
+                {formatThb(unitPrice)}
               </span>
             </div>
 
-            <h3 className="font-serif text-lg sm:text-xl font-medium text-[var(--ink)] leading-snug truncate">
+            <h3
+              onClick={onOpenNutrition}
+              className="font-serif fluid-card-display font-bold text-[var(--ink)] truncate cursor-pointer hover:opacity-85 transition-opacity"
+            >
               {title}
             </h3>
-            <p className="text-xs text-[var(--muted)] truncate">{soakMood}</p>
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[10px] text-[var(--muted)] pt-0.5">
-              <span className="truncate">{t.bathEngravedLabel}</span>
-              <span aria-hidden="true">·</span>
-              <span className="truncate">{t.bathGroovesLabel}</span>
-              <span aria-hidden="true">·</span>
-              <span className="tabular-figures font-medium text-[var(--ink)]">
-                {soldCount} {t.soldUnitLabel}
-              </span>
-            </div>
-          </div>
-
-          {/* Compact Animal-Pak Inspired Nutrient Highlights */}
-          <div className="pt-2 border-t border-[var(--border)] space-y-1 text-[11px] text-[var(--muted)] text-center">
-            <p className="text-[var(--ink)] font-medium truncate">{highlights[0]}</p>
-            <p className="truncate">{highlights[1]}</p>
+            <p className="text-xs font-semibold line-clamp-1" style={{ color: 'var(--accent)' }}>
+              {poeticMood}
+            </p>
           </div>
 
           <div className="pt-2.5 border-t border-[var(--border)] space-y-2.5">
@@ -162,7 +160,7 @@ const BathBombCard: React.FC<BathBombCardProps> = memo(({
               })}
             </div>
 
-            {/* Qty + Nutrition Facts + Wishlist + Reserve */}
+            {/* Qty + Wishlist + Reserve */}
             <div className="flex items-center gap-1.5">
               <div className="inline-flex items-center h-8 rounded-full border border-[var(--border)] bg-[var(--surface)] px-1 shrink-0">
                 <button
@@ -185,16 +183,6 @@ const BathBombCard: React.FC<BathBombCardProps> = memo(({
                   <Plus className="w-3 h-3" />
                 </button>
               </div>
-
-              <button
-                type="button"
-                onClick={onOpenNutrition}
-                className="h-8 px-2.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--ink)] text-[11px] font-medium inline-flex items-center gap-1 hover:border-[var(--ink)]/30 transition-colors cursor-pointer whitespace-nowrap shrink-0"
-                title={t.bathNutritionFactsTitle}
-              >
-                <FlaskConical className="w-3 h-3" style={{ color: 'var(--accent)' }} />
-                <span>{t.bathNutritionBtn}</span>
-              </button>
 
               <button
                 type="button"
@@ -232,6 +220,17 @@ const BathBombCard: React.FC<BathBombCardProps> = memo(({
             </div>
           </div>
         </div>
+
+        {/* Recessed Antique Parchment Ticket Hiding Vitamin, Wine, Milk & Salt Provenance */}
+        <VintageParchmentTicket
+          assayCode={`${t.ledgerFolioPrefix} ${bomb.editionNumber} · ${waterHueName}`}
+          finePrintText={finePrintText}
+          craftSpecText={craftSpecText}
+          soldCount={soldCount}
+          soldUnitLabel={t.soldUnitLabel}
+          ledgerActionLabel={t.ledgerActionLabel}
+          onInspectLedger={onOpenNutrition}
+        />
       </div>
     </article>
   );
@@ -244,12 +243,19 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
   accentTextHex = '#261E14',
   wishlistIds,
   itemSoldDeltas = {},
+  activeLineFilter,
+  onChangeLineFilter,
   onToggleWishlist,
   onOpenNutritionModal,
   onAddBombToBag,
 }) => {
   const { lang, t } = useLanguage();
-  const [viewFilter, setViewFilter] = useState<BombColumnFilter>('parallel');
+  const [internalViewFilter, setInternalViewFilter] = useState<BombColumnFilter>('parallel');
+  const viewFilter = activeLineFilter ?? internalViewFilter;
+  const setViewFilter = (next: BombColumnFilter) => {
+    setInternalViewFilter(next);
+    onChangeLineFilter?.(next);
+  };
   const [nutrientFilter, setNutrientFilter] = useState<NutrientFilter>('all');
   const [goldFilter, setGoldFilter] = useState<GoldFilter>('all');
   const [sortBy, setSortBy] = useState<BombSortKey>('edition');
@@ -338,7 +344,7 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
               <p className="text-[11px] tracking-[0.18em] uppercase" style={{ color: accentHex }}>
                 {t.bathCollectionEyebrow}
               </p>
-              <h2 className="marshmallow-text font-serif text-3xl sm:text-4xl font-medium leading-[1.08] text-[var(--ink)] balance-text">
+              <h2 className="marshmallow-text font-serif fluid-section-display text-[var(--ink)]">
                 {t.bathCollectionHeading}
               </h2>
             </div>
@@ -462,7 +468,7 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
         {/* 3 Parallel Vertical Columns (Dark | Bright | Holidays) */}
         {viewFilter === 'parallel' ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-7 items-start">
-            <div className="space-y-5">
+            <div id="type-dark" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.darkColTitle}
@@ -474,7 +480,7 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
               <div className="space-y-5">{darkBombs.map((bomb) => renderCard(bomb))}</div>
             </div>
 
-            <div className="space-y-5">
+            <div id="type-bright" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.brightColTitle}
@@ -486,7 +492,7 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
               <div className="space-y-5">{brightBombs.map((bomb) => renderCard(bomb))}</div>
             </div>
 
-            <div className="space-y-5">
+            <div id="type-holiday" className="space-y-5">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-card)]/94 backdrop-blur-md px-4 py-3 flex items-baseline justify-between gap-2 shadow-sm">
                 <h3 className="font-serif text-2xl font-medium text-[var(--ink)]">
                   {t.occasionsColTitle}
@@ -508,6 +514,13 @@ export const BathBombsSection: React.FC<BathBombsSectionProps> = memo(({
             ).map((bomb) => renderCard(bomb))}
           </div>
         )}
+
+        {/* Full-Width Antique Parchment Provenance Colophon Banner */}
+        <ApothecaryColophonBanner
+          mode="bath-bombs"
+          accentHex={accentHex}
+          onOpenSampleLedger={() => onOpenNutritionModal(BRIGHT_BATH_BOMBS[0].id)}
+        />
       </div>
     </section>
   );

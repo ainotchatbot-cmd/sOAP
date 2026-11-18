@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Droplets, FlaskConical, Heart, Thermometer, Timer, X } from 'lucide-react';
+import { Check, Droplets, Heart, ScrollText, Thermometer, Timer, X } from 'lucide-react';
 import {
   BATH_BOMB_BY_ID,
   BATH_BOMB_PRICE_TIERS,
@@ -9,6 +9,7 @@ import {
 } from '../data/bathBombs';
 import { formatThb } from '../data/soaps';
 import { useLanguage } from '../data/i18n';
+import { getPoeticBombMood } from '../data/poeticMoods';
 import { ResilientImage } from './ResilientImage';
 
 interface BathBombNutritionModalProps {
@@ -55,7 +56,7 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
   if (!bomb) return null;
 
   const title = lang === 'th' ? bomb.nameTh : bomb.nameEn;
-  const soakMood = lang === 'th' ? bomb.soakMoodTh : bomb.soakMoodEn;
+  const poeticMood = getPoeticBombMood(bomb, lang);
   const brighteningNote = lang === 'th' ? bomb.brighteningNoteTh : bomb.brighteningNoteEn;
   const waterHueName = lang === 'th' ? bomb.waterHueNameTh : bomb.waterHueNameEn;
   const fizzDuration = lang === 'th' ? bomb.fizzDurationTh : bomb.fizzDurationEn;
@@ -70,24 +71,26 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
     window.setTimeout(() => setJustAdded(false), 1200);
   };
 
-  const renderNutritionGroup = (groupTitle: string, rows: NutrientFactRow[]) => (
+  const renderLedgerGroup = (groupTitle: string, rows: NutrientFactRow[]) => (
     <div className="space-y-1">
-      <div className="bg-[var(--surface)] px-2.5 py-1 border-y border-[var(--ink)]/20">
-        <p className="text-[11px] font-bold tracking-wide text-[var(--ink)]">{groupTitle}</p>
+      <div className="px-3 py-1.5 bg-[#EFE4CF]/80 dark:bg-[#352F4B]/80 border-y border-dotted border-[#B89B6E]/60 dark:border-[#E6C589]/25">
+        <p className="font-serif text-[10.5px] font-semibold tracking-[0.06em] text-[#4E3B28] dark:text-[#EADCC4]">
+          {groupTitle}
+        </p>
       </div>
-      <div className="divide-y divide-[var(--border)]">
+      <div className="divide-y divide-dotted divide-[#C9B38C]/50 dark:divide-[#E6C589]/20">
         {rows.map((row) => (
           <div
             key={row.labelEn}
-            className="grid grid-cols-12 items-baseline gap-2 px-2 py-1.5 text-[11.5px] leading-snug"
+            className="grid grid-cols-12 items-baseline gap-2 px-3 py-1.5 font-serif text-[11px] leading-snug"
           >
-            <span className="col-span-6 sm:col-span-7 text-[var(--ink)]">
+            <span className="col-span-6 sm:col-span-7 text-[#463626] dark:text-[#E5D9C4]">
               {lang === 'th' ? row.labelTh : row.labelEn}
             </span>
-            <span className="col-span-4 sm:col-span-3 text-right font-semibold text-[var(--ink)] tabular-figures">
+            <span className="col-span-4 sm:col-span-3 text-right font-semibold text-[#3C2D1E] dark:text-[#F4EBD9] tabular-figures">
               {row.amount}
             </span>
-            <span className="col-span-2 text-right font-medium text-[var(--muted)] tabular-figures">
+            <span className="col-span-2 text-right italic text-[#7B6244] dark:text-[#CBBCA6] tabular-figures">
               {row.dailyValue}
             </span>
           </div>
@@ -109,18 +112,18 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-          {/* Left Column: Studio Photo + Dissolved Water Preview + Pack Reservation */}
+          {/* Left Column: Dreamy Bath Ritual, Water Swatch & Pack Reservation */}
           <div className="lg:col-span-5 p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-[var(--border)] bg-[var(--surface)]/55 flex flex-col justify-between gap-5">
             <div className="space-y-4">
               <div className="flex items-start justify-between gap-3">
-                <div className="space-y-0.5 min-w-0">
-                  <p className="text-[11px] font-semibold tracking-[0.14em] uppercase" style={{ color: accentHex }}>
-                    {bomb.editionNumber} · {bomb.edibleGoldLeaf === 'rose-gold' ? t.goldFilterRose : t.goldFilterYellow}
+                <div className="space-y-1 min-w-0">
+                  <p className="font-serif text-[11px] tracking-[0.16em] uppercase" style={{ color: accentHex }}>
+                    {t.ledgerFolioPrefix} {bomb.editionNumber} · {bomb.edibleGoldLeaf === 'rose-gold' ? t.goldFilterRose : t.goldFilterYellow}
                   </p>
                   <h2 className="font-serif text-2xl font-medium text-[var(--ink)] leading-snug">
                     {title}
                   </h2>
-                  <p className="text-xs text-[var(--muted)]">{soakMood}</p>
+                  <p className="font-serif italic text-xs text-[var(--muted)]">{poeticMood}</p>
                 </div>
 
                 <button
@@ -143,52 +146,54 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
                 />
               </div>
 
-              {/* Real Water-Soaking & Skin-Brightening Telemetry */}
-              <div className="p-3.5 rounded-2xl border border-[var(--border)] bg-[var(--surface-card)] space-y-3">
+              {/* Warm Parchment Ritual Atmosphere & Bath Notes */}
+              <div className="p-3.5 border border-[#C9B38C]/55 dark:border-[#E6C589]/25 bg-[#F7F0E2] dark:bg-[#2D2840] space-y-3 text-[#463626] dark:text-[#E5D9C4]">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span
-                      className="w-8 h-8 rounded-full border border-[var(--border)] shrink-0 shadow-inner"
+                      className="w-8 h-8 rounded-full border border-[#B99E74]/60 shrink-0 shadow-inner"
                       style={{ background: bomb.waterGradient }}
                     />
                     <div className="min-w-0">
-                      <p className="text-[10px] uppercase tracking-wider text-[var(--muted)] flex items-center gap-1">
+                      <p className="font-serif text-[10px] uppercase tracking-wider text-[#7B6244] dark:text-[#CBBCA6] flex items-center gap-1">
                         <Droplets className="w-3 h-3" style={{ color: accentHex }} />
                         <span>{t.bathWaterHueLabel}</span>
                       </p>
-                      <p className="text-xs font-semibold text-[var(--ink)] truncate">{waterHueName}</p>
+                      <p className="font-serif text-xs font-semibold truncate">{waterHueName}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[var(--border)] text-[11px]">
+                <div className="grid grid-cols-2 gap-2 pt-2 border-t border-dotted border-[#C9B38C]/60 dark:border-[#E6C589]/25 text-[11px] font-serif">
                   <div className="space-y-0.5">
-                    <span className="text-[var(--muted)] flex items-center gap-1">
+                    <span className="text-[#7B6244] dark:text-[#CBBCA6] flex items-center gap-1">
                       <Timer className="w-3 h-3" style={{ color: accentHex }} />
                       <span>{t.bathFizzDurationLabel}</span>
                     </span>
-                    <p className="font-medium text-[var(--ink)]">{fizzDuration}</p>
+                    <p className="font-medium">{fizzDuration}</p>
                   </div>
                   <div className="space-y-0.5">
-                    <span className="text-[var(--muted)] flex items-center gap-1">
+                    <span className="text-[#7B6244] dark:text-[#CBBCA6] flex items-center gap-1">
                       <Thermometer className="w-3 h-3" style={{ color: accentHex }} />
                       <span>{t.bathSoakTempLabel}</span>
                     </span>
-                    <p className="font-medium text-[var(--ink)] tabular-figures">{bomb.soakTemp}</p>
+                    <p className="font-medium tabular-figures">{bomb.soakTemp}</p>
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-2 text-[11px] text-[var(--muted)]">
-                  <span className="font-medium text-[var(--ink)]">{t.bathEngravedLabel}</span>
+                <div className="pt-2 border-t border-dotted border-[#C9B38C]/60 dark:border-[#E6C589]/25 flex flex-wrap items-center justify-between gap-2 font-serif text-[10.5px]">
+                  <span className="font-medium">{t.bathEngravedLabel}</span>
                   <span aria-hidden="true">·</span>
-                  <span className="font-medium text-[var(--ink)]">{t.bathGroovesLabel}</span>
+                  <span className="font-medium">{t.bathGroovesLabel}</span>
                 </div>
 
-                <div className="pt-2 border-t border-[var(--border)] space-y-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: accentHex }}>
+                <div className="pt-2 border-t border-dotted border-[#C9B38C]/60 dark:border-[#E6C589]/25 space-y-1">
+                  <p className="font-serif text-[10px] font-semibold uppercase tracking-wider text-[#7B6244] dark:text-[#CBBCA6]">
                     {t.bathBrighteningTitle}
                   </p>
-                  <p className="text-xs text-[var(--muted)] leading-relaxed">{brighteningNote}</p>
+                  <p className="font-serif italic text-[11.5px] leading-relaxed">
+                    {brighteningNote}
+                  </p>
                 </div>
               </div>
             </div>
@@ -259,16 +264,16 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Full Animal Pak-Inspired Multi-Vitamin & Mineral Bath Supplement Facts Label */}
+          {/* Right Column: Restyled Vintage Apothecary Elixir Ledger */}
           <div className="lg:col-span-7 p-5 sm:p-7 flex flex-col justify-between gap-4">
             <div className="space-y-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1">
-                  <p className="text-[11px] font-semibold tracking-[0.14em] uppercase flex items-center gap-1.5" style={{ color: accentHex }}>
-                    <FlaskConical className="w-3.5 h-3.5" />
+                  <p className="font-serif text-[11px] font-semibold tracking-[0.14em] uppercase flex items-center gap-1.5" style={{ color: accentHex }}>
+                    <ScrollText className="w-3.5 h-3.5" />
                     <span>{t.bathNutritionFactsTitle}</span>
                   </p>
-                  <p className="text-xs text-[var(--muted)]">{t.bathNutritionSubtitle}</p>
+                  <p className="font-serif italic text-xs text-[var(--muted)]">{t.bathNutritionSubtitle}</p>
                 </div>
 
                 <button
@@ -281,30 +286,39 @@ export const BathBombNutritionModal: React.FC<BathBombNutritionModalProps> = ({
                 </button>
               </div>
 
-              {/* Official FDA/Animal-Pak Style Tabular Facts Frame */}
-              <div className="border-2 border-[var(--ink)] rounded-xl overflow-hidden bg-[var(--surface-card)]">
-                <div className="p-3 border-b-4 border-[var(--ink)] space-y-1">
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-[var(--ink)]">
-                    Supplement &amp; Bath Facts
-                  </h3>
-                  <p className="text-xs font-medium text-[var(--muted)]">{servingSize}</p>
-                </div>
+              {/* Heirloom Double-Hairline Antique Parchment Broadsheet Ledger */}
+              <div className="bg-[#F6EEDD] dark:bg-[#2D2840] border border-[#B99E74]/65 dark:border-[#E6C589]/30 p-1.5 shadow-inner">
+                <div className="relative border border-[#B99E74]/50 dark:border-[#E6C589]/25 bg-[#FAF4E7]/90 dark:bg-[#262138]/85 overflow-hidden">
+                  {/* Ledger Title Block */}
+                  <div className="px-4 py-3.5 border-b border-double border-[#A6885C]/65 dark:border-[#E6C589]/30 text-center space-y-1">
+                    <p className="font-serif text-[10px] tracking-[0.22em] uppercase text-[#7B6244] dark:text-[#D5C3A5]">
+                      GentleBubble by AR · {t.ledgerFolioPrefix} {bomb.editionNumber}
+                    </p>
+                    <h3 className="font-serif text-xl sm:text-2xl font-medium tracking-tight text-[#3B2C1D] dark:text-[#F5ECDA]">
+                      {t.ledgerHeading}
+                    </h3>
+                    <p className="font-serif italic text-[11.5px] text-[#6E5942] dark:text-[#CBBCA6]">
+                      {servingSize}
+                    </p>
+                  </div>
 
-                <div className="grid grid-cols-12 gap-2 px-2 py-1.5 border-b-2 border-[var(--ink)] text-[10px] font-bold uppercase tracking-wider text-[var(--muted)]">
-                  <span className="col-span-6 sm:col-span-7">{t.bathNutrientCol}</span>
-                  <span className="col-span-4 sm:col-span-3 text-right">{t.bathAmountCol}</span>
-                  <span className="col-span-2 text-right">{t.bathDvCol}</span>
-                </div>
+                  {/* Column Rubric Row */}
+                  <div className="grid grid-cols-12 gap-2 px-3 py-1.5 border-b border-[#B99E74]/55 dark:border-[#E6C589]/25 font-serif text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[#7B6244] dark:text-[#CBBCA6]">
+                    <span className="col-span-6 sm:col-span-7">{t.bathNutrientCol}</span>
+                    <span className="col-span-4 sm:col-span-3 text-right">{t.bathAmountCol}</span>
+                    <span className="col-span-2 text-right">{t.bathDvCol}</span>
+                  </div>
 
-                <div className="space-y-2 pb-2">
-                  {renderNutritionGroup(t.bathVitaminsHeader, bomb.nutritionPack.vitamins)}
-                  {renderNutritionGroup(t.bathMineralsHeader, bomb.nutritionPack.minerals)}
-                  {renderNutritionGroup(t.bathAminoHeader, bomb.nutritionPack.aminoAndBrighteners)}
-                  {renderNutritionGroup(t.bathEnzymesHeader, bomb.nutritionPack.enzymesAndBotanicals)}
-                </div>
+                  <div className="space-y-1.5 pb-2">
+                    {renderLedgerGroup(t.bathVitaminsHeader, bomb.nutritionPack.vitamins)}
+                    {renderLedgerGroup(t.bathMineralsHeader, bomb.nutritionPack.minerals)}
+                    {renderLedgerGroup(t.bathAminoHeader, bomb.nutritionPack.aminoAndBrighteners)}
+                    {renderLedgerGroup(t.bathEnzymesHeader, bomb.nutritionPack.enzymesAndBotanicals)}
+                  </div>
 
-                <div className="px-3 py-2 border-t-2 border-[var(--ink)] bg-[var(--surface)]/70 text-[10.5px] text-[var(--muted)]">
-                  {t.bathDvFootnote}
+                  <div className="px-4 py-2.5 border-t border-double border-[#A6885C]/65 dark:border-[#E6C589]/30 bg-[#EFE4CF]/55 dark:bg-[#2E2942]/70 font-serif italic text-[10.5px] text-[#6A553E] dark:text-[#CBBCA6] text-center">
+                    {t.bathDvFootnote}
+                  </div>
                 </div>
               </div>
             </div>
