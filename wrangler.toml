@@ -1,0 +1,34 @@
+name = "soap"
+main = "src/index.ts"
+compatibility_date = "2025-12-01"
+
+[vars]
+PRIMARY_DOMAIN = "gentlebubblebyar.com"
+FIREBASE_PROJECT_ID = "gentlebubblebyar"
+ALLOWED_ORIGINS = "https://gentlebubblebyar.com,https://www.gentlebubblebyar.com,https://soap.bzcscjsktd.workers.dev"
+# Optional: set to a public Cloud Run *.run.app hostname to proxy upstream.
+# Leave empty ("") for native GitHub -> Cloudflare Static Assets + Edge API mode.
+ORIGIN_HOST = ""
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/sitemap.xml", "/robots.txt"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "gentlebubble_atelier_db"
+database_id = "gentlebubble-d1-bind-in-cloudflare-dashboard"
+migrations_dir = "migrations"
+
+[ai]
+binding = "AI"
+
+[[routes]]
+pattern = "gentlebubblebyar.com"
+custom_domain = true
+
+[[routes]]
+pattern = "www.gentlebubblebyar.com"
+custom_domain = true

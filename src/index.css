@@ -1,0 +1,562 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-serif: "Playfair Display", "Noto Sans Thai", Georgia, serif;
+  --font-sans: "Lora", "Noto Sans Thai", Georgia, serif;
+  --font-cursive: "Pinyon Script", "Playfair Display", Georgia, serif;
+}
+
+.font-cursive {
+  font-family: var(--font-cursive);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+:root {
+  --canvas: #FAF6F0;
+  --surface: #F2ECE3;
+  --surface-card: #FFFFFF;
+  --border: rgba(176, 144, 102, 0.22);
+  --ink: #2A211C;
+  --muted: #76695F;
+  --accent: #B5823B;
+  --accent-soft: rgba(181, 130, 59, 0.14);
+  --glaze-top: rgba(255, 255, 255, 0.85);
+  --glaze-shadow: 0 18px 42px -14px rgba(102, 78, 52, 0.15);
+}
+
+.dark {
+  --canvas: #252136;
+  --surface: #302B44;
+  --surface-card: #3A3452;
+  --border: rgba(235, 222, 248, 0.18);
+  --ink: #F8F3FA;
+  --muted: #C2B8D4;
+  --accent: #E6C589;
+  --accent-soft: rgba(230, 197, 137, 0.18);
+  --glaze-top: rgba(255, 255, 255, 0.22);
+  --glaze-shadow: 0 20px 44px -12px rgba(22, 16, 36, 0.42);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: clamp(14.5px, calc(14.5px + (100vw - 320px) * 0.0046875), 16px);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transition: font-size 160ms ease-out;
+  }
+
+  /* Tablet Portrait & Standard Desktop (640px - 1439px): steady 16px base with zero breakpoint step jumps */
+  @media (min-width: 640px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  /* Smooth Continuous Scaling: Desktop (1440px) -> Big Desktop (1800px+) -> Ultra-Wide (2400px+) -> 4K TV Max (3200px+)
+     Height-guarded via min(100vw, 190vh) so extreme wide-short windows stay proportional without vertical overflow */
+  @media (min-width: 1440px) {
+    html {
+      font-size: clamp(16px, calc(16px + (min(100vw, 190vh) - 1440px) * 0.003333), 24.5px);
+    }
+  }
+
+  /* Compact Mobile Horizontal / Extreme Short Landscape Phones */
+  @media (orientation: landscape) and (max-height: 540px) {
+    html {
+      font-size: clamp(13.75px, 3.4dvh, 14.75px);
+    }
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--accent-soft);
+    color: var(--ink);
+  }
+}
+
+/* Responsive Adaptive Gallery Shell with Notch Safe Areas, Fluid Gutters & TV Max Expansion */
+.atelier-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1440px;
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+@media (min-width: 640px) {
+  .atelier-container {
+    padding-left: max(clamp(1.5rem, 2.8vw, 2.5rem), env(safe-area-inset-left));
+    padding-right: max(clamp(1.5rem, 2.8vw, 2.5rem), env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1024px) {
+  .atelier-container {
+    padding-left: max(clamp(2.25rem, 3vw, 4.5rem), env(safe-area-inset-left));
+    padding-right: max(clamp(2.25rem, 3vw, 4.5rem), env(safe-area-inset-right));
+  }
+}
+
+@media (min-width: 1720px) {
+  .atelier-container {
+    max-width: min(94vw, 1680px);
+  }
+}
+
+@media (min-width: 2100px) {
+  .atelier-container {
+    max-width: min(93vw, 1960px);
+  }
+}
+
+@media (min-width: 2700px) {
+  .atelier-container {
+    max-width: min(92vw, 2320px);
+  }
+}
+
+/* Header sticky governance: un-pin on ultra-short landscape phones so sticky chrome never steals >15% height */
+.atelier-sticky-header {
+  position: sticky;
+  top: 0;
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .atelier-sticky-header {
+    position: relative;
+  }
+}
+
+/* Grid overflow protection across all resolutions */
+.hero-landscape-col-copy,
+.hero-landscape-col-carousel {
+  min-width: 0;
+}
+
+/* Compact mobile landscape ergonomics (e.g., 640x360, 844x390, 932x430) */
+@media (orientation: landscape) and (max-height: 540px) {
+  .atelier-container {
+    padding-left: max(1.25rem, env(safe-area-inset-left));
+    padding-right: max(1.25rem, env(safe-area-inset-right));
+  }
+  #hero .atelier-container {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+  .hero-landscape-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 1rem !important;
+  }
+  .hero-landscape-col-copy {
+    grid-column: span 12 / span 12 !important;
+  }
+  .hero-landscape-col-carousel {
+    grid-column: span 12 / span 12 !important;
+  }
+  .hero-landscape-card {
+    padding: 0.9rem 1.1rem !important;
+  }
+  .hero-carousel-media {
+    max-height: 44dvh;
+    aspect-ratio: 4 / 3 !important;
+  }
+}
+
+/* Wide-short desktop / split-screen / ultra-wide landscape height guard */
+@media (orientation: landscape) and (max-height: 680px) and (min-width: 900px) {
+  #hero .atelier-container {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+  .hero-carousel-media {
+    max-height: 54dvh;
+  }
+}
+
+.tabular-figures {
+  font-variant-numeric: tabular-nums;
+}
+
+.balance-text {
+  text-wrap: balance;
+}
+
+/* Fluid clamp() typography harmonizing cleanly with smooth root scaling from 320px to 4K TV Max */
+.fluid-hero-display {
+  font-size: clamp(1.9rem, 1.35rem + 1.4vw, 3.25rem);
+  line-height: 1.07;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+@media (orientation: landscape) and (max-height: 540px) {
+  .fluid-hero-display {
+    font-size: clamp(1.45rem, 1.05rem + 1.35vw, 2.05rem);
+    line-height: 1.08;
+  }
+}
+
+.fluid-section-display {
+  font-size: clamp(1.5rem, 1.15rem + 0.9vw, 2.35rem);
+  line-height: 1.12;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+.fluid-card-display {
+  font-size: clamp(1.04rem, 0.94rem + 0.25vw, 1.24rem);
+  line-height: 1.24;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.fluid-lead-copy {
+  font-size: clamp(0.875rem, 0.85rem + 0.12vw, 1.02rem);
+  line-height: 1.6;
+}
+
+/* Touch-friendly horizontal scroll track without visual clutter */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Debossed mold stamp depth for soap & bath bomb Victorian grooves */
+.engraved-stamp-deboss {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.55),
+    0 -1px 1px rgba(42, 33, 28, 0.42);
+}
+
+/* Shiny lifted 3D curved bubbly porcelain relief surface */
+.luxury-3d-card {
+  border-radius: 28px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border);
+  box-shadow:
+    inset 0 1px 2px var(--glaze-top),
+    0 12px 28px -14px rgba(102, 78, 52, 0.11);
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+}
+
+.luxury-3d-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Defer Y-translation exclusively to Framer Motion on sable product cards while expanding porcelain glaze shadow */
+.sable-motion-host .luxury-3d-card:hover,
+.luxury-3d-card.sable-motion-card:hover {
+  transform: none;
+  box-shadow:
+    inset 0 1px 2px var(--glaze-top),
+    0 18px 36px -14px rgba(102, 78, 52, 0.16);
+}
+
+.dark .sable-motion-host .luxury-3d-card:hover,
+.dark .luxury-3d-card.sable-motion-card:hover {
+  box-shadow:
+    inset 0 1px 2px var(--glaze-top),
+    0 22px 42px -12px rgba(16, 12, 28, 0.45);
+}
+
+.luxury-3d-pill {
+  box-shadow:
+    inset 0 1.5px 2px var(--glaze-top),
+    0 6px 18px -6px rgba(96, 74, 52, 0.14);
+}
+
+.botanical-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background-color: var(--surface-card);
+  border: 2px solid var(--accent);
+  box-shadow:
+    inset 0 1.5px 2px var(--glaze-top),
+    0 4px 12px -2px rgba(42, 33, 28, 0.25);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.botanical-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+}
+
+.botanical-range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background-color: var(--surface-card);
+  border: 2px solid var(--accent);
+  box-shadow:
+    inset 0 1.5px 2px var(--glaze-top),
+    0 4px 12px -2px rgba(42, 33, 28, 0.25);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pause-hover olfactory Scent Diffusion hue/opacity drift (compositor-only) */
+@keyframes scentDiffusionDrift {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: scale(0.99) translateY(0px);
+    filter: blur(22px) saturate(1.02);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.01) translateY(-2px);
+    filter: blur(24px) saturate(1.08);
+  }
+}
+
+.scent-diffusion-aura {
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(20px);
+  transition:
+    opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) 140ms,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 140ms;
+}
+
+.group:hover .scent-diffusion-aura,
+.group:focus-within .scent-diffusion-aura {
+  opacity: 0.28;
+  transform: scale(1.01);
+  animation: scentDiffusionDrift 6s ease-in-out 260ms infinite;
+}
+
+/* Classic vintage embossed letterpress depth */
+.marshmallow-text {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.58),
+    0 6px 16px rgba(136, 108, 82, 0.14);
+}
+
+.dark .marshmallow-text {
+  text-shadow:
+    0 2px 12px rgba(240, 218, 255, 0.2),
+    0 6px 18px rgba(16, 12, 28, 0.45);
+}
+
+/* Pearlescent Rainbow-Sparkle Typography for Brand & Display Accents */
+@keyframes rainbowSparkleDrift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.rainbow-sparkle-text {
+  background-image: linear-gradient(
+    112deg,
+    #B85D57 0%,
+    #C78826 18%,
+    #4F8A6B 36%,
+    #42719B 54%,
+    #8F5891 72%,
+    #C78826 88%,
+    #B85D57 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+  animation: rainbowSparkleDrift 9s ease-in-out infinite;
+}
+
+.dark .rainbow-sparkle-text {
+  background-image: linear-gradient(
+    112deg,
+    #FFA7A0 0%,
+    #F9D076 18%,
+    #8EE0B6 36%,
+    #8DC3F5 54%,
+    #E0A3E6 72%,
+    #F9D076 88%,
+    #FFA7A0 100%
+  );
+  filter: drop-shadow(0 2px 10px rgba(240, 218, 255, 0.28));
+}
+
+/* Real rising iridescent soap bubbles all page long */
+@keyframes realSoapBubbleRise {
+  0% {
+    transform: translate3d(0, 114vh, 0) scale(0.86);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--bubble-opacity, 0.8);
+  }
+  28% {
+    transform: translate3d(var(--bubble-sway, 18px), 78vh, 0) scale(0.96);
+  }
+  56% {
+    transform: translate3d(calc(var(--bubble-sway, 18px) * -0.85), 42vh, 0) scale(1.02);
+  }
+  84% {
+    opacity: var(--bubble-opacity, 0.8);
+    transform: translate3d(calc(var(--bubble-sway, 18px) * 0.55), 10vh, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(calc(var(--bubble-sway, 18px) * -0.4), -22vh, 0) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes bubblePopRing {
+  0% {
+    transform: scale(0.88);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+@keyframes bubblePopMist {
+  0% {
+    transform: rotate(var(--mist-angle, 0deg)) translate3d(24px, 0, 0) scale(1);
+    opacity: 0.92;
+  }
+  100% {
+    transform: rotate(var(--mist-angle, 0deg)) translate3d(78px, 0, 0) scale(0.2);
+    opacity: 0;
+  }
+}
+
+.floating-soap-bubble {
+  animation-name: realSoapBubbleRise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+.bubble-pop-ring {
+  animation: bubblePopRing 460ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.bubble-pop-mist {
+  animation: bubblePopMist 480ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Silk Translucent Shimmer CSS Overlay — compositor-only transform sweep (no frame repaints) */
+@keyframes shimmerStardustSweep {
+  0% {
+    transform: translate3d(-135%, -135%, 0);
+  }
+  100% {
+    transform: translate3d(135%, 135%, 0);
+  }
+}
+
+.shimmer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mix-blend-mode: screen;
+  opacity: 0.14;
+  contain: strict;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background-image: linear-gradient(
+    114deg,
+    transparent 38%,
+    rgba(255, 252, 244, 0.08) 44%,
+    rgba(255, 248, 224, 0.22) 50%,
+    rgba(255, 252, 244, 0.08) 56%,
+    transparent 62%
+  );
+  will-change: transform;
+  animation: shimmerStardustSweep 11.5s cubic-bezier(0.35, 0.05, 0.65, 0.95) infinite;
+}
+
+.shimmer-enlarged {
+  opacity: 0.22;
+}
+
+.shimmer-enlarged::after {
+  background-image: linear-gradient(
+    115deg,
+    transparent 36%,
+    rgba(255, 252, 244, 0.1) 43%,
+    rgba(255, 248, 224, 0.28) 50%,
+    rgba(255, 252, 244, 0.1) 57%,
+    transparent 64%
+  );
+  animation-duration: 9.5s;
+}
+
+/* Defer layout/paint of off-screen product cards in catalog grids */
+.cv-product-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 380px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+    transition: none;
+  }
+  .rainbow-sparkle-text {
+    animation: none;
+    background-position: 25% 50%;
+  }
+  .luxury-3d-card:hover {
+    transform: none;
+  }
+  .group:hover .scent-diffusion-aura,
+  .group:focus-within .scent-diffusion-aura {
+    animation: none;
+    opacity: 0.52;
+    transform: scale(1);
+  }
+  .floating-soap-bubble {
+    animation: none;
+    display: none;
+  }
+  .shimmer {
+    opacity: 0.18;
+  }
+  .shimmer::after {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
